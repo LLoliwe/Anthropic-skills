@@ -1,0 +1,30 @@
+**OBJECTIVE**
+Refine and elevate the attached Pryntor landing page content and design to be awe-evoking and desire-driven, while remaining strictly claim-safe, minimal, and "black box" engineering-focused.
+
+**CONSTRAINTS**
+1.  **No Em Dashes:** Use clean punctuation only.
+2.  **No Invented Proof:** Do not add client logos, metrics, testimonials, awards, or "we did X for Y" claims.
+3.  **No Builder Branding:** Do not mention Manus, Vercel, or any hosting provider.
+4.  **Style:** "Black Box" Engineering Console. Dark mode, rigid grid, monospace accents, radical transparency.
+5.  **Tone:** Clinical, precise, audit-ready. No hype words (revolutionary, cutting-edge, etc.).
+
+**INPUTS**
+Please read the following attached artifacts:
+1.  `SITE_SNAPSHOT.html` (Current implementation)
+2.  `DESIGN_TOKENS.json` (Current design system)
+3.  `CLAUDE_HANDOFF_PACK_v1.md` (Section map and copy deck)
+
+**OUTPUT FORMAT**
+Please provide a structured response with the following sections:
+
+1.  **Revised Section Order:** If you recommend changing the flow, list the new order with a specific reason for each move.
+2.  **Revised Copy Deck:** Provide the full, updated text for every section. Focus on "claim-safe desire"—using contrast (before/after), specificity (deliverables), and authority (process) to create emotional pull without hype.
+3.  **Revised Microcopy:** Updates for form labels, error messages, success states, and buttons to ensure frictionless user action.
+4.  **UI/Visual Upgrade Suggestions:** Concrete CSS/Design changes that preserve the "Black Box" system but elevate the quality (e.g., specific hover effects, border treatments, typography tweaks).
+5.  **Rationale:** A short explanation for each major change, explaining how it improves clarity, scanning behavior, or emotional connection.
+6.  **Updated DESIGN_TOKENS.json (Optional):** If your visual upgrades require new tokens, provide the updated JSON.
+
+**PRIORITIES**
+*   **Above-the-Fold Clarity:** Ensure the hero section immediately communicates value and credibility.
+*   **Scanning Behavior:** Optimize for users who scan (F-pattern). Use strong hierarchy and concise blocks.
+*   **Frictionless CTA:** Ensure the path to "Request Access" or "Contact" is obvious and inviting.

@@ -1,0 +1,32 @@
+# Project Manifest: Pryntor Landing Page
+
+## File Tree
+client/
+  public/       # Static assets (images, favicon)
+  src/
+    components/ # UI components (shadcn/ui)
+    pages/      # Page components (Home.tsx)
+    App.tsx     # Main application entry
+    index.css   # Global styles and Tailwind directives
+    main.tsx    # React root
+  index.html    # HTML entry point
+package.json    # Dependencies and scripts
+vite.config.ts  # Vite configuration
+
+## Build/Run Instructions
+1.  Install dependencies: `pnpm install`
+2.  Start dev server: `pnpm dev`
+3.  Build for production: `pnpm build`
+4.  Preview production build: `pnpm preview`
+
+## Content Location
+*   Main copy and layout: `client/src/pages/Home.tsx`
+*   Navigation and Footer: `client/src/pages/Home.tsx`
+
+## Styles Location
+*   Global theme variables: `client/src/index.css`
+*   Tailwind configuration: `client/src/index.css` (using Tailwind v4 @theme)
+*   Component styles: Inline Tailwind classes in `client/src/components/ui/*` and `client/src/pages/Home.tsx`
+
+## Components Location
+*   Reusable UI components: `client/src/components/ui/` (Button, Card, Input, etc.)
