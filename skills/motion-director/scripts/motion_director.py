@@ -14,7 +14,7 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageChops, ImageStat
 
 IVORY = "#F4F1E8"
 INK = "#171C1A"
@@ -299,14 +299,21 @@ def seek(p: dict, seconds: float) -> Image.Image:
     return frame
 
 
-def render(p: dict, output: Path, seconds: float | None, final: bool, blur: bool):
+def render(p: dict, output: Path, seconds: float | None, final: bool, blur: bool, shot_id: str | None = None):
     report = inspect(p, require_approval=final)
     if report["errors"]:
         raise ValueError("Render blocked: " + "; ".join(report["errors"]))
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("ffmpeg not installed; no MP4 was created")
-    length = duration(p) if seconds is None else min(float(seconds), duration(p))
+    start = 0.0
+    full_length = duration(p)
+    if shot_id:
+        match = next((row for row in timeline(p) if row["shot"]["id"] == shot_id), None)
+        if match is None:
+            raise ValueError(f"Unknown shot: {shot_id}")
+        start, full_length = match["start"], float(match["shot"]["duration"])
+    length = full_length if seconds is None else min(float(seconds), full_length)
     if length <= 0:
         raise ValueError("Render length must be positive")
     fps = int(p.get("fps", 24))
@@ -329,7 +336,7 @@ def render(p: dict, output: Path, seconds: float | None, final: bool, blur: bool
     process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
     try:
         for i in range(nframes):
-            img = seek(p, i / fps)
+            img = seek(p, start + i / fps)
             if blur and previous is not None:
                 img = Image.blend(previous, img, 0.78)
             previous = img
@@ -345,7 +352,41 @@ def render(p: dict, output: Path, seconds: float | None, final: bool, blur: bool
         raise RuntimeError("ffmpeg render failed: " + error[-1500:])
     print(json.dumps({"status": "rendered_not_published", "path": str(output),
                       "bytes": output.stat().st_size, "frames": nframes,
-                      "seconds": length, "final_approved": final}, indent=2))
+                      "seconds": length, "shot": shot_id,
+                      "final_approved": final}, indent=2))
+
+
+
+def frame_qa(p: dict, sample_fps: int = 4) -> dict:
+    """Computed pixel-motion inspection; NOT a perceptual or creative score."""
+    if not 1 <= sample_fps <= 24:
+        raise ValueError("sample_fps must be 1–24")
+    metrics, warnings = [], []
+    for row in timeline(p):
+        s = row["shot"]
+        n = max(2, int(math.ceil(float(s["duration"]) * sample_fps)))
+        prev = None
+        static = 0
+        max_static = 0
+        diffs = []
+        for i in range(n):
+            t = row["start"] + min((i + 0.5) / sample_fps, float(s["duration"]) - 0.01)
+            frame = seek(p, t).convert("L").resize((120, 120))
+            if prev is not None:
+                difference = ImageChops.difference(prev, frame)
+                mean_diff = ImageStat.Stat(difference).mean[0]
+                diffs.append(round(mean_diff, 4))
+                static = static + 1 if mean_diff < 0.45 else 0
+                max_static = max(max_static, static)
+            prev = frame
+        hold = round(max_static / sample_fps, 2)
+        metrics.append({"id": s["id"], "samples": n, "max_near_static_seconds": hold,
+                        "mean_frame_difference": round(sum(diffs)/max(1,len(diffs)), 3),
+                        "computed_only": True})
+        if hold > 1.25:
+            warnings.append(f"{s['id']}: >1.25s near-static hold; inspect against music")
+    return {"sample_fps": sample_fps, "shot_metrics": metrics, "warnings": warnings,
+            "limitation": "Pixel difference cannot determine artistic quality, legibility or transition intent"}
 
 
 def contact_sheet(p: dict, output: Path):
@@ -513,6 +554,9 @@ def main():
     sub.choices["render"].add_argument("--seconds", type=float)
     sub.choices["render"].add_argument("--final", action="store_true")
     sub.choices["render"].add_argument("--blur", action="store_true")
+    sub.choices["render"].add_argument("--shot")
+    sub.add_parser("qa-frames").add_argument("project", type=Path)
+    sub.choices["qa-frames"].add_argument("--output", type=Path)
     sub.choices["handoff"].add_argument("--outdir", type=Path, default=Path("handoff"))
     sub.choices["revise"].add_argument("--shot", required=True)
     sub.choices["revise"].add_argument("--duration", type=float)
@@ -533,7 +577,13 @@ def main():
     elif args.command == "qa":
         print(json.dumps(inspect(p), indent=2))
     elif args.command == "render":
-        render(p, args.output, args.seconds, args.final, args.blur)
+        render(p, args.output, args.seconds, args.final, args.blur, args.shot)
+    elif args.command == "qa-frames":
+        report = frame_qa(p)
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(report, indent=2)+"\n")
+        print(json.dumps(report, indent=2))
     elif args.command == "handoff":
         handoff(p, args.outdir)
     elif args.command == "revise":
