@@ -101,5 +101,15 @@ class MotionDirectorTests(unittest.TestCase):
         self.assertTrue(any("does not exist" in e for e in md.inspect(p)["errors"]))
 
 
+
+    def test_frame_qa_samples_real_animation(self):
+        p = copy.deepcopy(self.p)
+        p["shots"] = [p["shots"][1]]
+        report = md.frame_qa(p, sample_fps=2)
+        self.assertEqual(report["shot_metrics"][0]["id"], "S02")
+        self.assertGreater(report["shot_metrics"][0]["samples"], 4)
+        self.assertGreaterEqual(report["shot_metrics"][0]["mean_frame_difference"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
