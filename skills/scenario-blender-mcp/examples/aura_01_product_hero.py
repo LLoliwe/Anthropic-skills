@@ -77,7 +77,7 @@ def front_type(content, height, size, surface_radius, mat, normal, tracking=1.02
     return label
 
 
-def render_all(outdir, requested_size):
+def render_all(outdir, requested_size, selected):
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
     ceramic = matte("AURA 01 | deep marine ceramic", (.014, .14, .18), .2, .23)
@@ -146,6 +146,8 @@ def render_all(outdir, requested_size):
         ("aura_01_16x9", 16, 9),
     ]
     for name, rw, rh in ratios:
+        if selected != "all" and name != "aura_01_" + selected:
+            continue
         w = round(requested_size * rw / min(rw, rh))
         h = round(requested_size * rh / min(rw, rh))
         # Cropping is native-camera recomposition rather than stretched pixels.
@@ -164,9 +166,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--outdir", default="output")
     parser.add_argument("--size", type=int, default=512)
+    parser.add_argument("--format", choices=["all", "1x1", "4x5", "9x16", "16x9"], default="all")
     args = parser.parse_args(argv)
     assert 256 <= args.size <= 1600, "Render size outside tested cost envelope"
-    render_all(Path(args.outdir).expanduser().resolve(), args.size)
+    render_all(Path(args.outdir).expanduser().resolve(), args.size, args.format)
 
 
 if __name__ == "__main__":
