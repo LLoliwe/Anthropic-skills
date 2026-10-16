@@ -14,7 +14,7 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 IVORY = "#F4F1E8"
 INK = "#171C1A"
@@ -114,6 +114,9 @@ def inspect(p: dict, require_approval: bool = False) -> dict:
         warnings.append("Final shot should resolve into an explicit CTA")
     if not p.get("music"):
         warnings.append("No music supplied: beat grid is a tempo guide, not audio onset analysis")
+    for s in p["shots"]:
+        if s.get("asset") and not Path(s["asset"]).exists():
+            errors.append(f"{s['id']}: referenced screenshot does not exist")
     if not p.get("rights"):
         errors.append("Missing asset/music rights declaration")
     return {"status": "fail" if errors else "pass_with_warnings" if warnings else "pass",
@@ -144,8 +147,8 @@ def rect(draw, xy, fill, r=22, outline=None, width=1):
                            outline=outline, width=width)
 
 
-def chrome(draw, shot: dict, progress: float):
-    label(draw, (70, 62), "PRYNTOR   /   MOTION LAB", 22, INK, True)
+def chrome(draw, shot: dict, progress: float, brand: str):
+    label(draw, (70, 62), (brand.upper() + "   /   MOTION LAB")[:44], 22, INK, True)
     draw.line([(70, 102), (930, 102)], fill="#B9BEB5", width=2)
     label(draw, (70, 918), "ORIGINAL / SYNTHETIC UI DEMONSTRATION", 17, MUTED)
     label(draw, (930, 918), shot["id"], 19, INK, True, anchor="ra")
@@ -277,7 +280,14 @@ def seek(p: dict, seconds: float) -> Image.Image:
     base = Image.new("RGB", (1000, 1000), IVORY)
     draw = ImageDraw.Draw(base)
     SCENES[shot["type"]](draw, shot, u)
-    chrome(draw, shot, u)
+    if shot["type"] == "device" and shot.get("asset"):
+        asset = Path(shot["asset"])
+        if asset.exists():
+            cx = int(mix(1120, 500, ease(u / 0.3)))
+            with Image.open(asset) as original:
+                image = ImageOps.contain(original.convert("RGB"), (350, 250))
+                base.paste(image, (cx - image.width // 2, 520))
+    chrome(draw, shot, u, p.get("brand", "PRYNTOR"))
     w, h = int(p.get("width", 720)), int(p.get("height", 720))
     side = min(w, h)
     if (w, h) == (1000, 1000):
@@ -428,11 +438,77 @@ def approve(p: dict, path: Path, shot_id: str | None, all_shots: bool):
     save(p, path)
 
 
+
+def create_project(output: Path, name: str, brand: str, message: str, audience: str,
+                   channel: str, aspect: str, bpm: float):
+    """Deterministic brief -> editable six-shot storyboard; no LLM invoked."""
+    formats = {"1:1": (720, 720), "16:9": (1280, 720), "9:16": (720, 1280)}
+    if aspect not in formats:
+        raise ValueError("Aspect must be 1:1, 16:9 or 9:16")
+    if not 40 <= bpm <= 240:
+        raise ValueError("BPM must be 40–240")
+    width, height = formats[aspect]
+    specs = [
+        ("hook", 4, "Too much noise.", "A clearer way starts here.",
+         ["problem appears", "noise collapses"], "Compression into a signal line."),
+        ("toggle", 5, "Turn clarity on.", "One action changes the view.",
+         ["toggle engages", "switch morphs into CTA", "CTA expands"], "Maintain geometry across morph."),
+        ("cards", 5, "Bring it together.", "One place for what matters.",
+         ["cards enter", "priority expands", "secondary cards recede"], "Half-beat stagger; preserve hierarchy."),
+        ("device", 6, "Made for decisions.", "The experience, in your hands.",
+         ["device enters", "interface moves", "action confirms"], "Authentic screenshot optional; synthetic UI by default."),
+        ("data", 5, "Spot what matters.", "Turn activity into action.",
+         ["metrics rise", "chart resolves", "focus locks"], "Synthetic data; do not imply product metrics."),
+        ("cta", 5, message.upper()[:42] or "SEE THE SIGNAL.", "A better way to move.",
+         ["search field appears", "search morphs to CTA", "brand locks"], "Clear CTA and final 0.4s hold.")
+    ]
+    shots = [{"id": f"S{i:02d}", "type": kind, "duration": sec, "headline": head,
+              "subhead": sub, "actions": actions, "annotation": annotation,
+              "tool": "device" if kind == "device" else "code",
+              "approved": False, "notes": []}
+             for i, (kind, sec, head, sub, actions, annotation) in enumerate(specs, 1)]
+    p = {"name": name, "brand": brand, "message": message, "audience": audience,
+         "channel": channel, "aspect_ratio": aspect, "width": width, "height": height,
+         "fps": 24, "bpm": bpm, "music": None, "synthetic_demo": True,
+         "rights": "Original illustrative vectors; add verified licenses before commercial use",
+         "shots": shots, "history": [{"at": now(), "action": "deterministic_init",
+                                     "note": "Not AI-generated; director must rewrite for product truth"}]}
+    output.parent.mkdir(parents=True, exist_ok=True)
+    save(p, output)
+    print(json.dumps({"status": "storyboard_created", "path": str(output),
+                      "duration_seconds": duration(p), "shots": len(shots),
+                      "requires_director_review": True}, indent=2))
+
+
+def reorder(p: dict, path: Path, ids: str):
+    wanted = [x.strip() for x in ids.split(",") if x.strip()]
+    existing = [s["id"] for s in p["shots"]]
+    if len(wanted) != len(existing) or set(wanted) != set(existing):
+        raise ValueError("Order must contain each existing shot ID exactly once")
+    mapping = {s["id"]: s for s in p["shots"]}
+    p["shots"] = [mapping[sid] for sid in wanted]
+    for s in p["shots"]:
+        s["approved"] = False
+    p.setdefault("history", []).append({"at": now(), "action": "reorder",
+                                       "before": existing, "after": wanted})
+    save(p, path)
+
 def main():
     parser = argparse.ArgumentParser(description="Original music-led motion director / renderer")
     sub = parser.add_subparsers(dest="command", required=True)
     for name in ("plan", "qa", "render", "handoff", "revise", "approve"):
         sub.add_parser(name).add_argument("project", type=Path)
+    initp = sub.add_parser("init")
+    initp.add_argument("--output", type=Path, required=True)
+    initp.add_argument("--name", required=True)
+    initp.add_argument("--brand", default="ORIGINAL")
+    initp.add_argument("--message", required=True)
+    initp.add_argument("--audience", default="general")
+    initp.add_argument("--channel", default="social")
+    initp.add_argument("--aspect", choices=["1:1", "16:9", "9:16"], default="1:1")
+    initp.add_argument("--bpm", type=float, default=120)
+    sub.add_parser("reorder").add_argument("project", type=Path)
+    sub.choices["reorder"].add_argument("--order", required=True)
     sub.choices["render"].add_argument("--output", type=Path, default=Path("preview.mp4"))
     sub.choices["render"].add_argument("--seconds", type=float)
     sub.choices["render"].add_argument("--final", action="store_true")
@@ -445,6 +521,10 @@ def main():
     sub.choices["approve"].add_argument("--shot")
     sub.choices["approve"].add_argument("--all", action="store_true")
     args = parser.parse_args()
+    if args.command == "init":
+        create_project(args.output, args.name, args.brand, args.message,
+                       args.audience, args.channel, args.aspect, args.bpm)
+        return
     p = load(args.project)
     if args.command == "plan":
         print(json.dumps({"project": p.get("name"), "duration": duration(p),
@@ -459,6 +539,9 @@ def main():
     elif args.command == "revise":
         revise(p, args.project, args.shot, args.duration, args.headline, args.note)
         print("Revision saved; shot approval invalidated.")
+    elif args.command == "reorder":
+        reorder(p, args.project, args.order)
+        print("Order saved; shot approvals invalidated.")
     elif args.command == "approve":
         approve(p, args.project, args.shot, args.all)
         print("Manual CLI approval recorded; verify director identity separately.")
