@@ -20,9 +20,26 @@ jobs:
       - run: python -m unittest discover -s skills/motion-director/tests -v
       - run: python skills/motion-director/scripts/motion_director.py qa skills/motion-director/examples/signal-demo.json
       - run: python skills/motion-director/scripts/motion_director.py handoff skills/motion-director/examples/signal-demo.json --outdir /tmp/motion-handoff
-      - name: Real MP4 render smoke (2 seconds)
+      - name: Install FFmpeg
         run: |
-          command -v ffmpeg
-          python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --seconds 2 --output /tmp/motion-smoke.mp4
-          test -s /tmp/motion-smoke.mp4
-          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 /tmp/motion-smoke.mp4
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - name: Render original 30-second rough cut
+        run: |
+          python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --output /tmp/motion-rough-cut.mp4
+          test -s /tmp/motion-rough-cut.mp4
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 /tmp/motion-rough-cut.mp4
+      - name: Upload real preview and QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: motion-director-original-demo
+          path: |
+            /tmp/motion-rough-cut.mp4
+            /tmp/motion-handoff/contact_sheet.png
+            /tmp/motion-handoff/qa.json
+            /tmp/motion-handoff/storyboard.json
+            /tmp/motion-handoff/edit_decision_list.csv
+            /tmp/motion-handoff/editor_handoff.md
+          if-no-files-found: warn
+          retention-days: 7
