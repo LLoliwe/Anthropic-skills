@@ -137,7 +137,7 @@ def render_all(outdir, requested_size, selected):
     outdir.mkdir(parents=True, exist_ok=True)
     scene.render.resolution_x = requested_size
     scene.render.resolution_y = requested_size
-    bpy.ops.wm.save_as_mainfile(filepath=str(outdir / "aura_01_editable_source.blend"))
+    bpy.ops.wm.save_as_mainfile(filepath=str(outdir / "aura_01_editable_source.blend"), compress=False)
 
     ratios = [
         ("aura_01_1x1", 1, 1),
