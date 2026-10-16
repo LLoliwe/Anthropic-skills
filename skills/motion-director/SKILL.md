@@ -44,15 +44,15 @@ description: Direct, storyboard, render, critique, and finish original music-led
 
 Requires Python 3.10+, Pillow and ffmpeg (only for MP4). See README.md.
 
-\`\`\`bash
+```bash
 python -m pip install -r skills/motion-director/requirements.txt
 python skills/motion-director/scripts/motion_director.py plan skills/motion-director/examples/signal-demo.json
 python skills/motion-director/scripts/motion_director.py qa skills/motion-director/examples/signal-demo.json
 python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --seconds 6 --output /tmp/signal-preview.mp4
 python skills/motion-director/scripts/motion_director.py handoff skills/motion-director/examples/signal-demo.json --outdir /tmp/signal-handoff
-\`\`\`
+```
 
-The demo is synthetic and does not claim to depict a live product. Before final output, revise shots, obtain human approval, and run \`render ... --final\` (all shots must be approved).
+The demo is synthetic and does not claim to depict a live product. Before final output, revise shots, obtain human approval, and run `render ... --final` (all shots must be approved).
 
 ## Mandatory agent critique loop
 
