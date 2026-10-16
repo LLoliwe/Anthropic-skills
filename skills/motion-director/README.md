@@ -16,6 +16,24 @@ python skills/motion-director/scripts/motion_director.py handoff skills/motion-d
 
 **Preview:** 6-second playable MP4, no approval required. **Final:** `render ... --final --output final.mp4` refuses until all shots have been explicitly approved with `approve`.
 
+
+### Start from a new brief (not just the example)
+
+```bash
+python skills/motion-director/scripts/motion_director.py init \
+  --output /tmp/my-launch.json \
+  --name "Original Product Launch" \
+  --brand "YOUR BRAND" \
+  --message "See what matters" \
+  --audience "operators" \
+  --channel "social" \
+  --aspect 1:1 \
+  --bpm 120
+python skills/motion-director/scripts/motion_director.py plan /tmp/my-launch.json
+```
+
+The `init` command creates a **deterministic editable template**, not an AI-authored script. A directing agent must rewrite the storyboard with authentic product facts before any commercial use. Edit `asset` on a device shot to point to a locally licensed PNG/JPEG screenshot; the renderer places it in the phone screen. Referenced assets must exist. For a changed sequence, use `reorder /tmp/my-launch.json --order S02,S01,S03,S04,S05,S06`. This invalidates prior approvals. Use an actual rights-cleared music file via the `music` field; the 120 BPM grid is not automatic beat detection.
+
 ### Revise and approve
 
 ```bash
