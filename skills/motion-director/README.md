@@ -6,34 +6,34 @@ A concrete production pipeline based on the **structure** of Owi's public TuYo m
 
 Install Python 3.10+, Pillow and FFmpeg. From repository root:
 
-\`\`\`bash
+```bash
 python -m pip install -r skills/motion-director/requirements.txt
 python skills/motion-director/scripts/motion_director.py plan skills/motion-director/examples/signal-demo.json
 python skills/motion-director/scripts/motion_director.py qa skills/motion-director/examples/signal-demo.json
 python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --seconds 6 --output preview.mp4
 python skills/motion-director/scripts/motion_director.py handoff skills/motion-director/examples/signal-demo.json --outdir handoff
-\`\`\`
+```
 
-**Preview:** 6-second playable MP4, no approval required. **Final:** \`render ... --final --output final.mp4\` refuses until all shots have been explicitly approved with \`approve\`.
+**Preview:** 6-second playable MP4, no approval required. **Final:** `render ... --final --output final.mp4` refuses until all shots have been explicitly approved with `approve`.
 
 ### Revise and approve
 
-\`\`\`bash
+```bash
 cp skills/motion-director/examples/signal-demo.json /tmp/my-film.json
 python skills/motion-director/scripts/motion_director.py revise /tmp/my-film.json --shot S03 --duration 4.5 --note "Tighten on beat"
 python skills/motion-director/scripts/motion_director.py approve /tmp/my-film.json --shot S03
 python skills/motion-director/scripts/motion_director.py approve /tmp/my-film.json --all
 python skills/motion-director/scripts/motion_director.py render /tmp/my-film.json --final --output /tmp/my-film.mp4
-\`\`\`
+```
 
 Approval must come from an actual human director. The CLI records it but cannot authenticate who typed it; production teams should keep approvals in their review system.
 
 ### Files
 
-- \`SKILL.md\`: agent contract, creative/editorial loop, human gate, tool routing
-- \`scripts/motion_director.py\`: deterministic per-frame seek renderer, FFmpeg MP4, timeline QA, revisions, handoff
-- \`examples/signal-demo.json\`: original 30-second six-shot synthetic UI demo, 120 BPM
-- \`tests/test_motion_director.py\`: automated tests
+- `SKILL.md`: agent contract, creative/editorial loop, human gate, tool routing
+- `scripts/motion_director.py`: deterministic per-frame seek renderer, FFmpeg MP4, timeline QA, revisions, handoff
+- `examples/signal-demo.json`: original 30-second six-shot synthetic UI demo, 120 BPM
+- `tests/test_motion_director.py`: automated tests
 
 ### Constraints
 
