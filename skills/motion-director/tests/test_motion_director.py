@@ -75,5 +75,31 @@ class MotionDirectorTests(unittest.TestCase):
                 md.load(path)
 
 
+
+    def test_init_creates_new_editable_project(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "film.json"
+            md.create_project(path, "Launch", "TEST", "Better choices", "designers", "social", "9:16", 120)
+            p = md.load(path)
+            self.assertEqual(p["height"], 1280)
+            self.assertEqual(p["shots"][-1]["headline"], "BETTER CHOICES")
+            self.assertEqual(md.duration(p), 30)
+
+    def test_reorder_requires_complete_permutation(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "film.json"
+            p = copy.deepcopy(self.p)
+            with self.assertRaisesRegex(ValueError, "exactly once"):
+                md.reorder(p, path, "S02,S01")
+            md.reorder(p, path, "S02,S01,S03,S04,S05,S06")
+            self.assertEqual(md.load(path)["shots"][0]["id"], "S02")
+            self.assertFalse(any(s["approved"] for s in p["shots"]))
+
+    def test_missing_screenshot_blocks_render(self):
+        p = copy.deepcopy(self.p)
+        p["shots"][3]["asset"] = "/definitely/not/a/screenshot.png"
+        self.assertTrue(any("does not exist" in e for e in md.inspect(p)["errors"]))
+
+
 if __name__ == "__main__":
     unittest.main()
