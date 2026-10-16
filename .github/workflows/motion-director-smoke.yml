@@ -1,0 +1,28 @@
+name: Motion Director skill smoke
+on:
+  pull_request:
+    paths:
+      - 'skills/motion-director/**'
+      - '.github/workflows/motion-director-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r skills/motion-director/requirements.txt
+      - run: python -m unittest discover -s skills/motion-director/tests -v
+      - run: python skills/motion-director/scripts/motion_director.py qa skills/motion-director/examples/signal-demo.json
+      - run: python skills/motion-director/scripts/motion_director.py handoff skills/motion-director/examples/signal-demo.json --outdir /tmp/motion-handoff
+      - name: Real MP4 render smoke (2 seconds)
+        run: |
+          command -v ffmpeg
+          python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --seconds 2 --output /tmp/motion-smoke.mp4
+          test -s /tmp/motion-smoke.mp4
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 /tmp/motion-smoke.mp4
