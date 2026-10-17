@@ -43,4 +43,4 @@ Use REA when source is missing or insufficient and a legitimate task requires sh
 
 For EACH venture target append: date | venture | issue | exact target digest | rights | REA/version/provider | observed command | redacted Evidence | tests/holdouts | reviewer | spend | status (QUEUED / PROBE-ONLY / ANALYZED / ACCEPTED / REJECTED).
 
-**Current baseline 17 Oct 2026:** official skill saved separately, REA CLI previously started, live MCP and authentic target analysis **unverified**. This repo's probe is independent plumbing, not proof of commercial functionality.
+**Verified R0 CI baseline 17 Oct 2026:** official skill saved separately, hosted REA 6.5.0 MCP connected with 207 tools and original JavaScript fixture CLI evidence independently inspected. This PR adds a true MCP tools/call smoke test but does NOT register REA on persistent team hosts, certify real appliances, or authorize company-wide production. Deployment requires an independent reviewer and per-host proof.

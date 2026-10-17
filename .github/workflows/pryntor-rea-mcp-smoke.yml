@@ -18,8 +18,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 pinned
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4 pinned
         with:
           node-version: "24"
       - name: Check Node and local preflight without external code
@@ -30,6 +30,9 @@ jobs:
       - name: Exact-version real REA MCP handshake and tool enumeration
         run: |
           python3 scripts/rea_mcp_probe.py -- npx -y rea-agents@6.5.0 mcp
+      - name: Real REA MCP tools/call on original read-only JavaScript fixture
+        run: |
+          python3 scripts/rea_mcp_probe.py --call-js-target "$PWD/fixtures/rea-owned-js" -- npx -y rea-agents@6.5.0 mcp
       - name: Original JavaScript fixture oracle and complete REA Evidence
         run: |
           node -e "const app = require('./fixtures/rea-owned-js'); if (app.status() !== 'REA-ok') process.exit(1); console.log('Fixture oracle PASS')"
@@ -45,11 +48,16 @@ jobs:
           graph = record["normalized_result"].get("graph") or record["normalized_result"].get("semantic_graph")
           if not isinstance(graph, dict) or not graph.get("nodes"):
               raise SystemExit("FAIL: no application graph nodes")
+          observed = [str(obs.get("label", "")) for node in graph["nodes"] for obs in node.get("observations", []) if isinstance(obs, dict)]
+          if not all(any(filename in name for name in observed) for filename in ("index.js", "format.js")):
+              raise SystemExit("FAIL: graph omitted source fixture modules")
+          if not any(edge.get("relationship") == "imports" for edge in graph.get("edges", [])):
+              raise SystemExit("FAIL: graph omitted source import relationship")
           print(json.dumps({"status": "real-rea-static-js-analysis-passed", "operation": record["operation"], "node_count": len(graph["nodes"]), "evidence_bytes": target.stat().st_size}))
           PY
       - name: Retain original test-only analysis evidence
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4 pinned
         with:
           name: rea-original-js-analysis-evidence
           path: ${{ runner.temp }}/rea-owned-fixture-evidence.json
