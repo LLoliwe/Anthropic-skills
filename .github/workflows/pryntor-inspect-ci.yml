@@ -33,7 +33,8 @@ jobs:
           node --check apps/pryntor-inspect/v3-ui.mjs
           node --check apps/pryntor-inspect/concept-ui.mjs
           node --check apps/pryntor-inspect/concept-samples.mjs
-          node --test apps/pryntor-inspect/test.mjs apps/pryntor-inspect/v1-test.mjs apps/pryntor-inspect/asko-test.mjs apps/pryntor-inspect/v3-test.mjs apps/pryntor-inspect/concept-test.mjs
+          node --check apps/pryntor-inspect/live-scene.mjs
+          node --test apps/pryntor-inspect/test.mjs apps/pryntor-inspect/v1-test.mjs apps/pryntor-inspect/asko-test.mjs apps/pryntor-inspect/v3-test.mjs apps/pryntor-inspect/concept-test.mjs apps/pryntor-inspect/live-scene-test.mjs
       - name: Verify local-only CSP and standalone static files
         run: |
           python3 - <<'PY'
@@ -43,12 +44,14 @@ jobs:
           assert 'connect-src &#39;none&#39;' not in html
           assert "connect-src 'none'" in html
           assert '<script defer type="module" src="./app.mjs"></script>' in html
-          for f in ('index.html','app.mjs','inspector.mjs','styles.css','v1-ui.mjs','v1-model.mjs','v1-test.mjs','asko-guide.mjs','asko-response.mjs','asko-test.mjs','v3-model.mjs','v3-ui.mjs','v3-test.mjs','concept-ui.mjs','concept-samples.mjs','concept-test.mjs','concept.css','concept-hero.webp','concept-portrait.webp'): assert (p/f).exists()
+          for f in ('index.html','app.mjs','inspector.mjs','styles.css','v1-ui.mjs','v1-model.mjs','v1-test.mjs','asko-guide.mjs','asko-response.mjs','asko-test.mjs','v3-model.mjs','v3-ui.mjs','v3-test.mjs','concept-ui.mjs','concept-samples.mjs','concept-test.mjs','concept.css','live-scene.mjs','live-scene.css','live-scene-test.mjs'): assert (p/f).exists()
           assert 'Asko' in html
           assert 'commandDialog' in html and 'graphCanvas' in html and 'reviewToolbar' in html
           assert 'askoMascot' in html and 'askoGuideDialog' in html
           assert 'impactExplorer' in html and 'v3Target' in html and 'v3Search' in html
-          assert 'conceptSamples' in html and 'concept-hero.webp' in html and 'concept-portrait.webp' in html
+          assert 'conceptSamples' in html and 'live-scene.mjs' in html and 'live-scene.css' in html
+          assert 'v5GraphCanvas' in html and 'v5DemoStage' in html
+          assert 'concept-hero.webp' not in html and 'concept-portrait.webp' not in html
           assert 'type="search"' in html
           assert 'v1-ui.mjs' in (p/'app.mjs').read_text()
           print('Pryntor Inspect local-first static contract: PASS')

@@ -36,3 +36,14 @@ Current released baselines remain separate: founder-banked V2 release/asko-v2-ap
 
 QA: node --test apps/pryntor-inspect/test.mjs apps/pryntor-inspect/v1-test.mjs apps/pryntor-inspect/asko-test.mjs apps/pryntor-inspect/v3-test.mjs apps/pryntor-inspect/concept-test.mjs
 Real desktop 1536, tablet 1024 and mobile 390 browser interactions; six axe automated WCAG A/AA states zero violations (manual accessibility still required); source text stays local with CSP connect-src none.
+
+## V5 motion-native rebuild — no cropped raster hero or guide card (17 Oct)
+
+User explicitly rejected static image cutouts in V4 iPhone review. This new, independently deployed V5 candidate keeps reference-faithful calm dashboard composition but eliminates ALL screenshot/raster image layers. Main Ari figure, the separate foreground cat and the guide-card portrait are inline, hand-authored SVG vector drawings; there are no concept-hero.webp or concept-portrait.webp assets in this branch.
+
+- True interactive hero graph: actual local relative-import relationships rendered as SVG curves and keyboard/touch-operable HTML nodes. Sample preview labelled SAMPLE and replaced by real source report. Clicking nodes loads the real fixture or inspects selected files.
+- Animated Ari and cat: pupils track pointer, figure breathes slowly, tail reacts to hover, character click opens deterministic local guide, separate vector foreground cat visible on mobile. Respects prefers-reduced-motion. No remotely rendered models, external scripts, or false AI claims.
+- Actual coded editor microdemo: HTML code lines, syntax accent colours, graph lines/target chips, play/pause and step buttons. Play loads the original three-file fixture and stages authentic counts rather than fake telemetry.
+- Responsive original design: desktop 1536, tablet 1024, mobile 390 and compact 360 tested; zero raster hero/card images and no external requests. Browser native vector rendering at arbitrary resolution, no WebGL dependency.
+
+Verification: 38/38 local Node tests; Chromium interactions for nodes, file rows, Ari modal, source demo and playback on four breakpoints; axe automated six A/AA states 0 violations after line-number contrast fix. Hosted CI, independent expert review, consented user testing and brand clearance separate gates. Banked V2 https://asko-v2-preview.onrender.com , V3 https://asko-v3-lab-preview.onrender.com and V4 https://asko-concept-preview.onrender.com remain untouched, no spend or automatic merge.
