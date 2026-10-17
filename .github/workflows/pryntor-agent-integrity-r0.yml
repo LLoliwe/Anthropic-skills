@@ -21,6 +21,23 @@ jobs:
           persist-credentials: false
       - name: Run fail-closed unit tests (no keys or network)
         run: python3 -B -m unittest discover -s tests -v
+      - name: Install verified Graphify wheel in disposable environment
+        shell: bash
+        run: |
+          python3 -m pip download --quiet --no-deps --only-binary=:all: 'graphifyy==0.9.92' --dest "$RUNNER_TEMP/graphify-wheel"
+          echo "9722846e627a369150107dd792145c3e3a53e3d3da46f7a7bff9f96b75da857c  $RUNNER_TEMP/graphify-wheel/graphifyy-0.9.92-py3-none-any.whl" | sha256sum --check
+          python3 -m venv "$RUNNER_TEMP/graphify-venv"
+          "$RUNNER_TEMP/graphify-venv/bin/python" -m pip install --quiet "$RUNNER_TEMP/graphify-wheel/graphifyy-0.9.92-py3-none-any.whl"
+      - name: Graphify code-only map of disposable synthetic fixture
+        shell: bash
+        working-directory: skills/pryntor-evidence-harness/fixture
+        run: |
+          "$RUNNER_TEMP/graphify-venv/bin/graphify" --version
+          "$RUNNER_TEMP/graphify-venv/bin/graphify" extract . --code-only
+          "$RUNNER_TEMP/graphify-venv/bin/graphify" cluster-only . --no-label
+          "$RUNNER_TEMP/graphify-venv/bin/graphify" export html
+          test -s graphify-out/graph.json
+          test -s graphify-out/graph.html
       - name: Verify deliberately broken fixture holds
         shell: bash
         run: |
