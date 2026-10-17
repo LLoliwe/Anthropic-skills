@@ -1,0 +1,28 @@
+{
+  "name": "@pryntor/heroui-free-pilot",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Original, synthetic company-wide HeroUI free integration acceptance pilot. Not a product release.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "check": "node scripts/policy-check.mjs",
+    "test:e2e": "playwright test",
+    "test": "npm run check && npm run build && npm run test:e2e"
+  },
+  "dependencies": {
+    "@heroui/react": "3.2.6",
+    "@heroui/styles": "3.2.6",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@tailwindcss/vite": "4.3.3",
+    "@vitejs/plugin-react": "5.0.4",
+    "tailwindcss": "4.3.3",
+    "vite": "7.1.9"
+  }
+}

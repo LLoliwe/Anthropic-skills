@@ -1,0 +1,44 @@
+name: HeroUI FREE isolated React pilot
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/heroui-free-pilot.yml'
+      - 'examples/heroui-free-pilot/**'
+      - 'skills/pryntor-heroui-free/**'
+      - 'research/heroui/**'
+  workflow_dispatch:
+jobs:
+  prove-free-real-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: examples/heroui-free-pilot
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: First free dependency installation — generate lockfile for review
+        run: npm install --no-audit --no-fund
+      - name: Original component + rights policy contracts
+        run: npm run check
+      - name: Real Vite + React + HeroUI build
+        run: npm run build
+      - name: Install pinned Chromium runtime for real HTTP E2E
+        run: npx playwright install --with-deps chromium
+      - name: Real browser interactions and responsive viewport screenshots
+        run: npm run test:e2e
+      - name: Retain lockfile, built app, screenshots and browser output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: heroui-free-pilot-evidence
+          path: |
+            examples/heroui-free-pilot/package-lock.json
+            examples/heroui-free-pilot/dist/
+            examples/heroui-free-pilot/qa/
+          if-no-files-found: warn
+          retention-days: 14
