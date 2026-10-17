@@ -1,0 +1,90 @@
+/* V8 Ari — expressive original vector motion, no bitmap cut-outs, no remote animation SDK. */
+.v7-hero{isolation:isolate}
+.v7-visual{isolation:isolate}
+.v8-character-island{position:absolute;z-index:6;left:-104px;bottom:-8px;width:293px;height:305px;pointer-events:none}
+.v8-ari-button{--look-x:0px;--look-y:0px;position:absolute!important;left:0!important;bottom:10px!important;width:238px!important;height:271px!important;background:transparent!important;border:0!important;padding:0!important;cursor:pointer;pointer-events:auto;filter:drop-shadow(0 12px 12px #243d4730);transition:transform .32s cubic-bezier(.25,.85,.2,1)!important;transform-origin:50% 78%}
+.v8-ari-button:focus-visible{outline:3px solid #485fa0;outline-offset:0;border-radius:22px}
+.v8-ari-button svg{display:block;width:100%;height:100%;overflow:visible;filter:none}
+.v8-ari-button:hover{transform:translateY(-7px) rotate(-1.2deg)}
+.v8-ari-button .v6-hair-back{transform-origin:398px 226px;animation:v8-hair 7s ease-in-out infinite alternate}
+.v8-ari-button .v6-loose-hair{transform-origin:366px 260px;animation:v8-curl 4.9s ease-in-out infinite alternate}
+.v8-ari-button .v6-face{transform-origin:410px 291px;transition:transform .25s ease}
+.v8-ari-button .v6-eyes{transform:translate(var(--look-x),var(--look-y));transition:transform .12s}
+.v8-ari-button .v6-eyes ellipse{transform-box:fill-box;transform-origin:center;animation:v8-blink 6.4s ease-in-out infinite}
+.v8-ari-button .v6-eyes ellipse:nth-child(2){animation-delay:.08s}
+.v8-ari-button .v8-wave-arm{transform-origin:464px 440px;transition:transform .26s}
+.v8-ari-button .v6-front-shoe{transform-origin:550px 623px;animation:v8-shoe-tap 6.2s ease-in-out infinite}
+.v8-ari-button .v8-mouth,.v8-ari-button .v8-wink-eye,.v8-ari-button .v8-laugh-eye,.v8-ari-button .v8-shock-brows,.v8-ari-button .v8-sparkle{opacity:0}
+.v8-ari-button .ari-smile{transition:opacity .14s}
+.v8-ari-button[data-expression=laugh] .ari-smile,.v8-ari-button[data-expression=shock] .ari-smile,.v8-ari-button[data-expression=silly] .ari-smile{opacity:0}
+.v8-ari-button[data-expression=laugh] .v8-mouth-laugh,.v8-ari-button[data-expression=laugh] .v8-laugh-eye{opacity:1}
+.v8-ari-button[data-expression=laugh] .v6-eyes{opacity:0}
+.v8-ari-button[data-expression=wink] .v8-wink-eye{opacity:1}
+.v8-ari-button[data-expression=wink] .v6-eyes ellipse:nth-child(2){opacity:0}
+.v8-ari-button[data-expression=shock] .v8-mouth-shock,.v8-ari-button[data-expression=shock] .v8-shock-brows{opacity:1}
+.v8-ari-button[data-expression=shock] .v8-sparkle,.v8-ari-button[data-expression=silly] .v8-sparkle{opacity:1}
+.v8-ari-button[data-expression=silly] .v8-mouth-silly{opacity:1}
+.v8-ari-button[data-expression=laugh]{animation:v8-laugh-bounce .32s ease-in-out infinite alternate}
+.v8-ari-button[data-expression=laugh] .v8-wave-arm{animation:v8-wave .52s ease-in-out infinite alternate}
+.v8-ari-button[data-expression=laugh] .v6-face{transform:rotate(-2deg) translateY(-3px)}
+.v8-ari-button[data-expression=shock] .v6-face{transform:translateY(-6px) rotate(3deg)}
+.v8-ari-button[data-expression=silly] .v6-face{transform:rotate(4deg)}
+.v8-ari-button[data-expression=wink] .v6-face{transform:rotate(-2deg)}
+.v8-ari-button .v8-ari-bubble{position:absolute;left:61%;top:7%;transform:rotate(-7deg);display:block;background:#fffdf7;color:#374c5c;border:1px solid #fff9;border-radius:14px;padding:8px 12px;font-size:12px;font-weight:780;white-space:nowrap;box-shadow:0 8px 19px #243d5629;pointer-events:none}
+.v8-face-buttons{position:absolute;z-index:7;bottom:13px;left:165px;display:flex;flex-wrap:wrap;align-items:center;gap:5px;max-width:300px;pointer-events:auto}
+.v8-face-buttons button{border-radius:20px;border:1px solid #ffffffcf;background:#ffffffed;color:#344457;font-size:12px;font-weight:710;min-height:35px;padding:5px 10px;box-shadow:0 5px 14px #2a466c23;white-space:nowrap;transition:transform .18s,background .18s}
+.v8-face-buttons button:hover{background:#fff;transform:translateY(-3px)}
+.v8-face-buttons button:focus-visible{outline:3px solid #516aaa;outline-offset:2px}
+.v8-face-buttons button[aria-pressed=true]{background:#dddbff;border-color:#aaa4ee;color:#263a58}
+.v8-reaction-status{position:absolute;bottom:54px;left:172px;z-index:7;max-width:197px;border-radius:12px;background:#eff1ffef;padding:7px 10px;color:#536681;font-weight:700;font-size:10px;pointer-events:none;opacity:0;transform:translateY(5px);transition:opacity .23s,transform .23s}
+.v8-reaction-status:not(:empty){opacity:1;transform:translateY(0)}
+.v8-card-mascot{width:71%;height:125%;bottom:-17%;right:-17%;overflow:visible}
+.v8-card-mascot .ari-v8-card{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 12px 10px #4d576a2e)}
+.v8-card-mascot .v8-mouth,.v8-card-mascot .v8-wink-eye,.v8-card-mascot .v8-laugh-eye,.v8-card-mascot .v8-shock-brows,.v8-card-mascot .v8-sparkle{opacity:0}
+.v8-card-mascot[data-expression=laugh] .ari-smile,.v8-card-mascot[data-expression=shock] .ari-smile,.v8-card-mascot[data-expression=silly] .ari-smile{opacity:0}
+.v8-card-mascot[data-expression=laugh] .v8-mouth-laugh,.v8-card-mascot[data-expression=laugh] .v8-laugh-eye{opacity:1}
+.v8-card-mascot[data-expression=laugh] .v6-eyes{opacity:0}
+.v8-card-mascot[data-expression=shock] .v8-mouth-shock,.v8-card-mascot[data-expression=shock] .v8-shock-brows{opacity:1}
+.v8-card-mascot[data-expression=silly] .v8-mouth-silly,.v8-card-mascot[data-expression=silly] .v8-sparkle{opacity:1}
+.v8-card-mascot[data-expression=wink] .v6-eyes ellipse:nth-child(2){opacity:0}
+.v8-card-mascot[data-expression=wink] .v8-wink-eye{opacity:1}
+@keyframes v8-blink{0%,91%,95%,100%{transform:scaleY(1)}93%{transform:scaleY(.12)}}
+@keyframes v8-hair{from{transform:rotate(-.5deg)}to{transform:rotate(.65deg)}}
+@keyframes v8-curl{from{transform:rotate(-1deg)}to{transform:rotate(1.8deg)}}
+@keyframes v8-shoe-tap{0%,88%,100%{transform:rotate(0deg)}93%{transform:rotate(-3deg)}}
+@keyframes v8-laugh-bounce{from{transform:translateY(-1px) rotate(-1deg)}to{transform:translateY(-9px) rotate(1deg)}}
+@keyframes v8-wave{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@media(max-width:1250px){
+ .v8-character-island{left:-82px;width:265px}
+ .v8-ari-button{width:218px!important;height:247px!important}
+ .v8-face-buttons{left:143px;max-width:235px;gap:4px}
+ .v8-face-buttons button{font-size:11px;padding:4px 7px}
+ .v8-reaction-status{left:153px}
+}
+@media(max-width:860px){
+ .v8-character-island{left:-74px;bottom:-10px}
+ .v8-ari-button{width:200px!important;height:226px!important}
+ .v8-face-buttons{left:134px}
+ .v8-face-buttons button span{display:none}
+}
+@media(max-width:670px){
+ .v7-visual{padding-bottom:65px!important}
+ .v8-character-island{left:-16px;bottom:-11px;width:calc(100% + 18px);height:175px}
+ .v8-ari-button{width:145px!important;height:166px!important;left:0!important;bottom:0!important}
+ .v8-ari-button .v8-ari-bubble{font-size:10px;left:67%;top:10%;padding:6px 8px}
+ .v8-face-buttons{left:119px;bottom:11px;max-width:calc(100% - 130px);gap:5px}
+ .v8-face-buttons button{min-width:42px;min-height:42px;font-size:15px;padding:5px;border-radius:13px}
+ .v8-reaction-status{bottom:58px;left:122px;max-width:calc(100% - 135px);font-size:10px}
+ .v8-card-mascot{height:121%;width:70%;right:-15%;bottom:-25%}
+}
+@media(max-width:390px){
+ .v7-visual{height:435px!important;min-height:435px!important;max-height:435px!important;padding-bottom:66px!important}
+ .v8-character-island{left:-14px;bottom:-5px}
+ .v8-ari-button{width:134px!important;height:155px!important}
+ .v8-face-buttons{left:116px}
+ .v8-face-buttons button{min-width:38px;min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){
+ .v8-ari-button,.v8-ari-button:hover,.v8-ari-button .v6-hair-back,.v8-ari-button .v6-loose-hair,.v8-ari-button .v6-eyes ellipse,.v8-ari-button .v6-front-shoe,.v8-ari-button[data-expression=laugh],.v8-ari-button[data-expression=laugh] .v8-wave-arm{animation:none!important;transform:none!important;transition:none!important}
+ .v8-face-buttons button,.v8-reaction-status{transition:none!important}
+}
