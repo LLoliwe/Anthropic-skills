@@ -1,8 +1,9 @@
 # Earshot v0.2 in Motion Director (PRY-195)
 
 ## Status
-**Included in draft PR #3:** an original offline audio-technical gate and generated-fixture tests.
-**NOT installed / NOT independently evaluated:** full upstream Earshot package, CLAP/AST models, MCP server, forge v2, fit audio-to-code. Do not treat this document or a passed technical unit test as a production audio quality signoff.
+Pinned upstream installation, stdio initialization, enumeration of 13 tools, `measure(path)`, synthetic recording-to-code/rerender, CLAP/AST loading and non-fast critique passed hosted acceptance [39007126097](https://github.com/LLoliwe/Anthropic-skills/actions/runs/39007126097) at head `46206f1`. Downloaded evidence ZIP SHA256: `b81ef207b6c80dd0b121d9984f6888335ef319f3947bd4a92bb092bde998a922`.
+
+This verifies those capabilities on original synthetic fixtures. The critique returned **not launch-grade** (0.345), so a successful integration test is not film release approval. Forge, the offline bridge, a persistent production host, final soundtrack rights and human creative review need their own evidence. Preserve the final-head CI result with any merge decision.
 
 ## Primary source and license
 Upstream: https://github.com/Leonxlnx/earshot
@@ -26,12 +27,12 @@ python skills/motion-director/scripts/audio_gate.py /path/to/render.mp4 --earsho
 ```
 This sets `EARSHOT_OFFLINE=1`; absence of Earshot or cached models returns BLOCKED/FAIL. It does not make external LLM calls. `--earshot-review` has not yet been validated against real upstream 0.2.0 weights. No code here installs the package or downloads weights.
 
-## Future production install and signoff
+## Production install and signoff
 1. Confirm the actual Pryntor-owned private motion/film repo and stable host; pin upstream commit and check dependencies and model licences.
 2. Install in project-local environment, authorize model download only after disk, egress, and cost review; run `python -m earshot doctor --load`.
 3. Produce with licensed assets: `earshot measure`, `timeline`, `critique`, `forge` and `fit` test evidence, plus objective A/B against reference and human review.
-4. Verify MCP tool discovery in an authorized client; no secrets in repository and no `llm --yes-upload` without approval.
-5. Save per-venture rights ledger, technical measurements, generated media, reviewer identity, approval and CI run. Never auto-merge or auto-publish.
+4. Replay `.github/workflows/earshot-upstream-acceptance.yml` on the target host; inspect `mcp-validation.json`, `doctor.json`, `critique-validation.json` and `dependencies.log`. The test pins MCP SDK 2.3.0 and times out the stdio phase after 180 seconds. Register the stdio process in an authorized local client, keeping its filesystem private; do not expose it as a public unauthenticated service; no secrets in repository and no `llm --yes-upload` without approval.
+5. Save per-venture rights ledger, technical measurements, generated media, reviewer identity, approval and CI run. A software merge does not grant film approval or permission to publish.
 6. Route applicable production flows: Studios, BTWW, AFTERLIGHT, LVL7 explainer media, Tirisano approved promos, Voice audio measurement and Game Studios SFX; unrelated services do not get an installation by default.
 
 Aesthetic taste, speech transcription, license provenance and brand approval are not determined by Earshot. Source comparisons are hints and cannot substitute an independent human reviewer.

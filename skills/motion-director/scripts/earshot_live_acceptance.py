@@ -8,6 +8,7 @@ import asyncio
 import hashlib
 import json
 import math
+import importlib.metadata
 import os
 from pathlib import Path
 import subprocess
@@ -75,7 +76,46 @@ def fit():
     (OUT/"fit-validation.json").write_text(json.dumps(summary,indent=2,default=str)+"\n")
     print("EARSHOT_FIT_REAL_PASS")
 
+def validate_measurement(text):
+    """Reject text-only errors and fabricated success without actual meter values."""
+    marker = "JSON (compact): "
+    if marker not in text:
+        raise AssertionError("MCP measure missing structured meter data")
+    data = json.loads(text.split(marker, 1)[1])
+    for key in ("duration", "lufs", "true_peak_dbtp", "clipped_samples"):
+        value = data.get(key)
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise AssertionError(f"MCP measure invalid {key}")
+    if not 0.99 <= data["duration"] <= 1.01 or data["clipped_samples"] != 0:
+        raise AssertionError("MCP measurement does not match the original one-second fixture")
+    return data
+
+
+def validate_critique(doctor, review):
+    if doctor.get("problems") != []:
+        raise AssertionError("Earshot doctor reports problems or lacks a problem report")
+    for key in ("clap_load_s", "ast_load_s", "clap_one_window_s", "ast_one_window_s"):
+        value = doctor.get(key)
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
+            raise AssertionError(f"Model loading/inference not evidenced: {key}")
+    if not isinstance(review, dict) or not review.get("metrics") or review.get("partial") != []:
+        raise AssertionError("Incomplete model critique")
+    if review.get("verdict") not in {"launch-grade", "close", "needs work", "not launch-grade"}:
+        raise AssertionError("Invalid critique verdict")
+    score = review.get("score")
+    if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(score):
+        raise AssertionError("Invalid critique score")
+
+
+def runtime_provenance():
+    return {"repository_sha": os.environ.get("GITHUB_SHA"),
+            "run_id": os.environ.get("GITHUB_RUN_ID"),
+            "upstream_sha": "972132643583fc0b9a60c6c50983ed7dc1aa55bf",
+            "python": sys.version, "mcp_sdk": importlib.metadata.version("mcp"),
+            "fixture_sha256": hashlib.sha256((OUT/"original-ding.wav").read_bytes()).hexdigest()}
+
 async def mcp():
+    (OUT/"mcp-validation.json").unlink(missing_ok=True)
     from mcp import ClientSession, StdioServerParameters
     from mcp.client.stdio import stdio_client
     parms=StdioServerParameters(command=sys.executable,args=["-m","earshot","mcp"],
@@ -85,28 +125,31 @@ async def mcp():
             await session.initialize()
             tools=await session.list_tools()
             names=[t.name for t in tools.tools]
+            measure = next((t for t in tools.tools if t.name == "measure"), None)
+            if measure is None or "path" not in measure.model_dump(by_alias=True)["inputSchema"].get("required", []):
+                raise AssertionError("Upstream MCP measure schema no longer requires path")
             expected={"measure","critique","describe","timeline","doctor"}
             if not expected.issubset(set(names)):raise AssertionError(f"missing advertised tools {expected-set(names)}")
             response=await session.call_tool("measure",{"path":str(OUT/"original-ding.wav")})
             if response.is_error: raise RuntimeError("MCP measure returned error: "+str(response.content)[:800])
             text="\n".join(str(getattr(c,"text", "")) for c in response.content)
-            if not text.strip():raise AssertionError("MCP measure no output")
+            measurement = validate_measurement(text)
             summary={"transport":"stdio","handshake":True,"tools":names,"tools_count":len(names),
-                     "measure_called":True,"response_excerpt":text[:1200],
+                     "measure_called":True,"measurement":measurement,"provenance":runtime_provenance(),
+                     "response_excerpt":text[:1200],
                      "note":"MCP server exposes analysis tools; Forge/Fit are CLI/Python, not MCP tools."}
             (OUT/"mcp-validation.json").write_text(json.dumps(summary,indent=2)+"\n")
             print("EARSHOT_MCP_REAL_PASS",len(names))
 
 def critique():
+    (OUT/"critique-validation.json").unlink(missing_ok=True)
     run_cli("doctor","--load","--json","--out",str(OUT/"doctor.json"),name="doctor-loaded")
     report=json.loads((OUT/"doctor.json").read_text())
     run_cli("critique",str(OUT/"original-demo.mp4"),"--json","--out",
             str(OUT/"critique.json"),name="critique-model")
     review=json.loads((OUT/"critique.json").read_text())
-    if not isinstance(review,dict) or not review.get("metrics"):
-        raise AssertionError("No non-empty real scorecard metrics")
-    if "verdict" not in review:raise AssertionError("No verdict reported")
-    summary={"doctor":report,"critique_verdict":review.get("verdict"),
+    validate_critique(report, review)
+    summary={"doctor":report,"provenance":runtime_provenance(),"production_ready":False,"critique_verdict":review.get("verdict"),
              "critique_score":review.get("score"),"metric_count":len(review.get("metrics",{})),
              "uses_model_path":"critique without --fast, intended AST and realness inference",
              "limitations":"This is a synthetic film test, not human listening or rights clearance."}
@@ -116,4 +159,4 @@ def critique():
 if __name__=="__main__":
     ap=argparse.ArgumentParser(); ap.add_argument("phase",choices=["fixture","fit","mcp","critique"])
     choice=ap.parse_args().phase
-    {"fixture":fixture,"fit":fit,"mcp":lambda:asyncio.run(mcp()),"critique":critique}[choice]()
+    {"fixture":fixture,"fit":fit,"mcp":lambda:asyncio.run(asyncio.wait_for(mcp(), timeout=180)),"critique":critique}[choice]()

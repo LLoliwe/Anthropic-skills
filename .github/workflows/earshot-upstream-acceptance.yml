@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'skills/motion-director/scripts/earshot_live_acceptance.py'
+      - 'skills/motion-director/tests/test_earshot_acceptance.py'
+      - 'skills/motion-director/scripts/audio_gate.py'
       - '.github/workflows/earshot-upstream-acceptance.yml'
   workflow_dispatch:
 
@@ -51,9 +53,13 @@ jobs:
           git clone --no-checkout --filter=blob:none https://github.com/Leonxlnx/earshot.git /tmp/earshot-pin
           git -C /tmp/earshot-pin checkout --detach 972132643583fc0b9a60c6c50983ed7dc1aa55bf
           test "$(git -C /tmp/earshot-pin rev-parse HEAD)" = "972132643583fc0b9a60c6c50983ed7dc1aa55bf"
-          python -m pip install -e '/tmp/earshot-pin[mcp]'
+          python -m pip install -e '/tmp/earshot-pin[mcp]' 'mcp==2.3.0'
+          mkdir -p "$EARSHOT_PROOF_DIR"
+          python -m pip freeze > "$EARSHOT_PROOF_DIR/dependencies.log"
           python -m earshot doctor --json --out /tmp/earshot-doctor-before.json
           python -m earshot mcp --tools --json --out /tmp/earshot-tool-inventory.json
+      - name: Verify acceptance rejects invalid evidence
+        run: python -m unittest discover -s skills/motion-director/tests -p test_earshot_acceptance.py -v
       - name: Create fully original, licensed-in-place, local audio and video fixtures
         run: |
           python skills/motion-director/scripts/earshot_live_acceptance.py fixture
@@ -66,6 +72,9 @@ jobs:
       - name: Load open-weight models and run real non-fast Earshot video critique
         run: |
           python skills/motion-director/scripts/earshot_live_acceptance.py critique
+      - name: Verify installed offline model bridge on generated video
+        run: |
+          python skills/motion-director/scripts/audio_gate.py /tmp/pryntor-earshot-proof/original-demo.mp4 --earshot-review --report /tmp/pryntor-earshot-proof/offline-bridge.json
       - name: Archive actual runtime evidence, not model weights
         if: always()
         uses: actions/upload-artifact@v4

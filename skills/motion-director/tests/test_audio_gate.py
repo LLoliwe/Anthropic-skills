@@ -7,6 +7,8 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
+import json
 import wave
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "audio_gate.py"
@@ -68,6 +70,22 @@ class AudioGateTests(unittest.TestCase):
     def test_unavailable_earshot_honestly_blocked(self):
         # No model inference can be asserted from a technical validation test.
         self.assertIn(gate.earshot_review(self.root / "no.mp4")["status"], ("blocked",))
+
+    def test_model_bridge_rejects_incomplete_success(self):
+        for data in ({}, {"metrics": [1], "partial": ["AST missing"], "verdict": "launch-grade"}):
+            proc = subprocess.CompletedProcess([], 0, json.dumps(data), "")
+            with patch.object(gate.importlib.util, "find_spec", return_value=object()), patch.object(gate, "command", return_value=proc):
+                self.assertEqual(gate.earshot_review(self.root/"test.wav")["status"], "blocked")
+
+    def test_model_bridge_keeps_quality_verdict_and_forces_offline(self):
+        data = {"metrics": [{"metric": "lufs_i"}], "partial": [], "verdict": "not launch-grade"}
+        proc = subprocess.CompletedProcess([], 0, json.dumps(data), "")
+        with patch.object(gate.importlib.util, "find_spec", return_value=object()), patch.object(gate, "command", return_value=proc) as run:
+            result = gate.earshot_review(self.root/"test.wav")
+        self.assertEqual(result["data"]["verdict"], "not launch-grade")
+        self.assertIs(result["production_ready"], False)
+        for name in ("EARSHOT_OFFLINE", "HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE"):
+            self.assertEqual(run.call_args.kwargs["env"][name], "1")
 
     def test_cli_outputs_evidence(self):
         p = self.root / "test.wav"; out = self.root / "qa.json"; wav(p)

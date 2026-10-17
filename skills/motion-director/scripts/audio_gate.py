@@ -91,6 +91,8 @@ def earshot_review(media: Path) -> dict:
         return {"status": "blocked", "reason": "earshot_not_installed"}
     env = dict(os.environ)
     env["EARSHOT_OFFLINE"] = "1"
+    env["HF_HUB_OFFLINE"] = "1"
+    env["TRANSFORMERS_OFFLINE"] = "1"
     p = command([sys.executable, "-m", "earshot", "critique", str(media), "--json"], env=env)
     if p.returncode:
         return {"status": "blocked", "reason": "offline_model_run_failed",
@@ -99,7 +101,11 @@ def earshot_review(media: Path) -> dict:
         data = json.loads(p.stdout)
     except json.JSONDecodeError:
         return {"status": "blocked", "reason": "invalid_earshot_json"}
+    if (not isinstance(data, dict) or not data.get("metrics") or data.get("partial") != []
+            or data.get("verdict") not in {"launch-grade", "close", "needs work", "not launch-grade"}):
+        return {"status": "blocked", "reason": "incomplete_earshot_critique"}
     return {"status": "completed_model_assist_only", "data": data,
+            "production_ready": False,
             "limitations": "Unverified subjective taste, licensing, reference fit and director approval"}
 
 
