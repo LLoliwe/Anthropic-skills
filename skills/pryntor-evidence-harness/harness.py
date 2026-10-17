@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -62,6 +63,11 @@ def load_contract(path: Path) -> dict:
     return contract
 
 
+def contract_digest(contract: dict) -> str:
+    serialized = json.dumps(contract, sort_keys=True, separators=(',', ':'), ensure_ascii=False)
+    return hashlib.sha256(serialized.encode('utf-8')).hexdigest()
+
+
 def execute(project: Path, contract: dict, claim: str = '') -> dict:
     project = project.resolve(strict=True)
     initial = snapshot(project)
@@ -83,12 +89,16 @@ def execute(project: Path, contract: dict, claim: str = '') -> dict:
                              'elapsed_seconds': round(time.monotonic() - start, 4), 'snapshot_before': before,
                              'snapshot_after': after, 'exit_code': code, 'runner_state': state,
                              'stdout_tail': stdout, 'stderr_tail': stderr}
-    return {'schema': 'pryntor-evidence-v1', 'project_snapshot_before': initial,
+    return {'schema': 'pryntor-evidence-v1', 'contract_digest': contract_digest(contract), 'project_snapshot_before': initial,
             'project_snapshot_after': snapshot(project), 'worker_claim_untrusted': claim, 'checks': records}
 
 
 def evaluate(contract: dict, record: dict, current_snapshot: str) -> dict:
     """No judge/worker value can promote a missing, stale, failed or mutating check."""
+    if (record.get('schema') != 'pryntor-evidence-v1' or
+            record.get('contract_digest') != contract_digest(contract)):
+        return {'decision': 'hold', 'scope': 'contract_only', 'current_snapshot': current_snapshot,
+                'requirements': {}, 'release_authorized': False, 'reason': 'contract_or_schema_mismatch'}
     results = {}
     records = record.get('checks', {})
     for requirement, ids in contract['requirements'].items():
@@ -124,7 +134,7 @@ def route_diagnostic(response: dict | None, allowed: set[str], minimum_confidenc
     choice, conf, probs = response.get('choice'), response.get('confidence'), response.get('probabilities')
     if not isinstance(probs, dict) or not isinstance(conf, (int, float)) or isinstance(conf, bool):
         return {'action': 'stop_for_review', 'reason': 'judge_invalid_distribution'}
-    if not 0 <= conf <= 1 or not all(isinstance(p, (int, float)) and not isinstance(p, bool) and 0 <= p <= 1 for p in probs.values()) or abs(sum(probs.values()) - 1) > 0.03:
+    if not math.isfinite(conf) or not 0 <= conf <= 1 or not all(isinstance(p, (int, float)) and not isinstance(p, bool) and math.isfinite(p) and 0 <= p <= 1 for p in probs.values()) or abs(sum(probs.values()) - 1) > 0.03:
         return {'action': 'stop_for_review', 'reason': 'judge_invalid_distribution'}
     if choice not in allowed and choice != 'none_suitable':
         return {'action': 'stop_for_review', 'reason': 'unregistered_diagnostic'}
