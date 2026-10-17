@@ -40,7 +40,7 @@ test('public page has interactive mascot and guide without external script',asyn
  assert.match(html,/id="askoGuideQuestion"/);
  assert.match(html,/id="askoSample"/);
  assert.match(html,/id="askoUpload"/);
- assert.match(html,/class="ari-illustration ari-v6"/);
+ assert.match(html,/class="kiko-art"/);
  assert.match(html,/connect-src 'none'/);
  assert.match(html,/src="\.\/asko-guide\.mjs"/);
  assert.doesNotMatch(html,/\bPryntor\b/i);
