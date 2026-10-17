@@ -1,0 +1,37 @@
+name: Pryntor deck skill preflight
+on:
+  pull_request:
+    paths:
+      - 'tools/pryntor-deck-studio/**'
+      - 'skills/pryntor-deck-studio/**'
+      - '.github/workflows/pryntor-deck-skills.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Local deterministic tests
+        run: python3 -m unittest discover -s tools/pryntor-deck-studio -p 'test_*.py' -v
+      - name: Real 3 pinned upstream archives in ephemeral runner
+        run: python3 tools/pryntor-deck-studio/install.py --dest /tmp/pryntor-deck-ci > /tmp/pryntor-deck-receipt.json
+      - name: Verify three skill locations
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          records=json.loads(Path('/tmp/pryntor-deck-receipt.json').read_text())['installed']
+          assert len(records)==3,records
+          for name in ('frontend-slides','baoyu-slide-deck','knowledge-cat-ppt-skill'):
+              for base in ('skills/_external','.agents/skills','.claude/skills'):
+                  folder=Path('/tmp/pryntor-deck-ci')/base/name
+                  assert (folder/'SKILL.md').is_file(),folder
+                  assert (folder/'LICENSE').is_file(),folder
+          print('Verified only in disposable runner, not persistent clients')
+          PY
