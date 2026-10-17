@@ -1,9 +1,9 @@
 ---
 name: pryntor-video-reasoning
-version: 0.1.0
-summary: Evidence-first understanding of videos for Pryntor ventures; local intake plus guarded visual-reasoning workflow.
-status: pilot-not-production
+description: Pryntor-wide offline video evidence intake and timestamp-grounded reasoning protocol. Use when analysing submitted videos, motion, editing, continuity, screen content or audiovisual references while keeping third-party uploads disabled.
 ---
+
+**Version:** 0.1.1 · **Scope:** Offline intake released; model video reasoning remains a restricted pilot (not production-verified).
 # Pryntor Video Reasoning — company-wide skill
 
 ## Trigger
