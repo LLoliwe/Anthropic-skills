@@ -1,0 +1,46 @@
+name: Pryntor video evidence checks
+
+on:
+  pull_request:
+    paths:
+      - 'skills/pryntor-video-reasoning/**'
+      - '.github/workflows/pryntor-video-reasoning.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/pryntor-video-reasoning/**'
+      - '.github/workflows/pryntor-video-reasoning.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-media-validation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout exact commit
+        uses: actions/checkout@v4
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: System media tooling
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version | head -1
+          ffprobe -version | head -1
+      - name: Install test-only dependencies
+        run: |
+          python -m pip install --disable-pip-version-check 'pytest>=8,<10' 'opencv-python-headless>=4.8,<5'
+      - name: Compile and test private offline intake
+        run: |
+          python -m compileall -q skills/pryntor-video-reasoning
+          python -m pytest -q skills/pryntor-video-reasoning/tests/test_video_intake.py
+      - name: Assert no cloud/upload integrations
+        run: |
+          ! grep -n -E -- 'urllib.request|requests.post|httpx.post|boto3|google.cloud|allow-third-party-upload' skills/pryntor-video-reasoning/video_intake.py
+
+# No user/private media fixtures, no artifact upload and no external model calls.
