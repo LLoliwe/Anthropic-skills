@@ -1,0 +1,9 @@
+# LVL7 Water Lab — Gamified V1.1 / Founder review
+Working, mobile-first green-and-cream learning game. New original hand-authored SVG mascot **Bloop**, live green mission bar, XP, local streaks, three unlocking badges, real phase-based water physics, science mini-graph, reasoning, heat/gas/tilt/touch controls. No use of Cash App branding or source.
+
+**Source of physics:** preserves the original Pryntor, founder-verified Water V1 engine design from `release/lvl7-water-v1-working-20261017`, with small UI-binding change only for nested button text. Idealised 100g water at 1atm: heat from 20C to boiling 33.44kJ; total to vapour 259.04kJ. Illustrative 2D fluid, NOT CFD.
+
+**Game integrity:** XP starts at zero (no fake preview scores). 50 XP at boiling, 70XP after >30% gas, 100XP at full vapour. Awards exactly once per locally saved browser session. No real child identity, telemetry, server storage, ads, payment or third-party AI. Local progress can be reset using the profile icon. Daily streak only after earning a real badge.
+**Failure guard:** open via a real HTTPS site, not a ChatGPT iPhone HTML attachment; JS-disabled viewer shows a visible warning. Tilt sensor permission requires user gesture. Touch dragging remains available.
+**Tests:** tests/browser.cjs for 320/390/430/768/1440 real Chromium, actual emitted bubbles/gas, 3 badge awards and rewards, game resets, first reasoning error, waves and JS-disabled fallback.
+**Release:** V1.1 is new, separate and unapproved; existing V1 HTTPS demo + code snapshot must not be overwritten. Requires founder review and real iPhone/educator/accessibility QA before learner-facing launch. No paid tooling required.

@@ -1,0 +1,34 @@
+name: LVL7 Water Game V1.1 real browser QA
+on:
+  pull_request:
+    paths:
+      - "apps/lvl7-water-game-v1-1/**"
+      - ".github/workflows/lvl7-water-game-v1-1.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  interaction-and-reward-integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test runner syntax and standalone app
+        run: |
+          node --check apps/lvl7-water-game-v1-1/tests/browser.cjs
+          test -s apps/lvl7-water-game-v1-1/index.html
+      - name: Install browser runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/test" --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          "$RUNNER_TEMP/test/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Real responsive physics, rewards and accessibility smoke
+        run: NODE_PATH="$RUNNER_TEMP/test/node_modules" node apps/lvl7-water-game-v1-1/tests/browser.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lvl7-water-game-v1-1-chromium-evidence
+          path: apps/lvl7-water-game-v1-1/screenshots/*.png
+          retention-days: 14
+          if-no-files-found: error
