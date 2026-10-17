@@ -1,0 +1,45 @@
+name: Pryntor Void lab (no deploy)
+on:
+  pull_request:
+    paths:
+      - 'skills/pryntor-void/**'
+      - '.github/workflows/pryntor-void-lab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: void-lab-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  isolated-void:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: skills/pryntor-void/examples/hello
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify Node requirement
+        run: node -e 'const [major,minor]=process.versions.node.split(".").map(Number);if(major!==24||minor<21)process.exit(1)'
+      - name: Static policy preflight
+        run: npm run policy
+      - name: Install isolated demo dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build actual Void SDK app
+        run: npm run build
+      - name: Local real HTTP smoke
+        run: npm run smoke
+      - name: Upload build output only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pryntor-void-lab-build
+          path: skills/pryntor-void/examples/hello/dist/
+          if-no-files-found: warn
+          retention-days: 7
