@@ -1,0 +1,29 @@
+name: Context Vault R0 unit and handoff tests
+on:
+  pull_request:
+    paths:
+      - 'skills/pryntor-context-vault/**'
+      - '.github/workflows/context-vault-r0.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/pryntor-context-vault/**'
+      - '.github/workflows/context-vault-r0.yml'
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax and offline unit tests (synthetic only)
+        working-directory: skills/pryntor-context-vault
+        run: |
+          python3 -m py_compile vault.py
+          python3 -m unittest discover -s tests -v
