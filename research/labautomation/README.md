@@ -49,3 +49,24 @@ No agent should import or launch these projects automatically. Do not conflate a
 ## Legal/quality notes
 
 The forum is public community content, not a blanket software/data licence. Attribution and creator links are required. Treat Onshape/Rider free plans as potentially restricted to noncommercial use unless current terms are checked. Current Orca has an unauthenticated local daemon and a PyLabRobot fork; do not expose it on the internet or co-install it with upstream PyLabRobot. No legal, safety or independent testing approval is implied.
+
+## Alternative connection: public Discourse feed, no TinyFish login (implemented 17 October 2026)
+
+**Verified by a live public API read (not an authenticated user session):**
+
+- `https://labautomation.io/categories.json` — returned category metadata.
+- `https://labautomation.io/latest.json` — returned topic metadata including current activity.
+- `https://labautomation.io/c/open-source/12.json` — returned public Open-Source category topics.
+- `https://labautomation.io/latest.rss` — returned RSS XML.
+
+Discourse describes public JSON endpoints: https://docs.discourse.org/ . Public access may change; respect site terms, rate limiting and source attribution.
+
+**Read-only CLI code:** [public_forum.py](./public_forum.py) (Python standard library; no dependencies, no API key, no cookies, no POSTs). Fetches at most two allowed endpoints once per invocation, times out after 15 seconds each, limits response size and refuses redirects outside the forum. Outputs attributed topic metadata only, not personal profiles, post bodies or private messages.
+
+```bash
+python3 research/labautomation/public_forum.py --category open-source --limit 10 --format markdown
+python3 research/labautomation/public_forum.py --keyword robot --limit 12 --format json
+cd research/labautomation && python3 -m unittest -v test_public_forum.py
+```
+
+**Validation scope:** original equivalent CLI and its offline suite passed 12/12 local unit tests on 2026-10-17; production/scheduled runtime and GitHub-hosted CI are NOT certified by that. Live API endpoints were read separately in the assistant's read-only fetch tool. The committed adapter has not been proven to run from a GitHub Actions runner. This is a company reference integration, **not** a logged-in ChatGPT connector, agent installation, forum posting permission or autonomous continuous sync. Never upload forum session cookies or API keys into code/PRs.
