@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  isolated-void:
+  built-runtime:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     defaults:
@@ -25,21 +25,43 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Verify Node requirement
+      - name: Enforce Node baseline
         run: node -e 'const [major,minor]=process.versions.node.split(".").map(Number);if(major!==24||minor<21)process.exit(1)'
-      - name: Static policy preflight
-        run: npm run policy
-      - name: Install isolated demo dependencies
-        run: npm install --no-audit --no-fund
-      - name: Build actual Void SDK app
+      - name: Static security policy preflight
+        run: PRYNTOR_BOOTSTRAP_LOCK=1 npm run policy
+      - name: Deterministic install (one-time lock bootstrap permitted)
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+            echo "PRYNTOR_LOCKFILE_START"
+            cat package-lock.json
+            echo "PRYNTOR_LOCKFILE_END"
+          fi
+      - name: Dependency vulnerability report
+        shell: bash
+        run: |
+          npm audit --json > audit-report.json || true
+          node -e 'const a=require("./audit-report.json");console.log("AUDIT_COUNTS="+JSON.stringify(a.metadata?.vulnerabilities||{}))'
+      - name: Real SSR + client production build
         run: npm run build
-      - name: Local real HTTP smoke
+      - name: Local development HTTP smoke
         run: npm run smoke
-      - name: Upload build output only
+      - name: BUILT Node server HTTP, asset and security smoke
+        run: npm run smoke:prod
+      - name: Verify installed direct dependencies
+        run: npm ls --depth=0
+      - name: Static security policy postcheck
+        run: PRYNTOR_BOOTSTRAP_LOCK=1 npm run policy
+      - name: Upload compiled and dependency audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pryntor-void-lab-build
-          path: skills/pryntor-void/examples/hello/dist/
+          name: pryntor-void-node-runtime-evidence
+          path: |
+            skills/pryntor-void/examples/hello/dist/
+            skills/pryntor-void/examples/hello/audit-report.json
           if-no-files-found: warn
           retention-days: 7
