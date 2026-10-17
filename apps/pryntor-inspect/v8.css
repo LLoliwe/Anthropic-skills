@@ -88,3 +88,37 @@
  .v8-ari-button,.v8-ari-button:hover,.v8-ari-button .v6-hair-back,.v8-ari-button .v6-loose-hair,.v8-ari-button .v6-eyes ellipse,.v8-ari-button .v6-front-shoe,.v8-ari-button[data-expression=laugh],.v8-ari-button[data-expression=laugh] .v8-wave-arm{animation:none!important;transform:none!important;transition:none!important}
  .v8-face-buttons button,.v8-reaction-status{transition:none!important}
 }
+
+/* Final visual review — independent character area, touch friendly controls. */
+@media(min-width:1101px){
+.v8-character-island{left:-205px;bottom:-10px;width:560px;height:290px}
+.v8-ari-button{width:244px!important;height:280px!important;bottom:5px!important}
+.v8-face-buttons{left:201px;bottom:8px;max-width:320px;flex-wrap:nowrap;gap:5px}
+.v8-face-buttons button{font-size:11px;padding:5px 7px;min-height:36px}
+.v8-reaction-status{left:206px;bottom:54px;max-width:262px}
+}
+@media(min-width:671px) and (max-width:1100px){
+.v8-character-island{left:-105px;bottom:-8px;width:390px}
+.v8-ari-button{width:214px!important;height:244px!important}
+.v8-face-buttons{left:168px;bottom:8px;flex-wrap:nowrap;max-width:220px}
+.v8-face-buttons button{min-width:34px;padding:5px 7px}
+.v8-reaction-status{left:170px;bottom:55px;max-width:178px}
+}
+@media(max-width:670px){
+.concept-stage.v7-hero{min-height:880px}
+.v7-visual{height:575px!important;min-height:575px!important;max-height:575px!important;padding-bottom:214px!important}
+.v8-character-island{left:4px;bottom:0;width:calc(100% - 8px);height:220px}
+.v8-ari-button{left:0!important;bottom:0!important;width:194px!important;height:218px!important}
+.v8-face-buttons{left:197px;bottom:32px;max-width:calc(100% - 200px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.v8-face-buttons button{min-width:42px;min-height:44px;font-size:16px;padding:7px}
+.v8-face-buttons button span{display:none}
+.v8-reaction-status{bottom:136px;left:198px;max-width:calc(100% - 205px)}
+.v8-ari-button .v8-ari-bubble{left:61%;top:8%;font-size:11px}
+}
+@media(max-width:390px){
+.v7-visual{height:555px!important;min-height:555px!important;max-height:555px!important;padding-bottom:210px!important}
+.v8-character-island{left:3px;height:217px}
+.v8-ari-button{width:186px!important;height:211px!important}
+.v8-face-buttons{left:187px;max-width:calc(100% - 190px)}
+.v8-reaction-status{left:190px;max-width:calc(100% - 194px)}
+}
