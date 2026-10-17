@@ -1,0 +1,54 @@
+name: Pryntor REA isolated cloud host
+on:
+  push:
+    branches: [main]
+    paths: ["services/rea-host/**", ".github/workflows/pryntor-rea-host-ci.yml"]
+  pull_request:
+    paths: ["services/rea-host/**", ".github/workflows/pryntor-rea-host-ci.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Locked dependency, unit and security tests
+        run: |
+          npm ci --prefix services/rea-host --omit=dev --no-audit --no-fund
+          npm test --prefix services/rea-host
+          npm audit --prefix services/rea-host --omit=dev --audit-level=high
+          node --check services/rea-host/mcp.mjs
+          node --check services/rea-host/server.mjs
+      - name: Real MCP fixture test on running HTTP host
+        run: |
+          NODE_OPTIONS=--max-old-space-size=384 PORT=19081 node services/rea-host/server.mjs > "$RUNNER_TEMP/rea-host.log" 2>&1 &
+          host_pid=$!
+          trap 'kill "$host_pid" 2>/dev/null || true' EXIT
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import {setTimeout as sleep} from 'node:timers/promises';
+          const url='http://127.0.0.1:19081';
+          let evidence;
+          for(let i=0;i<100;i++){
+            try{const r=await fetch(url+'/readyz',{signal:AbortSignal.timeout(3000)});if(r.status===200){evidence=await r.json();break}}catch{}
+            await sleep(1000);
+          }
+          assert.ok(evidence,'REA host never became ready');
+          assert.equal(evidence.status,'verified');
+          assert.ok(evidence.toolCount>=1);
+          assert.ok(evidence.graphNodes>=2);
+          assert.ok(evidence.graphEdges>=1);
+          assert.equal(evidence.physicalControl,false);
+          assert.equal(evidence.customerData,false);
+          assert.equal((await fetch(url+'/tools/call',{method:'POST'})).status,405);
+          console.log(JSON.stringify({status:'REAL_MCP_HOST_PASS',tools:evidence.toolCount,nodes:evidence.graphNodes,edges:evidence.graphEdges}));
+          NODE
+      - name: Limited diagnostic evidence
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/rea-host.log"; then grep -E 'server-listening|rea-fixture-verified|verification failed' "$RUNNER_TEMP/rea-host.log" || true; fi
