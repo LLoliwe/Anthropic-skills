@@ -1,0 +1,1 @@
+Phosphor Icons MIT: https://github.com/phosphor-icons/core/blob/main/LICENSE . Adobe Fonts kit alv4dfk is licensed separately via Adobe website CSS; no font files bundled. No Adobe Stock artwork shipped.
