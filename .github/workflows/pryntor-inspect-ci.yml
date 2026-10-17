@@ -1,0 +1,41 @@
+name: Pryntor Inspect — public beta quality
+on:
+  pull_request:
+    paths:
+      - "apps/pryntor-inspect/**"
+      - ".github/workflows/pryntor-inspect-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/pryntor-inspect/**"
+      - ".github/workflows/pryntor-inspect-ci.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Static module and UI tests
+        run: |
+          node --check apps/pryntor-inspect/app.mjs
+          node --check apps/pryntor-inspect/inspector.mjs
+          node --test apps/pryntor-inspect/test.mjs
+      - name: Verify local-only CSP and standalone static files
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('apps/pryntor-inspect')
+          html=(p/'index.html').read_text()
+          assert 'connect-src &#39;none&#39;' not in html
+          assert "connect-src 'none'" in html
+          assert '<script defer type="module" src="./app.mjs"></script>' in html
+          for f in ('index.html','app.mjs','inspector.mjs','styles.css'): assert (p/f).exists()
+          assert 'Pryntor Inspect' in html
+          print('Pryntor Inspect local-first static contract: PASS')
+          PY

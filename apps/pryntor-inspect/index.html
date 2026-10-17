@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f8f9fb">
+  <meta name="description" content="Pryntor Inspect — a private, local-first source code quick scan. No upload, no account, no tracking.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'">
+  <title>Pryntor Inspect — Understand what you're looking at.</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script defer type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <div class="site">
+    <header class="topbar" aria-label="Site header">
+      <a class="brand" href="#top" aria-label="Pryntor Inspect home"><span class="brand-mark">P<span class="brand-dot">.</span></span><span class="brand-text">Pryntor <span>Inspect</span></span></a>
+      <nav aria-label="Main navigation"><a href="#workspace">Workspace</a><a href="#approach">How it works</a><a href="#privacy">Privacy</a></nav>
+      <span class="nav-flag"><span class="pulse"></span> Public preview</span>
+    </header>
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="overline light"><span class="overline-dot"></span> ENGINEERING INTELLIGENCE · BY PRYNTOR</p>
+          <h1 id="hero-title">Clarity, before<br><span>complexity.</span></h1>
+          <p class="hero-lead">A more thoughtful first look at your code. Understand the structure, spot questions worth asking, and keep your files exactly where they belong: with you.</p>
+          <div class="hero-actions"><a class="primary-btn" href="#workspace">Open your workspace <span aria-hidden="true">↗</span></a><button type="button" class="hero-secondary" id="heroSample">Explore a sample <span aria-hidden="true">↗</span></button></div>
+          <div class="hero-meta"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 22 8-4V6l-8-4-8 4v12zM4 6l8 4 8-4M12 10v12"/></svg> Entirely in your browser</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg> No account. No upload.</span></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="halo halo-one"></div><div class="halo halo-two"></div>
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="floating-pill pill-one"><span class="tiny-glyph">◇</span> Analyse locally <span class="pill-ok">✓</span></div>
+          <div class="floating-pill pill-two"><span class="status-star">✳</span> Clearer understanding</div>
+          <div class="glass-panel">
+            <div class="glass-top"><span class="glass-dots"><i></i><i></i><i></i></span><span>Project overview</span><span>↗</span></div>
+            <div class="glass-body">
+              <div class="metric-label">THE BIG PICTURE</div>
+              <div class="glass-heading">Every piece<br>in its place.</div>
+              <svg class="network" viewBox="0 0 360 190" role="img" aria-label="Abstract project module relationships">
+                <path d="M180 34L80 112M180 34L270 112M80 112L180 164M270 112L180 164M80 112L270 112" fill="none" stroke="#aab3ff" stroke-opacity=".34" stroke-width="1.5" stroke-dasharray="5 7"/>
+                <circle cx="180" cy="34" r="23" fill="#6d71e8" stroke="#aaaaff"/><circle cx="80" cy="112" r="22" fill="#333961" stroke="#9aa4fb"/><circle cx="270" cy="112" r="22" fill="#333961" stroke="#9aa4fb"/><circle cx="180" cy="164" r="18" fill="#343d66" stroke="#7889d6"/>
+                <g fill="#e6e9ff" font-size="16" text-anchor="middle" font-family="system-ui"><text x="180" y="40">⌘</text><text x="80" y="118">✦</text><text x="270" y="118">◫</text><text x="180" y="170">◇</text></g>
+              </svg>
+              <div class="glass-foot"><span><b class="tiny-spark">✧</b> Structure first</span><span>LOCAL INTELLIGENCE</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="trust-rail" aria-label="Product principles"><span>BUILT FOR BETTER DECISIONS</span><div><span>Private by design</span><span class="divider-dot"></span><span>Deliberately simple</span><span class="divider-dot"></span><span>Evidence over guesswork</span></div></section>
+      <section id="workspace" class="workspace-section">
+        <div class="section-top"><div><p class="overline">YOUR WORKSPACE</p><h2>Start with understanding.</h2><p class="section-lead">Choose JavaScript, TypeScript, HTML, CSS or JSON files. We'll generate a real first-pass inventory and review suggestions, right here on your device.</p></div><span class="section-number">01 / 03</span></div>
+        <div class="workspace-shell">
+          <div class="workspace-header"><div class="workspace-title"><span class="app-icon">⌘</span><div><strong>Source Inspector</strong><span>Local workspace · Private beta</span></div></div><span class="local-indicator"><span class="pulse"></span> LOCAL ONLY</span></div>
+          <div id="emptyView" class="empty-view">
+            <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose or drop source files">
+              <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 16V4m-4 4 4-4 4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
+              <h3>Your code stays yours.</h3><p>Drop a few source files here, or choose them from your device.</p>
+              <span class="upload-cta">Choose files <span aria-hidden="true">↗</span></span><span class="limits">Up to 20 files · 256 KB each · 2 MB total</span>
+            </div>
+            <input id="filePicker" type="file" accept=".js,.mjs,.cjs,.jsx,.ts,.tsx,.json,.html,.css" multiple hidden>
+            <div class="try-row"><span>Just looking around?</span><button id="sampleButton" type="button">Try the included sample <span aria-hidden="true">→</span></button></div>
+            <div class="privacy-line"><span class="shield">♧</span><span>No upload endpoint, no tracking, no external dependencies. All analysis stays in memory until you close or reset this page.</span></div>
+          </div>
+          <div id="resultsView" class="results-view" hidden>
+            <div class="results-head"><div><p class="result-eyebrow" id="reportMode">LOCAL ANALYSIS</p><h3 id="reportTitle">Your project, at a glance.</h3><p id="reportSubtitle">First-pass inventory from your selected files.</p></div><div class="result-actions"><button type="button" id="exportButton" class="small-btn">Export JSON <span aria-hidden="true">↓</span></button><button type="button" id="resetButton" class="small-btn secondary">New scan <span aria-hidden="true">↗</span></button></div></div>
+            <div class="stats-grid"><div><span>FILES</span><strong id="statFiles">0</strong></div><div><span>LINES</span><strong id="statLines">0</strong></div><div><span>IMPORTS</span><strong id="statImports">0</strong></div><div><span>REVIEW NOTES</span><strong id="statNotes">0</strong></div></div>
+            <div class="result-grid">
+              <div class="result-panel files-panel"><div class="panel-title"><h4>File inventory</h4><span id="fileCount">0 files</span></div><div id="fileRows" class="file-rows"></div></div>
+              <div class="result-panel detail-panel"><div class="panel-title"><h4>Selected file</h4><span id="fileType">—</span></div><div id="fileDetail" class="file-detail" aria-live="polite"></div></div>
+            </div>
+            <div class="insights"><div class="panel-title"><h4>Review suggestions</h4><span>Heuristics, not a security certificate</span></div><div id="findings"></div></div>
+            <div class="report-note"><span class="info-glyph">i</span><span>These are static, heuristic observations. We do not execute source files, validate runtime behaviour or claim a full REA reverse-engineering or penetration test.</span></div>
+          </div>
+          <p class="status-message" role="status" aria-live="polite" id="statusMessage"></p>
+        </div>
+      </section>
+      <section class="feature-section" id="approach">
+        <div class="section-top"><div><p class="overline">THE THINKING BEHIND IT</p><h2>Thoughtful, from the start.</h2><p class="section-lead">Good tools should make you more capable—not ask you to surrender control.</p></div><span class="section-number">02 / 03</span></div>
+        <div class="feature-grid"><article><div class="feature-symbol">◎</div><h3>See the structure.</h3><p>File types, lines, imports and source inventory in a calm, understandable view. Find your bearings before choosing your next step.</p></article><article><div class="feature-symbol">✳</div><h3>Ask better questions.</h3><p>Surface possible patterns worth reviewing, with specific file and line references. Every note is a suggestion—not a verdict.</p></article><article><div class="feature-symbol">⌁</div><h3>Stay in control.</h3><p>Nothing runs on a third-party server. No account, hidden telemetry, source upload or changes to your code. Reset whenever you like.</p></article></div>
+      </section>
+      <section class="privacy-section" id="privacy"><div class="privacy-card"><div><p class="overline light">PRIVATE, BY DEFAULT</p><h2>Intelligence without<br>the trade-off.</h2><p>Your source never leaves your browser. It is read for this session, then forgotten by the page when you reset or close it. This is a limited first-pass inspector, not a production security certification.</p><a href="#workspace" class="privacy-link">Explore the inspector <span aria-hidden="true">↗</span></a></div><div class="privacy-art" aria-hidden="true"><div class="privacy-ring one"></div><div class="privacy-ring two"></div><div class="privacy-lock">⌑</div><span>LOCAL FIRST</span></div></div></section>
+      <section class="faq-section"><div class="section-top"><div><p class="overline">GOOD TO KNOW</p><h2>Clear answers. No fine print.</h2></div><span class="section-number">03 / 03</span></div><div class="faq-grid"><div><h3>Is this the full REA engine?</h3><p>No. This public preview is a client-side source quick scan. Pryntor's separately hosted REA MCP lab performs a deeper fixture-only validation and does not accept public customer source uploads.</p></div><div><h3>Is it a security audit?</h3><p>No. Review notes are static heuristics, not verified exploits, professional security approval or a substitute for human review.</p></div><div><h3>Who is this for?</h3><p>Founders, developers and testers who want a quick understanding of their own or authorised code before making changes.</p></div><div><h3>What happens to my files?</h3><p>They're read locally in browser memory. Nothing is transmitted by this app; the exported report is generated and saved by your browser.</p></div></div></section>
+    </main>
+    <footer class="site-footer"><div class="footer-brand"><span class="brand-mark">P<span class="brand-dot">.</span></span><div><strong>Pryntor Inspect</strong><span>Clarity, before complexity.</span></div></div><div class="footer-right"><span>Public preview · Local-only</span><span>© Pryntor 2026</span></div></footer>
+  </div>
+</body>
+</html>
