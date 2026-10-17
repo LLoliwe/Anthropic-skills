@@ -1,5 +1,5 @@
 import { defineHandler } from 'void';
-import { launchDeskHTML } from '../src/launchdesk-page';
+import { launchDeskHTML } from '../src/launchdesk-radar-r2';
 
 export const GET = defineHandler((c) => {
   c.header('Cache-Control', 'no-store');
