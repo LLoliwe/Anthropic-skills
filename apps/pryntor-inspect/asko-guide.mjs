@@ -3,7 +3,7 @@ const $=id=>document.getElementById(id);
 let report=null,previousFocus=null,tipNumber=0;
 const dialog=$('askoGuideDialog'),history=$('askoGuideHistory'),form=$('askoGuideForm'),input=$('askoGuideQuestion'),portrait=$('askoMascot');
 const tips=[
- "Hi! I'm Kiko. Try the sample, then ask me about files, relationships or review notes.",
+ "Hi! I'm Ari. Try the sample, then ask me about files, relationships or review notes.",
  "Your source files stay on this device. I help you navigate the summary.",
  "Tip: press Ctrl or ⌘ + K to find a file or action, or / for the command menu.",
  "I can explain detected imports and flagged patterns. I can't verify runtime behaviour."
@@ -11,7 +11,7 @@ const tips=[
 import {respond} from './asko-response.mjs';
 function addMessage(role,text){
  const row=document.createElement('div');row.className='guide-message '+role;
- const label=document.createElement('span');label.className='guide-message-label';label.textContent=role==='ari'?'Kiko':'You';
+ const label=document.createElement('span');label.className='guide-message-label';label.textContent=role==='ari'?'Ari':'You';
  const p=document.createElement('p');p.textContent=text;row.append(label,p);history.append(row);history.scrollTop=history.scrollHeight;
 }
 function ask(text){
