@@ -58,3 +58,7 @@ Approval must come from an actual human director. The CLI records it but cannot 
 This is a **functional local renderer and agent skill**, not a cloud video-generation service. It does not call Claude, Hugging Face, Adobe, Ultramockup, Premiere, Figma, Lovable, or Vercel. Real product screenshots and rights-cleared music may be added later. The sample animation is original illustrative UI; not a verified recording of any live Pryntor product.
 
 Exports: MP4 if FFmpeg exists; PNG contact sheet; JSON QA/provenance; CSV edit decision list; markdown compositing handoff. Fail closed if FFmpeg is missing or a final film lacks approval. No public posting, cloud compute or paid generation is triggered.
+
+## Earshot v0.2 / audio-technical quality gate
+
+The optional audio QA is implemented in `scripts/audio_gate.py` and documented in [AUDIO_EARSHOT.md](AUDIO_EARSHOT.md). After a rough render, run `python skills/motion-director/scripts/audio_gate.py preview.mp4 --report audio_qa.json`. It decodes and checks audio locally using FFmpeg; an unintentionally muted sample **fails**. When intentional silence is approved, record the reason using `--intentional-mute` and preserve human signoff. `--earshot-review` requires separately installed and cached Earshot 0.2.0 and blocks without it. Neither this gate nor a model result proves creative approval, music licensing or company-wide installation.
