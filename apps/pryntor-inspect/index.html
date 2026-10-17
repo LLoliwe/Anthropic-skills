@@ -11,12 +11,14 @@
   <link rel="stylesheet" href="./concept.css">
   <link rel="stylesheet" href="./live-scene.css">
   <link rel="stylesheet" href="./v7.css">
+  <link rel="stylesheet" href="./v8.css">
   <script defer type="module" src="./app.mjs"></script>
   <script defer type="module" src="./asko-guide.mjs"></script>
   <script defer type="module" src="./v3-ui.mjs"></script>
   <script defer type="module" src="./concept-ui.mjs"></script>
   <script defer type="module" src="./live-scene.mjs"></script>
   <script defer type="module" src="./v7.mjs"></script>
+  <script defer type="module" src="./v8.mjs"></script>
 </head>
 <body>
   <div class="site">
@@ -41,7 +43,113 @@
       </nav>
     </aside>
     <main id="top">
-<section class="concept-stage v7-hero" aria-labelledby="hero-title"><div class="concept-copy v7-copy"><p class="v7-kicker">✳ YOUR CODE, IN FOCUS</p><h1 id="hero-title">Your code.<br><em>Your clarity.</em><br>Your next move.</h1><p class="concept-lead v7-lead">See how files connect, understand potential changes, and find what needs attention — entirely on your device.</p><div class="concept-ctas v7-ctas"><button type="button" id="askoUpload" class="concept-primary">Explore your files <span aria-hidden="true">↗</span></button><button type="button" id="askoSample" class="concept-secondary">Try an example <span aria-hidden="true">→</span></button></div><p class="concept-inline-trust v7-trust"><span>✳ Local only</span><span>◦ No account</span><span>◦ No source upload</span></p><p class="v7-tagline">The big picture, without the noise.</p></div><div class="concept-art v7-visual"><div class="v7-workspace" id="v7Workspace"><div class="v7-top"><div class="v7-lights" aria-hidden="true"><i></i><i></i><i></i></div><strong>◈ asko / explorer</strong><span class="v7-local">● ON DEVICE</span></div><div class="v7-heading"><div><small>YOUR PROJECT AT A GLANCE</small><h2 id="v7WindowTitle">Understand the connections.</h2></div><div class="v7-count" id="v7Count">3 <small>FILES</small></div></div><div class="v7-tabs" role="tablist" aria-label="Code explorer view"><button type="button" role="tab" id="v7TabMap" aria-selected="true" aria-controls="v7PaneMap" tabindex="0">Connections</button><button type="button" role="tab" id="v7TabImpact" aria-selected="false" aria-controls="v7PaneImpact" tabindex="-1">Impact</button><button type="button" role="tab" id="v7TabReview" aria-selected="false" aria-controls="v7PaneReview" tabindex="-1">Review <span id="v7NoteCount">1</span></button></div><div class="v7-pane-wrap"><section class="v7-pane" id="v7PaneMap" role="tabpanel" aria-labelledby="v7TabMap"><div class="v5-live-graph v7-live-graph" id="v5LiveGraph" aria-label="Actual local import graph"><div class="v5-graph-header"><span class="v5-led"></span><strong id="v5GraphTitle">web-app / src</strong><span id="v5GraphMode">SAMPLE</span></div><div class="v5-graph-canvas" id="v5GraphCanvas"><svg class="v5-graph-wires" id="v5GraphWires" viewBox="0 0 400 265" preserveAspectRatio="none" aria-hidden="true"></svg><div id="v5GraphNodes"></div></div><div class="v5-graph-footer"><span id="v5GraphStatus" aria-live="polite">Tap a file to explore</span><span>↗</span></div></div></section><section class="v7-pane" id="v7PaneImpact" role="tabpanel" aria-labelledby="v7TabImpact" hidden><div id="v7ImpactBody" class="v7-pane-body"></div></section><section class="v7-pane" id="v7PaneReview" role="tabpanel" aria-labelledby="v7TabReview" hidden><div id="v7ReviewBody" class="v7-pane-body"></div></section></div><div class="v7-status"><span class="v7-status-dot"></span><span id="v7StatusText">Original example · local preview</span><button type="button" id="v7OpenFull">Open workspace ↗</button></div></div><button id="askoMascot" class="v7-mascot" type="button" aria-label="Open Kiko, your original local project companion"><svg class="kiko-art" viewBox="0 0 280 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kiko, original asymmetrical lavender companion with a mint green fin"><defs><linearGradient id="kikoBody" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f5eaff"/><stop offset=".56" stop-color="#b8a4f1"/><stop offset="1" stop-color="#8071d0"/></linearGradient><linearGradient id="kikoFin" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ebffce"/><stop offset="1" stop-color="#6ac4a8"/></linearGradient></defs><ellipse cx="141" cy="280" rx="94" ry="11" fill="#213450" opacity=".14"/><path class="kiko-fin" d="M157 58Q152 1 197 13Q223 6 219 39Q215 60 194 79L182 100Z" fill="url(#kikoFin)" stroke="#486873" stroke-width="5" stroke-linejoin="round"/><path d="M74 129Q64 84 103 62Q134 42 185 59Q231 56 240 111Q269 168 238 222Q207 273 149 276Q93 279 65 238Q30 194 58 151Z" fill="url(#kikoBody)" stroke="#45456c" stroke-width="6"/><path d="M78 127Q88 80 139 73" stroke="white" stroke-opacity=".55" stroke-width="11" stroke-linecap="round" fill="none"/><ellipse cx="145" cy="227" rx="51" ry="29" fill="#eadbff" opacity=".67"/><g class="kiko-face"><ellipse class="kiko-eye" cx="115" cy="151" rx="8" ry="12" fill="#273248"/><ellipse class="kiko-eye" cx="183" cy="143" rx="8" ry="12" fill="#273248"/><circle cx="112" cy="146" r="2.4" fill="white"/><circle cx="180" cy="139" r="2.4" fill="white"/><ellipse cx="87" cy="173" rx="14" ry="9" fill="#f5a0b3" opacity=".65"/><ellipse cx="209" cy="162" rx="14" ry="9" fill="#f5a0b3" opacity=".65"/><path d="M138 182Q153 195 169 179" fill="none" stroke="#364357" stroke-width="5" stroke-linecap="round"/></g><path d="M64 211Q33 197 27 217M239 205Q261 196 267 209" fill="none" stroke="#817cba" stroke-width="11" stroke-linecap="round"/><path d="M111 263L104 283M193 261L197 283" stroke="#595a80" stroke-width="11" stroke-linecap="round"/><circle cx="49" cy="85" r="5" fill="#ffcd83"/><path d="M246 65l6 15 16 6-16 6-6 15-6-15-16-6 16-6z" fill="#e5d0ff"/></svg><span class="v7-mascot-note">psst, I'm Kiko! ✳</span></button></div></section>
+<section class="concept-stage v7-hero" aria-labelledby="hero-title"><div class="concept-copy v7-copy"><p class="v7-kicker">✳ YOUR CODE, IN FOCUS</p><h1 id="hero-title">Your code.<br><em>Your clarity.</em><br>Your next move.</h1><p class="concept-lead v7-lead">See how files connect, understand potential changes, and find what needs attention — entirely on your device.</p><div class="concept-ctas v7-ctas"><button type="button" id="askoUpload" class="concept-primary">Explore your files <span aria-hidden="true">↗</span></button><button type="button" id="askoSample" class="concept-secondary">Try an example <span aria-hidden="true">→</span></button></div><p class="concept-inline-trust v7-trust"><span>✳ Local only</span><span>◦ No account</span><span>◦ No source upload</span></p><p class="v7-tagline">The big picture, without the noise.</p></div><div class="concept-art v7-visual"><div class="v7-workspace" id="v7Workspace"><div class="v7-top"><div class="v7-lights" aria-hidden="true"><i></i><i></i><i></i></div><strong>◈ asko / explorer</strong><span class="v7-local">● ON DEVICE</span></div><div class="v7-heading"><div><small>YOUR PROJECT AT A GLANCE</small><h2 id="v7WindowTitle">Understand the connections.</h2></div><div class="v7-count" id="v7Count">3 <small>FILES</small></div></div><div class="v7-tabs" role="tablist" aria-label="Code explorer view"><button type="button" role="tab" id="v7TabMap" aria-selected="true" aria-controls="v7PaneMap" tabindex="0">Connections</button><button type="button" role="tab" id="v7TabImpact" aria-selected="false" aria-controls="v7PaneImpact" tabindex="-1">Impact</button><button type="button" role="tab" id="v7TabReview" aria-selected="false" aria-controls="v7PaneReview" tabindex="-1">Review <span id="v7NoteCount">1</span></button></div><div class="v7-pane-wrap"><section class="v7-pane" id="v7PaneMap" role="tabpanel" aria-labelledby="v7TabMap"><div class="v5-live-graph v7-live-graph" id="v5LiveGraph" aria-label="Actual local import graph"><div class="v5-graph-header"><span class="v5-led"></span><strong id="v5GraphTitle">web-app / src</strong><span id="v5GraphMode">SAMPLE</span></div><div class="v5-graph-canvas" id="v5GraphCanvas"><svg class="v5-graph-wires" id="v5GraphWires" viewBox="0 0 400 265" preserveAspectRatio="none" aria-hidden="true"></svg><div id="v5GraphNodes"></div></div><div class="v5-graph-footer"><span id="v5GraphStatus" aria-live="polite">Tap a file to explore</span><span>↗</span></div></div></section><section class="v7-pane" id="v7PaneImpact" role="tabpanel" aria-labelledby="v7TabImpact" hidden><div id="v7ImpactBody" class="v7-pane-body"></div></section><section class="v7-pane" id="v7PaneReview" role="tabpanel" aria-labelledby="v7TabReview" hidden><div id="v7ReviewBody" class="v7-pane-body"></div></section></div><div class="v7-status"><span class="v7-status-dot"></span><span id="v7StatusText">Original example · local preview</span><button type="button" id="v7OpenFull">Open workspace ↗</button></div></div><div class="v8-character-island"><button type="button" id="askoMascot" class="v7-mascot v8-ari-button" data-expression="happy" aria-label="Meet Ari and open the on-device code guide"><svg class="ari-illustration ari-v8 ari-v8-hero" viewBox="120 65 545 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated illustrated woman Ari wearing a cream cap and striped sweatshirt, with expressive facial reactions">
+  <defs>
+    <linearGradient id="v6Hair" x1="0" x2="1" y1="0" y2=".9"><stop stop-color="#191a2c"/><stop offset=".62" stop-color="#303049"/><stop offset="1" stop-color="#55344c"/></linearGradient>
+    <linearGradient id="v6Skin" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e6a477"/><stop offset=".55" stop-color="#cf855b"/><stop offset="1" stop-color="#ac5d4b"/></linearGradient>
+    <linearGradient id="v6Jumper" x1="0" x2="0.9" y1="0" y2="1"><stop stop-color="#fff9ec"/><stop offset=".48" stop-color="#fff0ea"/><stop offset="1" stop-color="#f8c3ca"/></linearGradient>
+    <linearGradient id="v6Pants" x1="0" x2=".9" y1="0" y2="1"><stop stop-color="#1b3540"/><stop offset="1" stop-color="#081a2b"/></linearGradient>
+    <linearGradient id="v6Shoe" x1="0" x2="1" y1="0" y2=".8"><stop stop-color="#fffef5"/><stop offset=".6" stop-color="#dfebe4"/><stop offset="1" stop-color="#96c5af"/></linearGradient>
+    <radialGradient id="v6Cheek"><stop stop-color="#e89b92" stop-opacity=".7"/><stop offset="1" stop-color="#ebaa9c" stop-opacity="0"/></radialGradient>
+    <clipPath id="v6SweatClip"><path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492 Q530 534 495 574 Q386 607 252 596 Q182 570 162 499 Q158 431 215 388Z"/></clipPath>
+  </defs>
+  <ellipse cx="365" cy="704" rx="328" ry="26" fill="#423962" opacity=".12"/>
+  <path d="M48 663 Q79 622 130 628 Q174 572 265 588 Q331 556 407 582 Q513 550 596 600 Q701 613 733 680 L732 709 L44 709Z" fill="#b19cde"/>
+  <path d="M76 670 Q197 620 320 659 Q424 605 586 654 Q663 654 714 678 L712 707 L66 707Z" fill="#cfb7f5" opacity=".75"/>
+  <!-- textured hair silhouette, with loose curls and an independent reactive tuft -->
+  <g class="v6-hair-back">
+    <path d="M241 306 Q190 286 185 242 Q167 211 195 169 Q190 115 240 100 Q278 52 347 67 Q402 37 459 66 Q541 72 570 144 Q607 185 576 242 Q615 298 578 345 Q625 401 601 455 Q634 508 585 540 Q582 600 519 610 Q454 643 403 588 Q344 616 314 566 Q232 599 193 534 Q151 508 177 461 Q138 405 188 370 Q166 334 241 306Z" fill="url(#v6Hair)" stroke="#252235" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M218 221 C193 268 224 311 187 347 M561 210 C589 276 540 313 575 369 M204 429 C182 471 199 518 244 534 M560 410 C589 481 545 543 509 553" stroke="#695273" stroke-width="10" stroke-linecap="round" opacity=".52" fill="none"/>
+    <path d="M254 106 Q288 67 350 70 M500 101 Q557 144 549 189 M218 338 Q172 386 204 427" fill="none" stroke="#87708b" stroke-width="6" stroke-linecap="round" opacity=".33"/>
+    <g fill="none" stroke="#343148" stroke-width="19" stroke-linecap="round">
+      <path d="M167 360 Q122 391 162 431"/><path d="M176 449 Q135 480 191 516"/><path d="M568 306 Q623 341 570 394"/><path d="M576 440 Q615 487 570 524"/>
+    </g>
+  </g>
+  <!-- back leg, socks, rear shoe -->
+  <path d="M285 517 Q338 478 405 499 Q448 513 465 564 Q480 589 451 617 L395 657 Q338 676 280 651 Q242 630 260 586Z" fill="url(#v6Pants)" stroke="#243041" stroke-width="8"/>
+  <path d="M310 558 Q325 589 300 617 M406 540 Q430 556 433 580" fill="none" stroke="#4a6470" stroke-width="7" opacity=".55" stroke-linecap="round"/>
+  <path d="M270 616 Q230 629 219 669 L179 676 Q140 684 149 707 Q179 731 276 711 L345 693 Q345 652 313 629Z" fill="url(#v6Shoe)" stroke="#38534e" stroke-width="7"/>
+  <path d="M158 695 Q230 704 324 675 M221 661 L261 665 M213 675 L256 678" stroke="#5f9685" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M163 711 Q234 720 329 693" stroke="#f9f7ea" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <!-- near folded leg and knee -->
+  <path d="M345 514 Q383 476 468 471 Q548 457 605 501 Q646 540 626 590 L583 642 Q536 680 474 659 Q415 657 384 611 Q357 590 345 514Z" fill="url(#v6Pants)" stroke="#202c40" stroke-width="9"/>
+  <path d="M391 548 Q433 526 474 534 M516 610 Q572 615 608 571" fill="none" stroke="#516878" stroke-width="7" opacity=".58" stroke-linecap="round"/>
+  <!-- near high quality chunky sneaker, toe points right -->
+  <g class="v6-front-shoe">
+    <path d="M518 614 Q552 599 577 610 Q603 603 632 622 L695 646 Q730 658 720 689 Q702 709 660 711 L553 705 Q515 703 491 687 Q488 652 518 614Z" fill="url(#v6Shoe)" stroke="#355a55" stroke-width="8"/>
+    <path d="M588 615 Q621 636 643 653 Q660 660 699 659" fill="none" stroke="#f6f5e9" stroke-width="12"/>
+    <path d="M534 633 L603 672 M548 623 L616 657" fill="none" stroke="#50a78f" stroke-width="7" stroke-linecap="round"/>
+    <path d="M510 678 Q620 710 713 675" fill="none" stroke="#457c70" stroke-width="8" stroke-linecap="round"/>
+    <path d="M510 688 Q622 719 717 687" fill="none" stroke="#f9f9ef" stroke-width="14" stroke-linecap="round"/>
+    <path d="M678 651 Q713 660 710 681" fill="none" stroke="#ffb39c" stroke-width="11" stroke-linecap="round"/>
+    <path d="M540 645 L577 664 M547 655 L584 675" stroke="#ebdcca" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <!-- sweater back volume and sleeves -->
+  <path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492 Q530 534 495 574 Q386 607 252 596 Q182 570 162 499 Q158 431 215 388Z" fill="url(#v6Jumper)" stroke="#332b3f" stroke-width="9"/>
+  <g clip-path="url(#v6SweatClip)" opacity=".91" stroke="#ecb1be" stroke-width="48" fill="none">
+    <path d="M141 446 Q293 520 509 435"/><path d="M151 555 Q291 482 547 593"/><path d="M268 334 Q312 417 303 627"/>
+  </g>
+  <path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492" fill="none" stroke="#fff9f0" stroke-width="8" opacity=".75" stroke-linecap="round"/>
+  <path d="M250 562 Q310 584 396 567" fill="none" stroke="#ffffff" stroke-width="6" opacity=".62"/>
+  <!-- neck and face, three-quarter profile -->
+  <path d="M345 342 Q363 367 370 394 L406 422 Q446 405 466 386 L445 334Z" fill="url(#v6Skin)" stroke="#975c50" stroke-width="5"/>
+  <path d="M330 363 Q365 404 425 400" fill="none" stroke="#f1b392" stroke-width="11" opacity=".65"/>
+  <g class="v6-face" stroke-linejoin="round">
+    <path d="M312 194 Q349 155 425 170 Q483 178 513 224 Q536 249 516 287 Q525 307 504 326 Q489 360 454 380 Q407 398 371 377 Q334 358 320 322 Q294 291 304 247Z" fill="url(#v6Skin)" stroke="#432f37" stroke-width="7"/>
+    <ellipse cx="473" cy="303" rx="37" ry="27" fill="url(#v6Cheek)"/>
+    <path d="M355 276 Q370 263 389 270 M441 263 Q458 255 472 260" fill="none" stroke="#40313b" stroke-width="6" stroke-linecap="round"/>
+    <g class="v6-eyes v8-open-eyes" fill="#251f2f">
+      <ellipse cx="377" cy="293" rx="7" ry="9"/><ellipse cx="456" cy="283" rx="7" ry="9"/>
+    </g>
+    <path d="M374 289 L369 284 M379 287 L380 281 M455 277 L453 270" stroke="#2c2939" stroke-width="3" stroke-linecap="round"/>
+    <path d="M425 286 Q428 305 439 311 Q448 313 452 308" fill="none" stroke="#965641" stroke-width="4" stroke-linecap="round"/>
+    <path class="ari-smile" d="M416 339 Q436 354 456 332" fill="none" stroke="#5b3038" stroke-width="5.5" stroke-linecap="round"/><g class="v8-face-overlay" aria-hidden="true">
+ <path class="v8-mouth v8-mouth-laugh" d="M408 328 Q433 322 468 326 Q470 365 438 372 Q407 369 408 328Z" fill="#57293b" stroke="#6f3c44" stroke-width="4"/>
+ <path class="v8-mouth v8-mouth-laugh v8-teeth" d="M411 329 Q438 324 465 329 Q461 340 438 340 Q421 339 411 329Z" fill="#fffaf1"/>
+ <path class="v8-mouth v8-mouth-laugh v8-tongue" d="M421 364 Q437 350 457 361 Q451 375 437 375Z" fill="#e8838f"/>
+ <ellipse class="v8-mouth v8-mouth-shock" cx="441" cy="346" rx="13" ry="19" fill="#61323a" stroke="#a2655b" stroke-width="3"/>
+ <path class="v8-mouth v8-mouth-silly" d="M417 336 Q439 355 460 334" fill="none" stroke="#693b48" stroke-width="5" stroke-linecap="round"/>
+ <path class="v8-mouth v8-mouth-silly" d="M430 342 Q445 344 447 351 Q447 371 435 375 Q422 369 427 350Z" fill="#ed8398" stroke="#763846" stroke-width="2.5"/>
+ <path class="v8-wink-eye" d="M441 283 Q459 291 470 279" fill="none" stroke="#372d38" stroke-width="6" stroke-linecap="round"/>
+ <path class="v8-laugh-eye" d="M360 293 Q376 279 390 288 M440 285 Q458 273 471 280" fill="none" stroke="#372b35" stroke-width="6" stroke-linecap="round"/>
+ <path class="v8-shock-brows" d="M353 264 Q371 244 393 256 M434 253 Q454 240 476 250" stroke="#41303b" stroke-width="5" stroke-linecap="round" fill="none"/>
+ <circle class="v8-sparkle" cx="505" cy="299" r="6" fill="#ffe3a3"/>
+ <path class="v8-sparkle" d="M320 335 l-5 -16 -5 16 -16 5 16 5 5 16 5 -16 16 -5Z" fill="#ffc9ea"/>
+ </g>
+    <path d="M392 345 Q425 363 458 350" fill="none" stroke="#ffc0a6" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+    <path d="M312 279 Q292 260 296 301 Q302 316 319 314" fill="#cc805d" stroke="#663f3d" stroke-width="4"/>
+    <path d="M303 294 Q309 284 317 294" fill="none" stroke="#e9a47f" stroke-width="3"/>
+  </g>
+  <!-- cap: curved head dome, stitched seams and brim -->
+  <g class="v6-cap">
+    <path d="M278 225 Q272 145 334 123 Q409 94 477 149 Q506 172 500 215 Q398 232 302 242Z" fill="#fff1db" stroke="#373343" stroke-width="8"/>
+    <path d="M304 152 Q371 119 452 148" fill="none" stroke="#ffffff" stroke-width="12" opacity=".73"/>
+    <path d="M378 136 Q389 180 380 220" fill="none" stroke="#ddc5b9" stroke-width="4"/>
+    <path d="M294 216 Q382 199 495 209 Q534 215 558 232 Q572 243 549 252 Q422 246 319 262 Q289 264 279 247Z" fill="#4d7c6f" stroke="#36323b" stroke-width="7"/>
+    <path d="M321 242 Q416 220 531 232" fill="none" stroke="#b9cfc0" stroke-width="5"/>
+    <path d="M421 159 q10 -13 21 0 q-9 4 -13 14 q-10 -4 -8 -14Z" fill="#333044"/>
+    <circle cx="447" cy="159" r="4" fill="#333044"/>
+    <path d="M439 175 q16 3 21 -7" fill="none" stroke="#333044" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- swinging side curl above the shoulder -->
+  <g class="v6-loose-hair">
+    <path d="M266 223 Q221 297 265 349 Q216 392 235 439" fill="none" stroke="#272239" stroke-width="45" stroke-linecap="round"/>
+    <path d="M272 230 Q248 299 280 337 Q249 398 265 417" fill="none" stroke="#68506b" stroke-width="8" opacity=".59" stroke-linecap="round"/>
+    <path d="M504 205 Q533 268 510 331 Q544 358 509 404" fill="none" stroke="#332b41" stroke-width="38" stroke-linecap="round"/>
+    <path d="M505 225 Q531 292 508 318" fill="none" stroke="#76576e" stroke-width="7" opacity=".59" stroke-linecap="round"/>
+  </g>
+  <g class="v8-wave-arm">  <!-- arm resting over folded knee, shape is not a straight stick -->
+  <path d="M449 410 Q477 404 504 428 Q533 454 554 480 L575 521 Q567 552 531 554 L509 531 Q495 496 476 487 Q452 474 444 454Z" fill="url(#v6Jumper)" stroke="#433b47" stroke-width="8"/>
+  <path d="M459 431 Q490 457 507 486" fill="none" stroke="#e4a6b4" stroke-width="27" stroke-linecap="round"/>
+  <path d="M526 501 Q548 493 565 514 L592 554 Q599 572 587 587 Q575 594 570 576 Q566 596 555 598 Q543 590 546 577 Q530 595 520 581 Q510 567 512 547Z" fill="url(#v6Skin)" stroke="#805247" stroke-width="6"/>
+  <path d="M559 547 l10 29 M546 554 l9 29 M532 557 l3 20" fill="none" stroke="#995c4c" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M495 505 L528 496" stroke="#fff6ee" stroke-width="21" stroke-linecap="round"/>
+</g>  <!-- freehand finishing strokes and tiny embroidered sweater heart -->
+  <path d="M283 421 q7 -11 17 0 q6 -11 17 -1 q0 14 -17 22Z" fill="none" stroke="#b86783" stroke-width="3"/>
+  <path d="M194 535 Q219 564 249 571" stroke="#fcf8f0" stroke-width="6" opacity=".65" fill="none"/>
+  <path d="M175 626 L162 604 M158 631 L130 622 M566 149 L593 138 M573 171 L605 168" fill="none" stroke="#ffd382" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="603" cy="273" r="7" fill="#d2a9f3"/><circle cx="139" cy="376" r="7" fill="#5cc0a9"/>
+</svg><span class="v8-ari-bubble" id="v8ExpressionBubble" aria-hidden="true">hey, you! ✳</span></button><div class="v8-face-buttons" role="group" aria-label="Make Ari react"><button type="button" data-v8-expression="laugh" aria-label="Make Ari laugh" aria-pressed="false">😂 <span>Laugh</span></button><button type="button" data-v8-expression="wink" aria-label="Make Ari wink" aria-pressed="false">😉 <span>Wink</span></button><button type="button" data-v8-expression="silly" aria-label="Make Ari pull a silly face" aria-pressed="false">😛 <span>Silly</span></button><button type="button" data-v8-expression="shock" aria-label="Surprise Ari" aria-pressed="false">😮 <span>Surprise</span></button></div><span class="v8-reaction-status" id="v8ReactionStatus" role="status" aria-live="polite"></span></div></div></section>
             <section class="concept-features" aria-label="Explore Asko capabilities">
         <button type="button" class="concept-feature concept-lilac" id="featureAnalyze">
           <span class="concept-feature-icon" aria-hidden="true">▢</span><span class="concept-feature-text"><strong>Smart Analysis</strong><small>Find issues, risks and<br>opportunities in seconds.</small></span><span class="concept-feature-arrow" aria-hidden="true">→</span>
@@ -78,9 +186,115 @@
           </div>
           <div class="v5-demo-bottom"><span id="v5DemoMessage" aria-live="polite">Press play to scan the sample locally</span><button type="button" id="v5DemoNext" aria-label="Show next analysis step">Next →</button></div>
         </div>
-<div class="concept-dashboard-card concept-assistant-panel v7-guide-card"><div class="concept-assistant-copy"><p>YOUR LOCAL COMPANION</p><h2>Big questions?<br>Little helper.</h2><span>Kiko explains your actual project findings, locally.</span><button type="button" id="askoHelpCard" class="concept-assistant-chat">Ask Kiko →</button></div><div class="v7-card-mascot" aria-hidden="true"><svg class="kiko-art kiko-card-art" viewBox="0 0 280 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kiko, original asymmetrical lavender companion with a mint green fin"><defs><linearGradient id="kikoCardBody" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f5eaff"/><stop offset=".56" stop-color="#b8a4f1"/><stop offset="1" stop-color="#8071d0"/></linearGradient><linearGradient id="kikoCardFin" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ebffce"/><stop offset="1" stop-color="#6ac4a8"/></linearGradient></defs><ellipse cx="141" cy="280" rx="94" ry="11" fill="#213450" opacity=".14"/><path class="kiko-fin" d="M157 58Q152 1 197 13Q223 6 219 39Q215 60 194 79L182 100Z" fill="url(#kikoCardFin)" stroke="#486873" stroke-width="5" stroke-linejoin="round"/><path d="M74 129Q64 84 103 62Q134 42 185 59Q231 56 240 111Q269 168 238 222Q207 273 149 276Q93 279 65 238Q30 194 58 151Z" fill="url(#kikoCardBody)" stroke="#45456c" stroke-width="6"/><path d="M78 127Q88 80 139 73" stroke="white" stroke-opacity=".55" stroke-width="11" stroke-linecap="round" fill="none"/><ellipse cx="145" cy="227" rx="51" ry="29" fill="#eadbff" opacity=".67"/><g class="kiko-face"><ellipse class="kiko-eye" cx="115" cy="151" rx="8" ry="12" fill="#273248"/><ellipse class="kiko-eye" cx="183" cy="143" rx="8" ry="12" fill="#273248"/><circle cx="112" cy="146" r="2.4" fill="white"/><circle cx="180" cy="139" r="2.4" fill="white"/><ellipse cx="87" cy="173" rx="14" ry="9" fill="#f5a0b3" opacity=".65"/><ellipse cx="209" cy="162" rx="14" ry="9" fill="#f5a0b3" opacity=".65"/><path d="M138 182Q153 195 169 179" fill="none" stroke="#364357" stroke-width="5" stroke-linecap="round"/></g><path d="M64 211Q33 197 27 217M239 205Q261 196 267 209" fill="none" stroke="#817cba" stroke-width="11" stroke-linecap="round"/><path d="M111 263L104 283M193 261L197 283" stroke="#595a80" stroke-width="11" stroke-linecap="round"/><circle cx="49" cy="85" r="5" fill="#ffcd83"/><path d="M246 65l6 15 16 6-16 6-6 15-6-15-16-6 16-6z" fill="#e5d0ff"/></svg></div><button type="button" id="askoGuideCard" class="concept-assistant-tag">Meet Kiko ↗</button></div>
+<div class="concept-dashboard-card concept-assistant-panel v7-guide-card"><div class="concept-assistant-copy"><p>YOUR LOCAL COMPANION</p><h2>Big questions?<br>Little helper.</h2><span>Ari explains your actual project findings, locally.</span><button type="button" id="askoHelpCard" class="concept-assistant-chat">Ask Ari →</button></div><div id="v8CardMascot" class="v7-card-mascot v8-card-mascot" data-expression="happy" aria-hidden="true"><svg class="ari-illustration ari-v8 ari-v8-card" viewBox="190 90 500 585" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated illustrated woman Ari wearing a cream cap and striped sweatshirt, with expressive facial reactions">
+  <defs>
+    <linearGradient id="v8Cardv6Hair" x1="0" x2="1" y1="0" y2=".9"><stop stop-color="#191a2c"/><stop offset=".62" stop-color="#303049"/><stop offset="1" stop-color="#55344c"/></linearGradient>
+    <linearGradient id="v8Cardv6Skin" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e6a477"/><stop offset=".55" stop-color="#cf855b"/><stop offset="1" stop-color="#ac5d4b"/></linearGradient>
+    <linearGradient id="v8Cardv6Jumper" x1="0" x2="0.9" y1="0" y2="1"><stop stop-color="#fff9ec"/><stop offset=".48" stop-color="#fff0ea"/><stop offset="1" stop-color="#f8c3ca"/></linearGradient>
+    <linearGradient id="v8Cardv6Pants" x1="0" x2=".9" y1="0" y2="1"><stop stop-color="#1b3540"/><stop offset="1" stop-color="#081a2b"/></linearGradient>
+    <linearGradient id="v8Cardv6Shoe" x1="0" x2="1" y1="0" y2=".8"><stop stop-color="#fffef5"/><stop offset=".6" stop-color="#dfebe4"/><stop offset="1" stop-color="#96c5af"/></linearGradient>
+    <radialGradient id="v8Cardv6Cheek"><stop stop-color="#e89b92" stop-opacity=".7"/><stop offset="1" stop-color="#ebaa9c" stop-opacity="0"/></radialGradient>
+    <clipPath id="v8Cardv6SweatClip"><path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492 Q530 534 495 574 Q386 607 252 596 Q182 570 162 499 Q158 431 215 388Z"/></clipPath>
+  </defs>
+  <ellipse cx="365" cy="704" rx="328" ry="26" fill="#423962" opacity=".12"/>
+  <path d="M48 663 Q79 622 130 628 Q174 572 265 588 Q331 556 407 582 Q513 550 596 600 Q701 613 733 680 L732 709 L44 709Z" fill="#b19cde"/>
+  <path d="M76 670 Q197 620 320 659 Q424 605 586 654 Q663 654 714 678 L712 707 L66 707Z" fill="#cfb7f5" opacity=".75"/>
+  <!-- textured hair silhouette, with loose curls and an independent reactive tuft -->
+  <g class="v6-hair-back">
+    <path d="M241 306 Q190 286 185 242 Q167 211 195 169 Q190 115 240 100 Q278 52 347 67 Q402 37 459 66 Q541 72 570 144 Q607 185 576 242 Q615 298 578 345 Q625 401 601 455 Q634 508 585 540 Q582 600 519 610 Q454 643 403 588 Q344 616 314 566 Q232 599 193 534 Q151 508 177 461 Q138 405 188 370 Q166 334 241 306Z" fill="url(#v8Cardv6Hair)" stroke="#252235" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M218 221 C193 268 224 311 187 347 M561 210 C589 276 540 313 575 369 M204 429 C182 471 199 518 244 534 M560 410 C589 481 545 543 509 553" stroke="#695273" stroke-width="10" stroke-linecap="round" opacity=".52" fill="none"/>
+    <path d="M254 106 Q288 67 350 70 M500 101 Q557 144 549 189 M218 338 Q172 386 204 427" fill="none" stroke="#87708b" stroke-width="6" stroke-linecap="round" opacity=".33"/>
+    <g fill="none" stroke="#343148" stroke-width="19" stroke-linecap="round">
+      <path d="M167 360 Q122 391 162 431"/><path d="M176 449 Q135 480 191 516"/><path d="M568 306 Q623 341 570 394"/><path d="M576 440 Q615 487 570 524"/>
+    </g>
+  </g>
+  <!-- back leg, socks, rear shoe -->
+  <path d="M285 517 Q338 478 405 499 Q448 513 465 564 Q480 589 451 617 L395 657 Q338 676 280 651 Q242 630 260 586Z" fill="url(#v8Cardv6Pants)" stroke="#243041" stroke-width="8"/>
+  <path d="M310 558 Q325 589 300 617 M406 540 Q430 556 433 580" fill="none" stroke="#4a6470" stroke-width="7" opacity=".55" stroke-linecap="round"/>
+  <path d="M270 616 Q230 629 219 669 L179 676 Q140 684 149 707 Q179 731 276 711 L345 693 Q345 652 313 629Z" fill="url(#v8Cardv6Shoe)" stroke="#38534e" stroke-width="7"/>
+  <path d="M158 695 Q230 704 324 675 M221 661 L261 665 M213 675 L256 678" stroke="#5f9685" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M163 711 Q234 720 329 693" stroke="#f9f7ea" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <!-- near folded leg and knee -->
+  <path d="M345 514 Q383 476 468 471 Q548 457 605 501 Q646 540 626 590 L583 642 Q536 680 474 659 Q415 657 384 611 Q357 590 345 514Z" fill="url(#v8Cardv6Pants)" stroke="#202c40" stroke-width="9"/>
+  <path d="M391 548 Q433 526 474 534 M516 610 Q572 615 608 571" fill="none" stroke="#516878" stroke-width="7" opacity=".58" stroke-linecap="round"/>
+  <!-- near high quality chunky sneaker, toe points right -->
+  <g class="v6-front-shoe">
+    <path d="M518 614 Q552 599 577 610 Q603 603 632 622 L695 646 Q730 658 720 689 Q702 709 660 711 L553 705 Q515 703 491 687 Q488 652 518 614Z" fill="url(#v8Cardv6Shoe)" stroke="#355a55" stroke-width="8"/>
+    <path d="M588 615 Q621 636 643 653 Q660 660 699 659" fill="none" stroke="#f6f5e9" stroke-width="12"/>
+    <path d="M534 633 L603 672 M548 623 L616 657" fill="none" stroke="#50a78f" stroke-width="7" stroke-linecap="round"/>
+    <path d="M510 678 Q620 710 713 675" fill="none" stroke="#457c70" stroke-width="8" stroke-linecap="round"/>
+    <path d="M510 688 Q622 719 717 687" fill="none" stroke="#f9f9ef" stroke-width="14" stroke-linecap="round"/>
+    <path d="M678 651 Q713 660 710 681" fill="none" stroke="#ffb39c" stroke-width="11" stroke-linecap="round"/>
+    <path d="M540 645 L577 664 M547 655 L584 675" stroke="#ebdcca" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <!-- sweater back volume and sleeves -->
+  <path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492 Q530 534 495 574 Q386 607 252 596 Q182 570 162 499 Q158 431 215 388Z" fill="url(#v8Cardv6Jumper)" stroke="#332b3f" stroke-width="9"/>
+  <g clip-path="url(#v8Cardv6SweatClip)" opacity=".91" stroke="#ecb1be" stroke-width="48" fill="none">
+    <path d="M141 446 Q293 520 509 435"/><path d="M151 555 Q291 482 547 593"/><path d="M268 334 Q312 417 303 627"/>
+  </g>
+  <path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492" fill="none" stroke="#fff9f0" stroke-width="8" opacity=".75" stroke-linecap="round"/>
+  <path d="M250 562 Q310 584 396 567" fill="none" stroke="#ffffff" stroke-width="6" opacity=".62"/>
+  <!-- neck and face, three-quarter profile -->
+  <path d="M345 342 Q363 367 370 394 L406 422 Q446 405 466 386 L445 334Z" fill="url(#v8Cardv6Skin)" stroke="#975c50" stroke-width="5"/>
+  <path d="M330 363 Q365 404 425 400" fill="none" stroke="#f1b392" stroke-width="11" opacity=".65"/>
+  <g class="v6-face" stroke-linejoin="round">
+    <path d="M312 194 Q349 155 425 170 Q483 178 513 224 Q536 249 516 287 Q525 307 504 326 Q489 360 454 380 Q407 398 371 377 Q334 358 320 322 Q294 291 304 247Z" fill="url(#v8Cardv6Skin)" stroke="#432f37" stroke-width="7"/>
+    <ellipse cx="473" cy="303" rx="37" ry="27" fill="url(#v8Cardv6Cheek)"/>
+    <path d="M355 276 Q370 263 389 270 M441 263 Q458 255 472 260" fill="none" stroke="#40313b" stroke-width="6" stroke-linecap="round"/>
+    <g class="v6-eyes v8-open-eyes" fill="#251f2f">
+      <ellipse cx="377" cy="293" rx="7" ry="9"/><ellipse cx="456" cy="283" rx="7" ry="9"/>
+    </g>
+    <path d="M374 289 L369 284 M379 287 L380 281 M455 277 L453 270" stroke="#2c2939" stroke-width="3" stroke-linecap="round"/>
+    <path d="M425 286 Q428 305 439 311 Q448 313 452 308" fill="none" stroke="#965641" stroke-width="4" stroke-linecap="round"/>
+    <path class="ari-smile" d="M416 339 Q436 354 456 332" fill="none" stroke="#5b3038" stroke-width="5.5" stroke-linecap="round"/><g class="v8-face-overlay" aria-hidden="true">
+ <path class="v8-mouth v8-mouth-laugh" d="M408 328 Q433 322 468 326 Q470 365 438 372 Q407 369 408 328Z" fill="#57293b" stroke="#6f3c44" stroke-width="4"/>
+ <path class="v8-mouth v8-mouth-laugh v8-teeth" d="M411 329 Q438 324 465 329 Q461 340 438 340 Q421 339 411 329Z" fill="#fffaf1"/>
+ <path class="v8-mouth v8-mouth-laugh v8-tongue" d="M421 364 Q437 350 457 361 Q451 375 437 375Z" fill="#e8838f"/>
+ <ellipse class="v8-mouth v8-mouth-shock" cx="441" cy="346" rx="13" ry="19" fill="#61323a" stroke="#a2655b" stroke-width="3"/>
+ <path class="v8-mouth v8-mouth-silly" d="M417 336 Q439 355 460 334" fill="none" stroke="#693b48" stroke-width="5" stroke-linecap="round"/>
+ <path class="v8-mouth v8-mouth-silly" d="M430 342 Q445 344 447 351 Q447 371 435 375 Q422 369 427 350Z" fill="#ed8398" stroke="#763846" stroke-width="2.5"/>
+ <path class="v8-wink-eye" d="M441 283 Q459 291 470 279" fill="none" stroke="#372d38" stroke-width="6" stroke-linecap="round"/>
+ <path class="v8-laugh-eye" d="M360 293 Q376 279 390 288 M440 285 Q458 273 471 280" fill="none" stroke="#372b35" stroke-width="6" stroke-linecap="round"/>
+ <path class="v8-shock-brows" d="M353 264 Q371 244 393 256 M434 253 Q454 240 476 250" stroke="#41303b" stroke-width="5" stroke-linecap="round" fill="none"/>
+ <circle class="v8-sparkle" cx="505" cy="299" r="6" fill="#ffe3a3"/>
+ <path class="v8-sparkle" d="M320 335 l-5 -16 -5 16 -16 5 16 5 5 16 5 -16 16 -5Z" fill="#ffc9ea"/>
+ </g>
+    <path d="M392 345 Q425 363 458 350" fill="none" stroke="#ffc0a6" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+    <path d="M312 279 Q292 260 296 301 Q302 316 319 314" fill="#cc805d" stroke="#663f3d" stroke-width="4"/>
+    <path d="M303 294 Q309 284 317 294" fill="none" stroke="#e9a47f" stroke-width="3"/>
+  </g>
+  <!-- cap: curved head dome, stitched seams and brim -->
+  <g class="v6-cap">
+    <path d="M278 225 Q272 145 334 123 Q409 94 477 149 Q506 172 500 215 Q398 232 302 242Z" fill="#fff1db" stroke="#373343" stroke-width="8"/>
+    <path d="M304 152 Q371 119 452 148" fill="none" stroke="#ffffff" stroke-width="12" opacity=".73"/>
+    <path d="M378 136 Q389 180 380 220" fill="none" stroke="#ddc5b9" stroke-width="4"/>
+    <path d="M294 216 Q382 199 495 209 Q534 215 558 232 Q572 243 549 252 Q422 246 319 262 Q289 264 279 247Z" fill="#4d7c6f" stroke="#36323b" stroke-width="7"/>
+    <path d="M321 242 Q416 220 531 232" fill="none" stroke="#b9cfc0" stroke-width="5"/>
+    <path d="M421 159 q10 -13 21 0 q-9 4 -13 14 q-10 -4 -8 -14Z" fill="#333044"/>
+    <circle cx="447" cy="159" r="4" fill="#333044"/>
+    <path d="M439 175 q16 3 21 -7" fill="none" stroke="#333044" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- swinging side curl above the shoulder -->
+  <g class="v6-loose-hair">
+    <path d="M266 223 Q221 297 265 349 Q216 392 235 439" fill="none" stroke="#272239" stroke-width="45" stroke-linecap="round"/>
+    <path d="M272 230 Q248 299 280 337 Q249 398 265 417" fill="none" stroke="#68506b" stroke-width="8" opacity=".59" stroke-linecap="round"/>
+    <path d="M504 205 Q533 268 510 331 Q544 358 509 404" fill="none" stroke="#332b41" stroke-width="38" stroke-linecap="round"/>
+    <path d="M505 225 Q531 292 508 318" fill="none" stroke="#76576e" stroke-width="7" opacity=".59" stroke-linecap="round"/>
+  </g>
+  <g class="v8-wave-arm">  <!-- arm resting over folded knee, shape is not a straight stick -->
+  <path d="M449 410 Q477 404 504 428 Q533 454 554 480 L575 521 Q567 552 531 554 L509 531 Q495 496 476 487 Q452 474 444 454Z" fill="url(#v8Cardv6Jumper)" stroke="#433b47" stroke-width="8"/>
+  <path d="M459 431 Q490 457 507 486" fill="none" stroke="#e4a6b4" stroke-width="27" stroke-linecap="round"/>
+  <path d="M526 501 Q548 493 565 514 L592 554 Q599 572 587 587 Q575 594 570 576 Q566 596 555 598 Q543 590 546 577 Q530 595 520 581 Q510 567 512 547Z" fill="url(#v8Cardv6Skin)" stroke="#805247" stroke-width="6"/>
+  <path d="M559 547 l10 29 M546 554 l9 29 M532 557 l3 20" fill="none" stroke="#995c4c" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M495 505 L528 496" stroke="#fff6ee" stroke-width="21" stroke-linecap="round"/>
+</g>  <!-- freehand finishing strokes and tiny embroidered sweater heart -->
+  <path d="M283 421 q7 -11 17 0 q6 -11 17 -1 q0 14 -17 22Z" fill="none" stroke="#b86783" stroke-width="3"/>
+  <path d="M194 535 Q219 564 249 571" stroke="#fcf8f0" stroke-width="6" opacity=".65" fill="none"/>
+  <path d="M175 626 L162 604 M158 631 L130 622 M566 149 L593 138 M573 171 L605 168" fill="none" stroke="#ffd382" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="603" cy="273" r="7" fill="#d2a9f3"/><circle cx="139" cy="376" r="7" fill="#5cc0a9"/>
+</svg></div><button type="button" id="askoGuideCard" class="concept-assistant-tag">Meet Ari ↗</button></div>
             </section>
-      <section class="concept-note-row" id="releaseNotes"><p><strong>Real product, not a static mockup.</strong> Sample projects load original code, the graph is calculated locally, and Kiko explains your own scan metadata. No customer files leave this browser.</p></section>
+      <section class="concept-note-row" id="releaseNotes"><p><strong>Real product, not a static mockup.</strong> Sample projects load original code, the graph is calculated locally, and Ari explains your own scan metadata. No customer files leave this browser.</p></section>
       <section id="workspace" class="workspace-section">
         <div class="section-top"><div><p class="overline">YOUR WORKSPACE</p><h2>Make sense of the messy bits.</h2><p class="section-lead">Pick files you own or have permission to review. Asko maps detected imports, groups notes and lets you explore relationships entirely on this device.</p></div><span class="section-number">01 / 03</span></div>
         <div class="workspace-shell">
@@ -143,18 +357,18 @@
     </main>
     <footer class="site-footer"><div class="footer-brand"><span class="brand-text">asko</span><div><strong>Asko</strong><span>Clarity, before complexity.</span></div></div><div class="footer-right"><span>Concept fidelity preview · Local-only</span><span>Asko preview · original concept</span></div></footer>
   </div>
-  <button class="asko-guide-fab" id="askoGuideFab" type="button" aria-label="Open Kiko, Asko's interactive local guide">
+  <button class="asko-guide-fab" id="askoGuideFab" type="button" aria-label="Open Ari, Asko's interactive local guide">
     <span class="fab-avatar" aria-hidden="true"><span class="fab-hair"></span><span class="fab-face">•ᴗ•</span><span class="fab-cap"></span></span>
-    <span class="fab-word">Ask Kiko <span aria-hidden="true">↗</span></span>
+    <span class="fab-word">Ask Ari <span aria-hidden="true">↗</span></span>
   </button>
   <dialog class="asko-guide-dialog" id="askoGuideDialog" aria-labelledby="askoGuideHeading">
     <div class="guide-head">
       <span class="guide-avatar" aria-hidden="true">✳</span>
-      <div><p class="guide-overline">ASKO'S ON-DEVICE GUIDE</p><h2 id="askoGuideHeading">Hey, I'm Kiko.</h2></div>
-      <button type="button" id="askoGuideClose" class="guide-close" aria-label="Close Kiko guide">×</button>
+      <div><p class="guide-overline">ASKO'S ON-DEVICE GUIDE</p><h2 id="askoGuideHeading">Hey, I'm Ari.</h2></div>
+      <button type="button" id="askoGuideClose" class="guide-close" aria-label="Close Ari guide">×</button>
     </div>
     <p class="guide-intro">I can explain what your <em>local scan</em> found, show you where to look and help with next steps. I'm a rule-based guide, not a live AI model.</p>
-    <div class="guide-history" id="askoGuideHistory" aria-live="polite" aria-label="Conversation with Kiko"></div>
+    <div class="guide-history" id="askoGuideHistory" aria-live="polite" aria-label="Conversation with Ari"></div>
     <div class="guide-suggestions" aria-label="Suggested questions">
       <button type="button" data-asko-question="What does my project look like?">Project overview</button>
       <button type="button" data-asko-question="How do my files connect?">File relationships</button>
@@ -162,7 +376,7 @@
       <button type="button" data-asko-question="How do I start?">Get started</button>
     </div>
     <form id="askoGuideForm" class="guide-input" autocomplete="off">
-      <label class="sr-only" for="askoGuideQuestion">Ask Kiko about your local project</label>
+      <label class="sr-only" for="askoGuideQuestion">Ask Ari about your local project</label>
       <input id="askoGuideQuestion" type="text" maxlength="240" placeholder="Ask about your project…" required>
       <button type="submit" aria-label="Ask question">→</button>
     </form>
