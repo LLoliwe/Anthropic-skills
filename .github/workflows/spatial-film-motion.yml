@@ -1,0 +1,103 @@
+name: RED HOUR | native 49-frame Blender 3D camera-film and independent decode
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/spatial-film-motion.yml"
+      - "skills/spatial-film-lab/verify_motion.py"
+      - "skills/spatial-film-lab/test_motion.py"
+
+permissions:
+  contents: read
+
+jobs:
+  motion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preflight against static slideshow and missing frames
+        run: |
+          python -m pip install --disable-pip-version-check 'Pillow>=10,<13'
+          python -m unittest discover -s skills/spatial-film-lab -p test_motion.py -v
+          python -m py_compile skills/spatial-film-lab/verify_motion.py
+      - name: Fetch pinned official Blender and validate its SHA256
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 'https://download.blender.org/release/Blender5.0/blender-5.0.1-linux-x64.tar.xz' -o blender.tar.xz
+          echo '8019580ee1b7262e505f4196a00237ccf743c88d205b38d34201510676e60b09  blender.tar.xz' | sha256sum -c -
+          tar -xf blender.tar.xz
+      - name: Real 49-frame Cycles CPU world-space perspective camera render
+        run: |
+          set -euo pipefail
+          mkdir -p output
+          ./blender-5.0.1-linux-x64/blender -b -t 2 --python skills/spatial-film-lab/red_hour_gallery.py -- --outdir output --mode video --width 576 --samples 8 > output/blender_motion.log 2>&1 || { tail -120 output/blender_motion.log; exit 1; }
+          grep 'PRYNTOR_RENDER_FINISHED_MOTION 49' output/blender_motion.log
+      - name: Independently decode each frame and reject frozen camera/fake cuts
+        run: |
+          python skills/spatial-film-lab/verify_motion.py --folder output --width 576
+      - name: Encode genuine animated-camera movie, verify frame count
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          fi
+          ffmpeg -nostdin -hide_banner -loglevel error -framerate 16 -i output/motion_%03d.png -c:v libx264 -pix_fmt yuv420p -movflags +faststart -crf 18 output/red_hour_true_camera.mp4
+          ffmpeg -nostdin -hide_banner -loglevel error -i output/red_hour_true_camera.mp4 -f null -
+          ffprobe -v error -select_streams v:0 -show_entries stream=nb_frames,width,height,codec_name,r_frame_rate -of json output/red_hour_true_camera.mp4 > output/film_probe.json
+          python - <<'PY'
+          import json,hashlib,pathlib
+          from PIL import Image,ImageDraw
+          root=pathlib.Path('output')
+          pr=json.loads((root/'film_probe.json').read_text())['streams'][0]
+          assert int(pr['nb_frames'])==49, pr
+          assert (pr['width'],pr['height'])==(576,324),pr
+          assert pr['codec_name']=='h264',pr
+          canvas=Image.new('RGB',(576*4,324),'white')
+          for idx,f in enumerate((1,16,32,49)):
+              with Image.open(root/f'motion_{f:03}.png') as im:
+                  im.load(); canvas.paste(im.convert('RGB'),(576*idx,0))
+          canvas.save(root/'four_film_frames.jpg',quality=91)
+          files=['red_hour_true_camera.mp4','red_hour_gallery_editable.blend','four_film_frames.jpg','motion_qa.json']
+          checks={f:hashlib.sha256((root/f).read_bytes()).hexdigest() for f in files}
+          (root/'movie_artifact_checksums.json').write_text(json.dumps(checks,indent=2)+'\n')
+          assert (root/'red_hour_true_camera.mp4').stat().st_size>20000
+          print('TRUE_MOVIE_H264_49_FRAME_DECODE_PASS')
+          PY
+          rm output/motion_???.png
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: red-hour-r1-49f-real-3d-camera
+          path: output/
+          retention-days: 14
+          if-no-files-found: warn
+
+  independent-movie:
+    needs: motion
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: red-hour-r1-49f-real-3d-camera
+          path: artifact/
+      - name: Independently check downloaded movie bytes, frame count, decode, and edit source
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          fi
+          python - <<'PY'
+          import hashlib,json,pathlib
+          root=pathlib.Path('artifact')
+          checks=json.loads((root/'movie_artifact_checksums.json').read_text())
+          for file,digest in checks.items():
+              assert hashlib.sha256((root/file).read_bytes()).hexdigest()==digest,file
+          assert (root/'red_hour_gallery_editable.blend').read_bytes()[:7]==b'BLENDER'
+          assert json.loads((root/'motion_qa.json').read_text())['expected_frames']==49
+          print('INDEPENDENT_ORIGINAL_RENDER_AND_HASH_PASS')
+          PY
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=nb_frames -of default=nw=1:nk=1 artifact/red_hour_true_camera.mp4)" = 49
+          ffmpeg -nostdin -hide_banner -loglevel error -i artifact/red_hour_true_camera.mp4 -f null -
+          echo 'INDEPENDENT_FULL_FILM_DECODE_PASS'
