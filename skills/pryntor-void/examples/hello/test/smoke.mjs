@@ -29,7 +29,7 @@ test('Void serves the static page and real API route without Cloudflare credenti
     }
     assert.ok(page, 'Local HTML not served. Logs: ' + logs);
     assert.match(page, /Launch Desk — Pryntor/);
-    assert.deepEqual(api, { ok: true, service: 'pryntor-void-pilot', deployment: 'local-only' });
+    assert.deepEqual(api, { ok: true, service: 'pryntor-launch-desk', runtime: 'node', release: 'beta' });
   } finally {
     if (process.platform !== 'win32') { try { process.kill(-child.pid, 'SIGTERM'); } catch {} }
     else child.kill();
