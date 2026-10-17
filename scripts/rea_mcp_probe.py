@@ -44,8 +44,8 @@ def probe(command, timeout=90):
                 if not chunk:
                     raise RuntimeError("MCP stdout closed before response")
                 buffer += chunk
-                if len(buffer) > 2_000_000:
-                    raise RuntimeError("MCP response exceeds 2 MB limit")
+                if len(buffer) > 32_000_000:
+                    raise RuntimeError("MCP response exceeds 32 MB limit")
             elif process.poll() is not None:
                 raise RuntimeError(f"MCP exited before response (code {process.returncode})")
         raise TimeoutError(f"No MCP response to id {message_id} within {timeout}s")
@@ -91,7 +91,7 @@ for raw in sys.stdin:
  if p.get('method')=='initialize':
   print(json.dumps({'jsonrpc':'2.0','id':p['id'],'result':{'protocolVersion':'2025-03-26','capabilities':{},'serverInfo':{'name':'fake','version':'0'}}}),flush=True)
  elif p.get('method')=='tools/list':
-  print(json.dumps({'jsonrpc':'2.0','id':p['id'],'result':{'tools':[{'name':'analyze_javascript_application','inputSchema':{'type':'object'}}]}}),flush=True)
+  print(json.dumps({'jsonrpc':'2.0','id':p['id'],'result':{'tools':[{'name':'analyze_javascript_application','description':'X'*3_000_000,'inputSchema':{'type':'object'}}]}}),flush=True)
 """
     assert probe([sys.executable, "-u", "-c", fake], timeout=10) == 0
     print("PASS: local transport self-test (synthetic server, NOT REA)")
