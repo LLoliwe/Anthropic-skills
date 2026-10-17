@@ -53,7 +53,7 @@ export function analyze(files,{mode='local'}={}){
     if(resolved&&resolved!==file.name)edges.push({from:file.name,to:resolved,type:'imports'});
   }
   const counts={files:rows.length,lines:rows.reduce((s,f)=>s+f.lines,0),imports:rows.reduce((s,f)=>s+f.imports.length,0),notes:findings.length,bytes:total};
-  return {product:'Pryntor Inspect',version:'v1-preview',method:'local-heuristic-source-inventory',mode,scope:'first-pass-only',customerDataUploaded:false,codeExecuted:false,securityCertification:false,generatedAt:new Date().toISOString(),counts,files:rows,relationships:edges,findings,limitations:['Static heuristic scan; no AST/runtime execution.','No formal security audit or REA MCP analysis.','Pattern matches may include false positives and omit true defects.']};
+  return {product:'Asko',version:'v1-preview',method:'local-heuristic-source-inventory',mode,scope:'first-pass-only',customerDataUploaded:false,codeExecuted:false,securityCertification:false,generatedAt:new Date().toISOString(),counts,files:rows,relationships:edges,findings,limitations:['Static heuristic scan; no AST/runtime execution.','No formal security audit or REA MCP analysis.','Pattern matches may include false positives and omit true defects.']};
 }
 export const EXAMPLE=[
  {name:'index.js',text:"import { format } from './format.js';\n// Original Pryntor demo — no network calls\nexport function status() {\n  return format('ready');\n}\n"},

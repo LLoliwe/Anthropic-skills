@@ -25,9 +25,10 @@ function renderFile(index){
 }
 function render(r){
  report=r;selection=0;empty.hidden=true;results.hidden=false;setStatus();
+ document.dispatchEvent(new CustomEvent('asko:report',{detail:r}));
  $('reportMode').textContent=r.mode==='sample'?'INCLUDED EXAMPLE · NOT YOUR FILES':'YOUR FILES · PROCESSED LOCALLY';
  $('reportTitle').textContent=r.mode==='sample'?'A small project, made clear.':'Your project, at a glance.';
- $('reportSubtitle').textContent=r.mode==='sample'?'Original Pryntor sample, analysed in this browser.':'First-pass inventory from your selected files.';
+ $('reportSubtitle').textContent=r.mode==='sample'?'Original Asko sample, analysed in this browser.':'First-pass inventory from your selected files.';
  for(const[key,value] of [['statFiles',r.counts.files],['statLines',r.counts.lines],['statImports',r.counts.imports],['statNotes',r.counts.notes]])$(key).textContent=value.toLocaleString();
  $('fileCount').textContent=r.counts.files+' file'+(r.counts.files===1?'':'s');
  const list=$('fileRows');list.replaceChildren();
@@ -67,19 +68,19 @@ async function scanFileObjects(fileList){
 function openPicker(){filePicker.click()}
 function showSample(){try{render(analyze(EXAMPLE,{mode:'sample'}))}catch(e){setStatus(e.message)}}
 $('sampleButton').addEventListener('click',showSample);
-$('heroSample').addEventListener('click',()=>{showSample();location.hash='workspace'});
+$('heroSample')?.addEventListener('click',()=>{showSample();location.hash='workspace'});
 dropzone.addEventListener('click',openPicker);
 dropzone.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openPicker()}});
 filePicker.addEventListener('change',()=>scanFileObjects(filePicker.files));
 for(const name of ['dragenter','dragover'])dropzone.addEventListener(name,event=>{event.preventDefault();dropzone.classList.add('drag-over')});
 for(const name of ['dragleave','drop'])dropzone.addEventListener(name,event=>{event.preventDefault();dropzone.classList.remove('drag-over')});
 dropzone.addEventListener('drop',event=>scanFileObjects(event.dataTransfer.files));
-function resetWorkspace(){report=null;empty.hidden=false;results.hidden=true;setStatus();$('fileRows').replaceChildren();$('fileDetail').replaceChildren();$('findings').replaceChildren();filePicker.value='';v1.onReset();dropzone.focus();}
+function resetWorkspace(){report=null;document.dispatchEvent(new CustomEvent('asko:report',{detail:null}));empty.hidden=false;results.hidden=true;setStatus();$('fileRows').replaceChildren();$('fileDetail').replaceChildren();$('findings').replaceChildren();filePicker.value='';v1.onReset();dropzone.focus();}
 $('resetButton').addEventListener('click',resetWorkspace);
 function exportReport(){
  if(!report)return;
  const blob=new Blob([JSON.stringify(report,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
- a.href=url;a.download='pryntor-inspect-v1-report.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ a.href=url;a.download='asko-local-report.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 $('exportButton').addEventListener('click',exportReport);
 const v1=setupV1({getReport:()=>report,selectFile:renderFile,runSample:showSample,resetWorkspace,exportReport,openPicker});

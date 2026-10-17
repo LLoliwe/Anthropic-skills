@@ -3,58 +3,110 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f8f9fb">
-  <meta name="description" content="Pryntor Inspect — a private, local-first source code quick scan. No upload, no account, no tracking.">
+  <meta name="theme-color" content="#dfe5ff">
+  <meta name="description" content="Asko — a private, local-first source code quick scan. No upload, no account, no tracking.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'">
-  <title>Pryntor Inspect — Understand what you're looking at.</title>
+  <title>Asko — Understand what you're looking at.</title>
   <link rel="stylesheet" href="./styles.css">
   <script defer type="module" src="./app.mjs"></script>
+  <script defer type="module" src="./asko-guide.mjs"></script>
 </head>
 <body>
   <div class="site">
     <header class="topbar" aria-label="Site header">
-      <a class="brand" href="#top" aria-label="Pryntor Inspect home"><span class="brand-mark">P<span class="brand-dot">.</span></span><span class="brand-text">Pryntor <span>Inspect</span></span></a>
+      <a class="brand" href="#top" aria-label="Asko home"><span class="brand-text">asko <span>beta</span></span></a>
       <nav aria-label="Main navigation"><a href="#workspace">Workspace</a><a href="#approach">How it works</a><a href="#privacy">Privacy</a></nav>
-      <button type="button" id="headerCommandButton" class="header-commands" aria-label="Open commands">⌘ K <span>Commands</span></button><span class="nav-flag"><span class="pulse"></span> V1 Preview</span>
+      <button type="button" id="headerCommandButton" class="header-commands" aria-label="Open commands">⌘ K <span>Commands</span></button><span class="nav-flag"><span class="pulse"></span> V2 Preview</span>
     </header>
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-content">
-          <p class="overline light"><span class="overline-dot"></span> PRYNTOR INSPECT · V1 PREVIEW</p>
-          <h1 id="hero-title">Clarity, before<br><span>complexity.</span></h1>
-          <p class="hero-lead">A more thoughtful first look at your code. Understand the structure, spot questions worth asking, and keep your files exactly where they belong: with you.</p>
-          <div class="hero-actions"><a class="primary-btn" href="#workspace">Open your workspace <span aria-hidden="true">↗</span></a><button type="button" class="hero-secondary" id="heroSample">Explore a sample <span aria-hidden="true">↗</span></button></div>
-          <div class="hero-meta"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 22 8-4V6l-8-4-8 4v12zM4 6l8 4 8-4M12 10v12"/></svg> Entirely in your browser</span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4L19 6"/></svg> No account. No upload.</span></div>
+      <section class="hero asko-hero" aria-labelledby="hero-title">
+        <div class="asko-hero-copy">
+          <p class="asko-eyebrow"><span class="eyebrow-dot"></span> YOUR CODE, MADE CLEAR · ASKO V2</p>
+          <h1 id="hero-title">Understand<br>any codebase,<br><em>move faster.</em></h1>
+          <p class="asko-hero-lead">Explore what connects. Spot patterns worth reviewing. Turn complicated projects into something you can actually navigate.</p>
+          <div class="hero-actions">
+            <button type="button" id="askoUpload" class="asko-btn dark">Choose local files <span aria-hidden="true">↗</span></button>
+            <button type="button" id="askoSample" class="asko-btn white">Try the sample <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="asko-hero-meta"><span>✳ Read-only</span><span>♧ Local by default</span><span>◈ No account</span></div>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="halo halo-one"></div><div class="halo halo-two"></div>
-          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-          <div class="floating-pill pill-one"><span class="tiny-glyph">◇</span> Analyse locally <span class="pill-ok">✓</span></div>
-          <div class="floating-pill pill-two"><span class="status-star">✳</span> Clearer understanding</div>
-          <div class="glass-panel">
-            <div class="glass-top"><span class="glass-dots"><i></i><i></i><i></i></span><span>Project overview</span><span>↗</span></div>
-            <div class="glass-body">
-              <div class="metric-label">THE BIG PICTURE</div>
-              <div class="glass-heading">Every piece<br>in its place.</div>
-              <svg class="network" viewBox="0 0 360 190" role="img" aria-label="Abstract project module relationships">
-                <path d="M180 34L80 112M180 34L270 112M80 112L180 164M270 112L180 164M80 112L270 112" fill="none" stroke="#aab3ff" stroke-opacity=".34" stroke-width="1.5" stroke-dasharray="5 7"/>
-                <circle cx="180" cy="34" r="23" fill="#6d71e8" stroke="#aaaaff"/><circle cx="80" cy="112" r="22" fill="#333961" stroke="#9aa4fb"/><circle cx="270" cy="112" r="22" fill="#333961" stroke="#9aa4fb"/><circle cx="180" cy="164" r="18" fill="#343d66" stroke="#7889d6"/>
-                <g fill="#e6e9ff" font-size="16" text-anchor="middle" font-family="system-ui"><text x="180" y="40">⌘</text><text x="80" y="118">✦</text><text x="270" y="118">◫</text><text x="180" y="170">◇</text></g>
-              </svg>
-              <div class="glass-foot"><span><b class="tiny-spark">✧</b> Structure first</span><span>LOCAL INTELLIGENCE</span></div>
+        <div class="asko-hero-visual">
+          <div class="asko-splash yellow"></div><div class="asko-splash lilac"></div><div class="asko-splash mint"></div>
+          <div class="asko-note">Take a look<br>inside.</div>
+          <button type="button" id="askoMascot" class="asko-portrait" aria-label="Meet Ari, your interactive Asko guide" title="Say hello to Ari">
+            <svg class="ari-illustration" viewBox="0 0 650 520" role="img" aria-label="Illustrated friendly woman in cap relaxing next to a black cat">
+              <defs>
+                <linearGradient id="shirt" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ffebe1"/><stop offset="1" stop-color="#ef98aa"/></linearGradient>
+                <linearGradient id="shoe" x1="0" x2="1"><stop stop-color="#f2f6ed"/><stop offset="1" stop-color="#adcfc4"/></linearGradient>
+              </defs>
+              <path d="M45 486C14 443 51 374 116 370C155 317 255 328 287 352C366 326 489 369 539 374C608 380 650 437 629 497H45Z" fill="#c7b3eb"/>
+              <ellipse cx="325" cy="492" rx="266" ry="17" fill="#44346d" opacity=".12"/>
+              <path d="M154 315C111 273 122 183 187 153C216 94 307 81 361 125C415 107 464 138 473 190C527 202 542 275 503 315C534 358 505 407 475 407H163C112 387 116 350 154 315Z" fill="#1b1c29"/>
+              <g fill="#252334"><circle cx="162" cy="213" r="49"/><circle cx="196" cy="161" r="47"/><circle cx="260" cy="133" r="54"/><circle cx="344" cy="131" r="56"/><circle cx="417" cy="174" r="49"/><circle cx="475" cy="238" r="50"/><circle cx="455" cy="314" r="47"/><circle cx="174" cy="303" r="49"/></g>
+              <path d="M212 238C190 199 199 159 238 146C280 129 352 145 371 189C383 229 355 284 312 305C261 310 234 278 212 238Z" fill="#bf754e"/>
+              <path d="M222 259Q264 312 329 279L325 346H242Z" fill="#a85f42"/>
+              <path d="M222 213Q238 204 250 208M298 205Q312 197 326 202" fill="none" stroke="#342525" stroke-width="7" stroke-linecap="round"/>
+              <ellipse cx="241" cy="223" rx="5" ry="6.2" fill="#25202b"/><ellipse cx="312" cy="218" rx="5" ry="6.2" fill="#25202b"/>
+              <path d="M280 217L273 248Q276 252 284 249" fill="none" stroke="#965337" stroke-width="4" stroke-linecap="round"/>
+              <path class="ari-smile" d="M250 261Q276 279 300 256" fill="none" stroke="#432525" stroke-width="5" stroke-linecap="round"/>
+              <path d="M173 168C200 121 237 109 292 111C335 109 369 127 377 163L185 181Z" fill="#edddcd" stroke="#33333d" stroke-width="5"/>
+              <path d="M183 171C254 151 334 151 392 174C412 182 413 193 392 200C335 188 268 185 189 192Z" fill="#416e63" stroke="#30343a" stroke-width="4"/>
+              <path d="M203 125C245 100 316 96 354 127" fill="none" stroke="#fff1d8" stroke-width="8" stroke-linecap="round"/>
+              <path d="M208 331C239 298 295 301 318 320C360 296 410 316 431 356L484 453L370 484L278 426L172 458L99 415C129 377 163 355 208 331Z" fill="url(#shirt)" stroke="#302a37" stroke-width="5"/>
+              <path d="M235 315Q269 340 308 318" fill="none" stroke="#fffcf5" stroke-width="10"/>
+              <path d="M416 364Q442 389 451 427" fill="none" stroke="#e9869d" stroke-width="10" stroke-linecap="round"/>
+              <path d="M120 411C148 388 181 398 217 420L292 460L228 504L123 486C69 480 64 448 120 411Z" fill="#172b2d" stroke="#263035" stroke-width="5"/>
+              <path d="M270 412C315 381 376 399 410 440L477 496H311L238 464Z" fill="#1a3230" stroke="#263035" stroke-width="5"/>
+              <path d="M122 467C167 455 198 469 229 488L205 517H70Q51 489 79 475Z" fill="url(#shoe)" stroke="#34403d" stroke-width="5"/>
+              <path d="M330 481C388 467 429 474 477 502L462 519H302C288 504 304 486 330 481Z" fill="url(#shoe)" stroke="#34403d" stroke-width="5"/>
+              <path d="M79 496L194 496M314 505L459 505" stroke="#4c8378" stroke-width="6"/>
+              <path d="M125 421C157 415 170 441 186 459" fill="none" stroke="#c4745b" stroke-width="20" stroke-linecap="round"/>
+              <g class="asko-cat">
+                <path class="cat-tail" d="M529 449Q615 430 600 357Q591 329 567 349" fill="none" stroke="#1e1d2b" stroke-width="31" stroke-linecap="round"/>
+                <path d="M466 453Q447 403 486 378L489 329L523 344L549 324L568 369Q604 396 580 445Q568 475 527 481Q481 486 466 453Z" fill="#22212b" stroke="#16161b" stroke-width="4"/>
+                <path d="M489 332L510 343L494 351Z M548 338L557 352L543 346Z" fill="#b88093"/>
+                <path d="M491 408Q504 420 516 408M542 408Q554 420 566 406" stroke="#f5d9ce" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <path d="M525 425l-5 5h10z" fill="#e4a2b6"/><path d="M520 432Q526 440 532 432" stroke="#f2d7cf" fill="none" stroke-width="2"/>
+                <path d="M510 431l-29 -5M508 437l-32 5M543 432l30 -4M545 438l31 5" stroke="#f5d9ce" stroke-width="2" stroke-linecap="round"/>
+              </g>
+              <path d="M104 298l-16 -27m43 23l12 -31M477 115l19 -20m-3 33l24 -4" fill="none" stroke="#ffb828" stroke-width="10" stroke-linecap="round"/>
+              <circle cx="499" cy="102" r="6" fill="#fa688e"/><circle cx="76" cy="329" r="8" fill="#55cfa7"/>
+            </svg>
+            <span class="asko-portrait-label">say hi to Ari <span aria-hidden="true">↗</span></span>
+          </button>
+          <div class="asko-map-preview" aria-label="Illustrative module relationship graphic, not results for your code">
+            <div class="map-preview-heading"><span class="map-dot"></span> Little things connect <span class="map-demo-badge">SAMPLE</span></div>
+            <div class="mini-map">
+              <span class="map-chip main">app.js</span><span class="map-stem stem-one"></span><span class="map-stem stem-two"></span><span class="map-chip left">auth.js</span><span class="map-chip right">utils.js</span>
             </div>
           </div>
         </div>
       </section>
-      <section class="trust-rail" aria-label="Product principles"><span>BUILT FOR BETTER DECISIONS</span><div><span>Private by design</span><span class="divider-dot"></span><span>Deliberately simple</span><span class="divider-dot"></span><span>Evidence over guesswork</span></div></section>
+      <section class="asko-feature-row" aria-label="What Asko does">
+        <button type="button" id="featureAnalyze" class="asko-feature lavender"><span class="feature-graphic">⌁</span><span><strong>Smart overview</strong><small>Read files, spot patterns,<br>find your starting point.</small></span><span class="feature-arrow">↗</span></button>
+        <button type="button" id="featureGraph" class="asko-feature green"><span class="feature-graphic">◇</span><span><strong>Explore relationships</strong><small>Follow detected imports<br>and how modules connect.</small></span><span class="feature-arrow">↗</span></button>
+        <button type="button" id="featureShortcuts" class="asko-feature peach"><span class="feature-graphic">⌘</span><span><strong>Work smarter</strong><small>Search and navigate with<br>a keyboard-first toolkit.</small></span><span class="feature-arrow">↗</span></button>
+      </section>
+      <section class="asko-extras" aria-label="Get started with Asko">
+        <div class="asko-extras-card">
+          <div><p class="asko-extras-eyebrow">NOT SURE WHERE TO START?</p><h2>Your first look, sorted.</h2><p>Try a safe, original sample first. Nothing to install or connect.</p></div><button type="button" id="askoDemoCard" class="asko-mini-button">Open a sample →</button>
+        </div>
+        <div class="asko-extras-card dark">
+          <div><p class="asko-extras-eyebrow">CODE INTELLIGENCE, NOT MAGIC</p><h2>Answers grounded in what’s here.</h2><p>Our on-device guide explains the scanned report—not an AI that invents findings.</p></div><button type="button" id="askoGuideCard" class="asko-mini-button">Meet Ari →</button>
+        </div>
+        <div class="asko-extras-card warm">
+          <div><p class="asko-extras-eyebrow">A LITTLE HELP ALONG THE WAY</p><h2>Curious? So are we.</h2><p>Ari helps you take the next step while your files stay with you.</p></div><button type="button" id="askoHelpCard" class="asko-mini-button">Ask Ari →</button>
+        </div>
+      </section>
+
       <section id="workspace" class="workspace-section">
-        <div class="section-top"><div><p class="overline">YOUR WORKSPACE</p><h2>Start with understanding.</h2><p class="section-lead">Choose JavaScript, TypeScript, HTML, CSS or JSON files. We'll generate a real first-pass inventory and review suggestions, right here on your device.</p></div><span class="section-number">01 / 03</span></div>
+        <div class="section-top"><div><p class="overline">YOUR WORKSPACE</p><h2>Make sense of the messy bits.</h2><p class="section-lead">Pick files you own or have permission to review. Asko maps detected imports, groups notes and lets you explore relationships entirely on this device.</p></div><span class="section-number">01 / 03</span></div>
         <div class="workspace-shell">
-          <div class="workspace-header"><div class="workspace-title"><span class="app-icon">⌘</span><div><strong>Source Inspector</strong><span>Local workspace · Private beta</span></div></div><span class="local-indicator"><span class="pulse"></span> LOCAL ONLY</span></div>
+          <div class="workspace-header"><div class="workspace-title"><span class="app-icon">⌘</span><div><strong>Local code explorer</strong><span>Local workspace · V2 preview</span></div></div><span class="local-indicator"><span class="pulse"></span> LOCAL ONLY</span></div>
           <div id="emptyView" class="empty-view">
             <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose or drop source files">
               <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 16V4m-4 4 4-4 4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
-              <h3>Your code stays yours.</h3><p>Drop a few source files here, or choose them from your device.</p>
+              <h3>Bring your code. Keep control.</h3><p>Choose JavaScript, TypeScript, HTML, CSS or JSON. Nothing gets uploaded.</p>
               <span class="upload-cta">Choose files <span aria-hidden="true">↗</span></span><span class="limits">Up to 20 files · 256 KB each · 2 MB total</span>
             </div>
             <input id="filePicker" type="file" accept=".js,.mjs,.cjs,.jsx,.ts,.tsx,.json,.html,.css" multiple hidden>
@@ -77,14 +129,41 @@
         </div>
       </section>
       <section class="feature-section" id="approach">
-        <div class="section-top"><div><p class="overline">THE THINKING BEHIND IT</p><h2>Thoughtful, from the start.</h2><p class="section-lead">Good tools should make you more capable—not ask you to surrender control.</p></div><span class="section-number">02 / 03</span></div>
+        <div class="section-top"><div><p class="overline">THE THINKING BEHIND IT</p><h2>Built to feel effortless.</h2><p class="section-lead">Useful context, fewer distractions and no need to give up control of your files.</p></div><span class="section-number">02 / 03</span></div>
         <div class="feature-grid"><article><div class="feature-symbol">◎</div><h3>See the structure.</h3><p>File types, lines, imports and source inventory in a calm, understandable view. Find your bearings before choosing your next step.</p></article><article><div class="feature-symbol">✳</div><h3>Ask better questions.</h3><p>Surface possible patterns worth reviewing, with specific file and line references. Every note is a suggestion—not a verdict.</p></article><article><div class="feature-symbol">⌁</div><h3>Stay in control.</h3><p>Nothing runs on a third-party server. No account, hidden telemetry, source upload or changes to your code. Reset whenever you like.</p></article></div>
       </section>
-      <section class="privacy-section" id="privacy"><div class="privacy-card"><div><p class="overline light">PRIVATE, BY DEFAULT</p><h2>Intelligence without<br>the trade-off.</h2><p>Your source never leaves your browser. It is read for this session, then forgotten by the page when you reset or close it. This is a limited first-pass inspector, not a production security certification.</p><a href="#workspace" class="privacy-link">Explore the inspector <span aria-hidden="true">↗</span></a></div><div class="privacy-art" aria-hidden="true"><div class="privacy-ring one"></div><div class="privacy-ring two"></div><div class="privacy-lock">⌑</div><span>LOCAL FIRST</span></div></div></section>
-      <section class="faq-section"><div class="section-top"><div><p class="overline">GOOD TO KNOW</p><h2>Clear answers. No fine print.</h2></div><span class="section-number">03 / 03</span></div><div class="faq-grid"><div><h3>Is this the full REA engine?</h3><p>No. This public preview is a client-side source quick scan. Pryntor's separately hosted REA MCP lab performs a deeper fixture-only validation and does not accept public customer source uploads.</p></div><div><h3>Is it a security audit?</h3><p>No. Review notes are static heuristics, not verified exploits, professional security approval or a substitute for human review.</p></div><div><h3>Who is this for?</h3><p>Founders, developers and testers who want a quick understanding of their own or authorised code before making changes.</p></div><div><h3>What happens to my files?</h3><p>They're read locally in browser memory. Nothing is transmitted by this app; the exported report is generated and saved by your browser.</p></div></div></section>
+      <section class="privacy-section" id="privacy"><div class="privacy-card"><div><p class="overline light">PRIVATE, BY DEFAULT</p><h2>Your code. Your rules.</h2><p>Your source never leaves your browser. It is read for this session, then forgotten by the page when you reset or close it. This is a limited first-pass inspector, not a production security certification.</p><a href="#workspace" class="privacy-link">Explore the inspector <span aria-hidden="true">↗</span></a></div><div class="privacy-art" aria-hidden="true"><div class="privacy-ring one"></div><div class="privacy-ring two"></div><div class="privacy-lock">⌑</div><span>LOCAL FIRST</span></div></div></section>
+      <section class="faq-section"><div class="section-top"><div><p class="overline">GOOD TO KNOW</p><h2>Clear answers. No fine print.</h2></div><span class="section-number">03 / 03</span></div><div class="faq-grid"><div><h3>Is this the full REA engine?</h3><p>No. This public preview is a client-side source quick scan. A separate internal REA MCP lab performs a deeper fixture-only validation and does not accept public customer source uploads.</p></div><div><h3>Is it a security audit?</h3><p>No. Review notes are static heuristics, not verified exploits, professional security approval or a substitute for human review.</p></div><div><h3>Who is this for?</h3><p>Founders, developers and testers who want a quick understanding of their own or authorised code before making changes.</p></div><div><h3>What happens to my files?</h3><p>They're read locally in browser memory. Nothing is transmitted by this app; the exported report is generated and saved by your browser.</p></div></div></section>
     </main>
-    <footer class="site-footer"><div class="footer-brand"><span class="brand-mark">P<span class="brand-dot">.</span></span><div><strong>Pryntor Inspect</strong><span>Clarity, before complexity.</span></div></div><div class="footer-right"><span>V1 Preview · Local-only</span><span>© Pryntor 2026</span></div></footer>
+    <footer class="site-footer"><div class="footer-brand"><span class="brand-text">asko</span><div><strong>Asko</strong><span>Clarity, before complexity.</span></div></div><div class="footer-right"><span>V2 Preview · Local-only</span><span>© Asko 2026</span></div></footer>
   </div>
+  <button class="asko-guide-fab" id="askoGuideFab" type="button" aria-label="Open Ari, Asko's interactive local guide">
+    <span class="fab-avatar" aria-hidden="true"><span class="fab-hair"></span><span class="fab-face">•ᴗ•</span><span class="fab-cap"></span></span>
+    <span class="fab-word">Ask Ari <span aria-hidden="true">↗</span></span>
+  </button>
+  <dialog class="asko-guide-dialog" id="askoGuideDialog" aria-labelledby="askoGuideHeading">
+    <div class="guide-head">
+      <span class="guide-avatar" aria-hidden="true">✳</span>
+      <div><p class="guide-overline">ASKO'S ON-DEVICE GUIDE</p><h2 id="askoGuideHeading">Hey, I'm Ari.</h2></div>
+      <button type="button" id="askoGuideClose" class="guide-close" aria-label="Close Ari guide">×</button>
+    </div>
+    <p class="guide-intro">I can explain what your <em>local scan</em> found, show you where to look and help with next steps. I'm a rule-based guide, not a live AI model.</p>
+    <div class="guide-history" id="askoGuideHistory" aria-live="polite" aria-label="Conversation with Ari"></div>
+    <div class="guide-suggestions" aria-label="Suggested questions">
+      <button type="button" data-asko-question="What does my project look like?">Project overview</button>
+      <button type="button" data-asko-question="How do my files connect?">File relationships</button>
+      <button type="button" data-asko-question="What should I review?">Review notes</button>
+      <button type="button" data-asko-question="How do I start?">Get started</button>
+    </div>
+    <form id="askoGuideForm" class="guide-input" autocomplete="off">
+      <label class="sr-only" for="askoGuideQuestion">Ask Ari about your local project</label>
+      <input id="askoGuideQuestion" type="text" maxlength="240" placeholder="Ask about your project…" required>
+      <button type="submit" aria-label="Ask question">→</button>
+    </form>
+    <p class="guide-privacy">✳ Answers use only local report counts and metadata. No messages or source files are sent anywhere.</p>
+  </dialog>
+
+
 <dialog id="commandDialog" class="v1-dialog" aria-labelledby="commandTitle"><div class="v1-command-header"><div><p class="v1-small">YOUR WORKSPACE, ONE SHORTCUT AWAY</p><h2 id="commandTitle">Find something.</h2></div><button type="button" id="commandClose" class="command-close" aria-label="Close commands">Esc ×</button></div><label for="commandSearch" class="sr-only">Search commands and files</label><input id="commandSearch" type="search" placeholder="Search commands or files…" autocomplete="off" aria-controls="commandResults"><div id="commandResults" class="command-results" role="listbox" aria-label="Available commands"></div><p class="command-footer">↑↓ Navigate <span>↵ Select</span> <span>Esc Close</span> · All actions run on your device</p></dialog>
 </body>
 </html>

@@ -92,3 +92,145 @@
 .v1-filter-pills button.active{color:#343f79}
 .v1-graph-canvas svg .map-node text:last-child{fill:#58647a}
 
+
+/* ASKO V2 · Original editorial/product design, saturated but legible. V0/V1 remain separate. */
+:root{--asko-ink:#12252a;--asko-blue:#5a7efe;--asko-pink:#ffb9cf;--asko-green:#b8f1cf;--asko-purple:#cec0ff;--asko-coral:#ffb4a0}
+body{background:linear-gradient(135deg,#e1e7ff 0%,#e2d9ff 24%,#fce0ef 54%,#c8e8ff 75%,#e2f8e1 100%);color:var(--asko-ink)}
+.site{max-width:1600px}
+.topbar{background:transparent;height:82px;padding:0 clamp(22px,3.2vw,58px);gap:18px}
+.brand{gap:7px}.brand-mark{display:none}.brand-text{font-size:41px;font-weight:850;letter-spacing:-.09em;color:#10252b;line-height:1}
+.brand-text span{margin-left:6px;display:inline-block;vertical-align:middle;text-transform:uppercase;font-size:10px!important;letter-spacing:.075em!important;font-weight:800!important;color:#485781!important;background:#e4e8ff;padding:7px 9px;border-radius:22px}
+.topbar nav{gap:10px}.topbar nav a{padding:13px 19px;border-radius:24px;font-weight:660;font-size:13px;color:#354753}
+.topbar nav a:first-child{background:#fff;color:#14252b;box-shadow:0 3px 15px #2c3c6c10}
+.topbar nav a:hover{background:#fff8;color:#162933}
+.nav-flag{background:#f8f9ff88;border:1px solid #fff;color:#445b6d}
+.header-commands{border:1px solid #ccd7ec;background:#f4f6ffe6;border-radius:50px;box-shadow:none}
+.header-commands:hover{background:#fff}
+.asko-hero{display:grid;grid-template-columns:47% 53%;align-items:center;border:0;min-height:590px;margin:0 clamp(14px,2.2vw,37px);padding:12px clamp(20px,3.8vw,70px) 22px;border-radius:36px;background:radial-gradient(ellipse at 88% 23%,#ffb6ccac,transparent 32%),radial-gradient(ellipse at 25% 45%,#e4e7ffcc,transparent 55%),linear-gradient(119deg,#d5e1ff,#dcd4ff 58%,#bcd5ff);color:#12202b;box-shadow:inset 0 1px #fff8;overflow:hidden;position:relative}
+.asko-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(130deg,transparent 60%,#e5acf45c);pointer-events:none}
+.asko-hero:after{content:"";position:absolute;width:300px;height:300px;border-radius:55% 45% 54% 46%;background:#67b4ff22;left:-160px;bottom:-240px;transform:rotate(30deg)}
+.asko-hero-copy{z-index:2;align-self:center;padding:24px 0 28px}
+.asko-eyebrow{display:inline-flex;align-items:center;gap:10px;border:1px solid #ffffffa8;background:#fff9;border-radius:30px;color:#495684;padding:10px 16px;font-size:10px;font-weight:840;letter-spacing:.15em}
+.eyebrow-dot{width:8px;height:8px;border-radius:50%;background:#5d69f0;box-shadow:0 0 0 4px #596beb25}
+.asko-hero h1{font-size:clamp(55px,5.65vw,86px);line-height:.99;letter-spacing:-.083em;margin:30px 0 22px;font-weight:805}
+.asko-hero h1 em{font-style:normal;background:linear-gradient(100deg,#4565ee,#6b65d5,#943fc2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.asko-hero-lead{font-size:16px;color:#405567;line-height:1.77;max-width:485px}
+.asko-hero .hero-actions{margin-top:33px;gap:14px}
+.asko-btn{display:inline-flex;align-items:center;justify-content:space-between;min-width:175px;gap:20px;padding:17px 20px;border-radius:13px;font-weight:750;font-size:13px;box-shadow:0 7px 18px #15334e11;transition:transform .2s,box-shadow .2s;border:1px solid #244048}
+.asko-btn.dark{background:#102b30;color:white}.asko-btn.white{background:#fffdfa;color:#203239}
+.asko-btn:hover{transform:translateY(-3px);box-shadow:0 12px 28px #19394e20}
+.asko-btn span{font-size:18px}
+.asko-hero-meta{display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin-top:41px;color:#435875;font-size:10px;font-weight:770;letter-spacing:.025em}
+.asko-hero-meta span{border:1px solid #fff9;background:#ffffff63;padding:8px 11px;border-radius:30px}
+.asko-hero-visual{position:relative;min-width:0;height:540px;z-index:1}
+.asko-splash{position:absolute;border-radius:48% 52% 62% 38%;transform:rotate(18deg);filter:drop-shadow(0 19px 23px #7654ba17)}
+.asko-splash.yellow{height:410px;width:470px;left:12%;top:27px;background:linear-gradient(140deg,#ffca5a,#ffbd63,#ff95a0)}
+.asko-splash.lilac{height:290px;width:390px;right:-20px;top:89px;background:linear-gradient(145deg,#e69cff,#afa6f9);transform:rotate(-29deg)}
+.asko-splash.mint{height:140px;width:170px;right:2%;bottom:21px;background:#8fdbbc;transform:rotate(65deg)}
+.asko-note{position:absolute;right:1%;top:23px;z-index:4;transform:rotate(10deg);font-family:Georgia,serif;font-style:italic;font-size:22px;font-weight:760;line-height:1.12;color:#293958;text-align:center}
+.asko-portrait{z-index:3;position:absolute;inset:35px -24px 0 5%;display:block;background:none;border:0;padding:0;cursor:pointer;--look-x:0px;--look-y:0px;transition:transform .3s ease}
+.asko-portrait:hover{transform:translateY(-8px) rotate(-1deg)}.asko-portrait:active{transform:translateY(0) scale(.97)}
+.ari-illustration{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 17px 9px #302b4a1c)}
+.asko-portrait .ari-smile{transition:stroke-width .3s;stroke-width:5}.asko-portrait:hover .ari-smile,.asko-portrait[data-mood=proud] .ari-smile{stroke-width:8}
+.asko-portrait .ari-illustration ellipse[cx="241"],.asko-portrait .ari-illustration ellipse[cx="312"]{transform:translate(var(--look-x),var(--look-y))}
+.asko-cat{transform-origin:530px 445px}.asko-portrait:hover .asko-cat{animation:cat-nod .85s ease-in-out infinite alternate}
+.cat-tail{transform-origin:529px 450px}.asko-portrait:hover .cat-tail{animation:tail-wag .68s ease-in-out infinite alternate}
+.asko-portrait[data-mood=proud]{transform:translateY(-6px) rotate(1deg)}
+.asko-portrait-label{position:absolute;right:7%;bottom:8px;padding:10px 14px;border:1px solid #ffffffdc;background:#fffceb;color:#3c5368;font-size:11px;font-weight:760;border-radius:60px;box-shadow:0 9px 20px #51447925}
+.asko-map-preview{z-index:2;position:absolute;top:34px;right:-33px;width:235px;height:145px;background:#14242ae8;border:1px solid #ffffff31;border-radius:16px;color:#e9f1fa;box-shadow:0 17px 32px #16213c39;transform:rotate(4deg);padding:17px}
+.map-preview-heading{font-size:10px;font-weight:740;color:#ecf2f9;display:flex;align-items:center;gap:7px}.map-dot{height:8px;width:8px;background:#b8f6d2;border-radius:50%}
+.map-demo-badge{margin-left:auto;color:#c0d3e0;font-size:8px;font-weight:850;letter-spacing:.08em}
+.mini-map{position:relative;height:93px}.map-chip{position:absolute;border:1px solid #bcd3ed58;border-radius:9px;background:#345169;color:#eef7ff;font-size:10px;font-weight:720;padding:9px 12px;min-width:70px;text-align:center}
+.map-chip.main{left:66px;top:15px;background:#6a7dff;color:white}.map-chip.left{left:5px;bottom:0}.map-chip.right{right:4px;bottom:0;background:#335a55}
+.map-stem{position:absolute;height:1px;background:#a6d0ed;top:58px;width:67px}.stem-one{left:33px;transform:rotate(-36deg)}.stem-two{right:31px;transform:rotate(36deg)}
+.asko-feature-row{padding:18px clamp(14px,2.2vw,37px) 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.asko-feature{min-height:130px;display:flex;align-items:center;gap:19px;text-align:left;border-radius:21px;padding:23px 24px;border:1px solid #fff8;box-shadow:0 9px 28px #34487a13;transition:transform .2s,box-shadow .2s}
+.asko-feature:hover{transform:translateY(-5px);box-shadow:0 20px 30px #4a537e20}.asko-feature.lavender{background:#e8dbff}.asko-feature.green{background:#c4f3d5}.asko-feature.peach{background:#ffd8cf}
+.feature-graphic{flex-shrink:0;width:52px;height:52px;border-radius:15px;background:#fff9;display:grid;place-items:center;font-size:31px;color:#24334b}
+.asko-feature strong{font-size:16px;display:block;letter-spacing:-.04em;font-weight:800}.asko-feature small{font-size:12px;color:#536579;line-height:1.5;display:block;margin-top:7px;font-weight:520}
+.feature-arrow{margin-left:auto;background:#fff9;border-radius:50%;padding:9px 13px;font-size:16px}
+.asko-extras{padding:16px clamp(14px,2.2vw,37px) 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.asko-extras-card{min-height:211px;border-radius:22px;background:#fffdfa;display:flex;flex-direction:column;align-items:start;justify-content:space-between;padding:27px 29px;border:1px solid #ffffffa9;box-shadow:0 9px 27px #26366a0d}
+.asko-extras-card.dark{background:#142830;color:white}.asko-extras-card.warm{background:#d7f0b9}
+.asko-extras-eyebrow{letter-spacing:.12em;font-size:10px;font-weight:800;color:#697a8e}.asko-extras-card.dark .asko-extras-eyebrow{color:#bed0d6}
+.asko-extras-card h2{font-size:24px;letter-spacing:-.055em;line-height:1.05;margin:12px 0}
+.asko-extras-card p:not(.asko-extras-eyebrow){font-size:12px;color:#53687a;line-height:1.58}.asko-extras-card.dark p:not(.asko-extras-eyebrow){color:#c3d3d9}
+.asko-mini-button{display:inline-flex;padding:10px 14px;background:#182e35;color:white;border:0;border-radius:9px;font-size:11px;font-weight:750;margin-top:17px}.asko-extras-card.dark .asko-mini-button{background:#fafcff;color:#243c45}
+.asko-mini-button:hover{transform:translateY(-1px)}
+.workspace-section{padding-top:100px}.section-top h2{font-weight:790}.workspace-shell{background:#fffefc}
+.v1-architecture{background:linear-gradient(140deg,#eaf0ff,#fff 48%,#f3eeff)}.v1-action-strip{background:linear-gradient(102deg,#e4dcff,#e5fbef,#ffedee)}
+.v1-filter-pills button.active{color:#3152c7}.small-btn{background:#1d3940;border-color:#1d3940}
+.feature-section{padding-top:95px}.feature-grid article:first-child{background:#e8e2ff}.feature-grid article:nth-child(2){background:#c9f0dc}.feature-grid article:nth-child(3){background:#ffe3da}
+.privacy-card{background:radial-gradient(circle at 82% 44%,#3f7274,#19333f 68%,#182833)}
+.faq-section{padding-bottom:90px}.site-footer{background:#e8eeff;border-color:#dae3fc}
+.asko-guide-fab{position:fixed;right:27px;bottom:26px;z-index:30;display:flex;align-items:center;gap:9px;padding:8px 14px 8px 9px;border:2px solid white;border-radius:40px;background:#193439;color:white;box-shadow:0 13px 35px #11263d45;font-weight:750;font-size:12px;transition:transform .2s}
+.asko-guide-fab:hover{transform:translateY(-4px)}
+.fab-avatar{height:36px;width:36px;position:relative;display:block;background:#eebbb1;border-radius:50%;overflow:hidden}
+.fab-hair{position:absolute;inset:0;background:#27212b;border-radius:45% 45% 40% 45%}
+.fab-face{position:absolute;left:8px;top:9px;width:22px;height:23px;border-radius:50%;background:#be7c53;color:#1f272f;font-size:13px;line-height:23px;font-weight:700}
+.fab-cap{position:absolute;top:1px;left:0;width:35px;height:13px;border-radius:85% 85% 22% 12%;background:#efe0d4;border-bottom:3px solid #47786b}
+.fab-word{white-space:nowrap}
+.asko-guide-dialog{position:fixed;max-width:min(460px,calc(100% - 24px));width:460px;max-height:min(660px,85vh);margin:auto 25px 22px auto;border:1px solid #fff;border-radius:23px;padding:0;background:#fffcfd;color:#23323c;box-shadow:0 38px 100px #17284466;overflow:hidden}
+.asko-guide-dialog::backdrop{background:#26345357;backdrop-filter:blur(4px)}
+.guide-head{display:flex;align-items:center;gap:13px;background:linear-gradient(100deg,#d9d4ff,#b3ebd5,#ffdfdd);padding:23px}
+.guide-avatar{height:51px;width:51px;border-radius:17px;background:#ffb9cc;display:grid;place-items:center;font-size:29px;color:#34448a}
+.guide-overline{font-size:9px;letter-spacing:.14em;font-weight:850;color:#536277}.guide-head h2{font-size:24px;letter-spacing:-.055em;margin-top:3px}
+.guide-close{margin-left:auto;border:1px solid #fff;background:#ffffffa8;width:34px;height:34px;border-radius:50%;font-size:23px}
+.guide-intro{padding:18px 22px 14px;color:#465b6a;line-height:1.5;font-size:12px}
+.guide-history{display:flex;flex-direction:column;gap:10px;padding:6px 18px;min-height:95px;max-height:202px;overflow:auto}
+.guide-message{max-width:93%;padding:12px 14px;border-radius:13px;background:#eef1ff;align-self:flex-start}
+.guide-message.user{align-self:flex-end;background:#d7f5e3}.guide-message-label{font-size:9px;font-weight:850;text-transform:uppercase;color:#536278;letter-spacing:.08em}
+.guide-message p{font-size:12px;line-height:1.55;margin-top:4px;color:#293b48}
+.guide-suggestions{display:flex;flex-wrap:wrap;gap:7px;padding:16px 19px}
+.guide-suggestions button{font-size:11px;padding:8px 10px;border-radius:30px;background:#fff;border:1px solid #d8e2f2;color:#344b68;font-weight:670}
+.guide-suggestions button:hover{background:#e7eaff}
+.guide-input{display:flex;gap:8px;padding:10px 18px}
+.guide-input input{min-width:0;flex:1;border:1px solid #d9e2ee;border-radius:11px;background:#f8f9fc;padding:13px;font-size:13px}
+.guide-input input:focus{outline:3px solid #9da4ef70}
+.guide-input button{border:0;border-radius:12px;background:#294fcf;color:white;font-size:24px;width:48px}
+.guide-privacy{font-size:10px;color:#54667b;line-height:1.45;padding:8px 20px 19px}
+@keyframes tail-wag{from{transform:rotate(-7deg)}to{transform:rotate(9deg)}}
+@keyframes cat-nod{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+@media(max-width:1120px){
+ .asko-hero{grid-template-columns:48% 52%}.asko-hero h1{font-size:clamp(46px,5.7vw,76px)}.asko-hero-visual{height:485px}.asko-splash.yellow{left:5%;width:400px;height:375px}.asko-map-preview{right:-18px;transform:scale(.86) rotate(3deg);transform-origin:top right}.asko-feature{padding:20px 14px;gap:10px}.asko-feature strong{font-size:14px}.feature-graphic{width:42px;height:42px;font-size:25px}
+}
+@media(max-width:790px){
+ .topbar{height:74px}.brand-text{font-size:35px}
+ .asko-hero{grid-template-columns:1fr;padding:28px 32px 8px;min-height:auto}
+ .asko-hero-copy{padding:13px 0}.asko-hero h1{font-size:clamp(50px,9vw,74px);margin:22px 0}
+ .asko-hero-lead{font-size:15px;max-width:570px}
+ .asko-hero-meta{margin-top:23px}
+ .asko-hero-visual{height:430px}
+ .asko-portrait{left:14%;right:4%;top:0;bottom:-14px}
+ .asko-splash.yellow{left:24%;top:12px;width:430px}
+ .asko-splash.lilac{right:8%;top:25px}
+ .asko-map-preview{right:1%;top:20px}
+ .asko-feature-row,.asko-extras{grid-template-columns:1fr 1fr}.asko-extras-card:last-child{grid-column:1/-1}
+ .asko-feature:last-child{grid-column:1/-1}
+}
+@media(max-width:580px){
+ .topbar{padding:0 23px}.topbar nav{display:none}.brand-text{font-size:35px}
+ .asko-hero{margin:0 9px;border-radius:22px;padding:25px 18px 0}
+ .asko-eyebrow{font-size:9px;padding:9px 11px}
+ .asko-hero h1{font-size:clamp(44px,12.8vw,61px);line-height:1.03}
+ .asko-hero-lead{font-size:13px}
+ .asko-hero .hero-actions{gap:9px;margin-top:24px}.asko-btn{font-size:11px;padding:13px 12px;min-width:0;flex:1;gap:5px}
+ .asko-hero-meta{gap:5px;margin-top:19px}.asko-hero-meta span{font-size:9px;padding:6px 8px}
+ .asko-hero-visual{height:350px;margin:0 -19px}
+ .asko-splash.yellow{width:310px;height:290px;left:20%;top:15px}.asko-splash.lilac{width:220px;height:190px;top:36px}
+ .asko-portrait{left:0;right:0;top:25px;bottom:-10px}.ari-illustration{height:100%;width:100%}
+ .asko-note{right:9%;top:4px;font-size:15px}.asko-map-preview{display:none}
+ .asko-portrait-label{bottom:0;right:12%;padding:8px;font-size:10px}
+ .asko-feature-row,.asko-extras{padding:11px 10px 0;grid-template-columns:1fr;gap:11px}
+ .asko-feature,.asko-feature:last-child,.asko-extras-card:last-child{grid-column:auto}
+ .asko-feature{min-height:98px;padding:17px 19px}.asko-feature strong{font-size:15px}.asko-feature small{font-size:11px}
+ .asko-extras-card{min-height:170px;padding:22px}.asko-extras-card h2{font-size:22px}
+ .workspace-section{padding-top:76px}
+ .asko-guide-fab{right:13px;bottom:17px;padding:6px 10px 6px 6px}
+ .asko-guide-dialog{margin:auto 10px 10px auto;max-height:86vh;width:calc(100% - 20px)}
+}
+@media(prefers-reduced-motion:reduce){.asko-portrait,.asko-btn,.asko-feature,.asko-guide-fab,.ari-illustration,.asko-cat,.cat-tail{animation:none!important;transition:none!important}}
+
+/* Audited WCAG A/AA contrast for promotional panels. */
+.asko-extras-eyebrow{color:#344657}
+.asko-extras-card.dark .asko-extras-eyebrow{color:#d3e4e8}
