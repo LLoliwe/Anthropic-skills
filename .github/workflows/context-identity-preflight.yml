@@ -1,0 +1,43 @@
+name: Pryntor Context Fabric — signed workload identity preflight
+on:
+  pull_request:
+    paths:
+      - '.github/scripts/context-identity-preflight.mjs'
+      - '.github/workflows/context-identity-preflight.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/context-identity-preflight.mjs'
+      - '.github/workflows/context-identity-preflight.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * *'
+permissions:
+  contents: read
+jobs:
+  static-policy-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test allowed and denied claim fixtures
+        run: node .github/scripts/context-identity-preflight.mjs --selftest
+  signed-identity:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify actual GitHub-issued token signature and exact repo claims
+        env:
+          EXPECTED_REPO_ID: '1128131192'
+        run: node .github/scripts/context-identity-preflight.mjs
