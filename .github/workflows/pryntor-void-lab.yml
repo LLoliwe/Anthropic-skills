@@ -25,36 +25,30 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: npm
+          cache-dependency-path: skills/pryntor-void/examples/hello/package-lock.json
       - name: Enforce Node baseline
         run: node -e 'const [major,minor]=process.versions.node.split(".").map(Number);if(major!==24||minor<21)process.exit(1)'
       - name: Static security policy preflight
-        run: PRYNTOR_BOOTSTRAP_LOCK=1 npm run policy
-      - name: Deterministic install (one-time lock bootstrap permitted)
-        shell: bash
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci --no-audit --no-fund
-          else
-            npm install --no-audit --no-fund
-            echo "PRYNTOR_LOCKFILE_START"
-            cat package-lock.json
-            echo "PRYNTOR_LOCKFILE_END"
-          fi
-      - name: Dependency vulnerability report
+        run: npm run policy
+      - name: Reproducible locked install
+        run: npm ci --no-audit --no-fund
+      - name: Dependency vulnerability report and production severity gate
         shell: bash
         run: |
           npm audit --json > audit-report.json || true
-          node -e 'const a=require("./audit-report.json");console.log("AUDIT_COUNTS="+JSON.stringify(a.metadata?.vulnerabilities||{}))'
-      - name: Real SSR + client production build
+          node -e 'const a=require("./audit-report.json");const v=a.vulnerabilities||{};console.log("AUDIT_COUNTS="+JSON.stringify(a.metadata?.vulnerabilities||{}));console.log("AUDIT_PACKAGES="+JSON.stringify(Object.entries(v).map(([k,x])=>({name:k,severity:x.severity,fixAvailable:x.fixAvailable}))));'
+          npm audit --omit=dev --audit-level=high
+      - name: Real SSR production build
         run: npm run build
       - name: Local development HTTP smoke
         run: npm run smoke
-      - name: BUILT Node server HTTP, asset and security smoke
+      - name: BUILT Node server HTTP, security and error-route smoke
         run: npm run smoke:prod
       - name: Verify installed direct dependencies
         run: npm ls --depth=0
       - name: Static security policy postcheck
-        run: PRYNTOR_BOOTSTRAP_LOCK=1 npm run policy
+        run: npm run policy
       - name: Upload compiled and dependency audit evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -63,5 +57,5 @@ jobs:
           path: |
             skills/pryntor-void/examples/hello/dist/
             skills/pryntor-void/examples/hello/audit-report.json
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 7
