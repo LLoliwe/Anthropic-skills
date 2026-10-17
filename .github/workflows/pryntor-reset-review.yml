@@ -1,0 +1,22 @@
+name: Pryntor RESET offline research gate
+on:
+  pull_request:
+    paths:
+      - 'research/reset/**'
+      - 'skills/pryntor-reset-research/**'
+      - '.github/workflows/pryntor-reset-review.yml'
+  workflow_dispatch:
+jobs:
+  review-gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Original policy tests (offline, no wallet or external services)
+        run: node --test research/reset/preflight.test.mjs
+      - name: Reject accidental activation
+        run: node research/reset/preflight.mjs

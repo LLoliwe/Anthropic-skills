@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "subject": "Pryntor RESET isolated research pilot",
+  "upstream": {
+    "repository": "Trac-Systems/reset",
+    "commit": "6132e8653d6342f36673eb7426ec8e064960e48e",
+    "checkedDate": "2026-10-17",
+    "licenseConfirmed": false
+  },
+  "mode": "review-only",
+  "runtime": {
+    "minimumNodeMajorForSigner": 24,
+    "hostSignerInstalled": false,
+    "mcpLiveVerified": false,
+    "independentDevnetTestVerified": false
+  },
+  "permissions": {
+    "externalNetwork": false,
+    "createWallet": false,
+    "fundWallet": false,
+    "miningMoves": false,
+    "transfers": false,
+    "backgroundAgent": false,
+    "chatMode": "off",
+    "paidApi": false
+  },
+  "approvals": {
+    "licenseReview": false,
+    "securityReview": false,
+    "independentValidation": false,
+    "separateHumanLiveGoAhead": false
+  }
+}
