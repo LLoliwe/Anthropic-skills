@@ -4,7 +4,7 @@ export function evidenceOf(reply){
  if(!reply)throw Error('MCP_TOOL_ERROR');
  if(reply.isError){
   const raw=(reply.content||[]).filter(p=>p?.type==='text').map(p=>String(p.text)).join(' ').slice(0,800);
-  const safe=raw.replace(/(?:token|password|secret|api[_-]?key)\\s*[:=]\\s*\\S+/ig,'[redacted]').replace(/\\/[^\\s]+/g,'[path]');
+  const safe=JSON.stringify(raw).slice(0,550);
   console.error('REA original-fixture-only tool error: '+safe.slice(0,550));
   throw Error('MCP_TOOL_ERROR');
  }
