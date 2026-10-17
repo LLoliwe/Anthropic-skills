@@ -1,0 +1,32 @@
+name: Durban character animation (one free demo attempt)
+on:
+  pull_request:
+    paths:
+      - 'tools/durban/one_shot.py'
+      - '.github/workflows/one-free-durban-animation.yml'
+permissions:
+  contents: read
+jobs:
+  no-cash-free-space:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install free Gradio client only
+        run: python -m pip install --disable-pip-version-check --no-input 'gradio_client==1.13.1'
+      - name: Single anonymous free demo (no retry, no billing)
+        env:
+          OUTPUT_DIR: output/durban
+          HF_HUB_DISABLE_TELEMETRY: '1'
+        run: python tools/durban/one_shot.py
+      - name: Preserve output and truthful status even if public queue blocked
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pryntor-durban-original-free-video-or-blocker
+          path: output/durban/
+          retention-days: 7
+          if-no-files-found: error
