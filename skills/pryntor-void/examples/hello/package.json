@@ -1,13 +1,21 @@
 {
   "name": "pryntor-void-pilot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=24.21.0"
+  },
   "scripts": {
     "build": "vite build",
     "dev": "vite",
+    "start": "node dist/ssr/index.js",
     "smoke": "node --test test/smoke.mjs",
+    "smoke:prod": "node --test test/production-smoke.mjs",
     "policy": "node ../../scripts/policy-check.mjs"
+  },
+  "dependencies": {
+    "@hono/node-server": "2.1.4"
   },
   "devDependencies": {
     "void": "1.1.11",

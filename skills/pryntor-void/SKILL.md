@@ -1,25 +1,18 @@
 ---
 name: pryntor-void
-description: Optional, evidence-gated VoidZero/Cloudflare Void SDK and CLI evaluation for isolated Pryntor Vite applications. Use only where it beats existing stacks on measured build and deployment outcomes.
+description: Optional, tested Void 1.1.11 framework skill for isolated Pryntor Vite apps. Evaluate compiled Node/Cloudflare build and hosting tradeoffs without new vendor spend.
 ---
 
-# Pryntor Void — optional engineering capability
+# Pryntor Void — gated opt-in capability
 
-Upstream: https://github.com/voidzero-dev/void (MIT), https://void.cloud/guide/quickstart . Package pinned to `void@1.1.11` for the October 2026 pilot.
+Official upstream: https://github.com/voidzero-dev/void (MIT). Source is vendored only as pinned npm dependency `void@1.1.11`; optional engineering pilot, **not** global fleet-installation.
 
-## Apply
-- Prefer disposable, non-customer projects; first use the isolated fixture in `examples/hello`.
-- Confirm Node >=24.21.0; read the matching installed `node_modules/void/docs/` before changing a client app.
-- Choose Void only for compatible Vite/full-stack work. Do not replace existing Python, WordPress, React, Astro, Railway, or Cloudflare systems by default.
-- Run `npm run build` and `npm run smoke` on the fixture; capture CI run URL, commit SHA, response and costs.
-- Read only credentials and environment details from scoped CI secret manager; never paste tokens in agent prompts, logs, issues, Drive, or Slack.
-- No auto-deploy, Cloudflare login, DNS changes, billed resources, account creation, public endpoint, migration, production customer data, or email without a separate approval and cost/permissions review.
-- Direct Cloudflare Workers Free may work within quotas; the shared team platform requires paid Workers for Platforms and external database. Open source is not equivalent to free shared hosting.
-- Preserve rights/attribution and avoid inventing QA results.
+## Procedure
+1. Determine target (Node / Bun / Deno / Cloudflare) before generating code; never pretend Cloudflare bindings run on Node.
+2. Use `examples/hello` as isolated Node sample. Install Node >=24.21, run `npm ci`, static policy check, `npm run build`, `npm run smoke`, `npm run smoke:prod` and audit.
+3. Require matching committed lockfile, exact dependency pins, latest-head hosted CI run and saved build artifact; do not trust stale passing builds.
+4. Never copy credentials or real customer data into generated code, files, logs or CI. No paid resources, login, live deployment, DNS, migration, persistent agent installation or public release without scoped authorization.
+5. Read full `PRODUCTION_GATE.md` and `README.md`. A green build is **not** production certification. Have an independent reviewer verify data boundaries, dependencies, auth, performance, rollback, legal/rights, observability and spend, then sign off separately.
+6. Treat LVL7 and Mission Control as first evaluation candidates; avoid automatic migration of Python Recover or WordPress Tirisano.
 
-## Decision gate
-1. **Local trial**: reproducible install, build, health-route HTTP smoke and static output; CI artifact.
-2. **Engineering review**: inspect actual dependencies, license, token scopes and rollback; document alternatives (current Vite/Cloudflare, Railway, Render, Vercel).
-3. **Production**: requires separate reviewed repo integration, real account permissions, budget authorization, secrets, rollback, independent human QA and security.
-
-Status: pilot code only until latest-head CI evidence and independent review. This skill is opt-in, not a mandatory global agent installation.
+Keep R1 (technical build/HTTP) independent from R2 (real staging and human-reviewed production).

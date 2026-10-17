@@ -1,31 +1,35 @@
-# Pryntor × Void v1.1.11 isolated lab
+# Pryntor × Void 1.1.11 — built Node runtime hardening (R1)
 
-This pilot adds a real Void route + browser fixture and a no-deploy CI smoke. It does **not** modify running Pryntor apps, provision Cloudflare, or install Void in persistent agents.
+**Status:** CI hardening candidate, not production-authorized. No live Cloudflare, Railway or Vercel deployment. Production release requires a named owner and independent human security review.
 
-Sources: https://github.com/voidzero-dev/void ; https://void.cloud/guide/quickstart ; https://void.cloud/reference/api/plugin ; https://void.cloud/guide/platform/installation/prerequisites
+## What's different from the R0 disposable pilot?
 
-## Local, if Node >=24.21.0 and npm is available
+- Void config uses `target:'node'` to demonstrate cloud-independent built server; no Cloudflare bindings.
+- Node production runtime starts via `node dist/ssr/index.js` and exposes GET /api/health.
+- Tests check the **built Node server** (not just Vite dev), client JavaScript asset, five repeated responses, cache/type headers and no dummy secret leakage.
+- Node >=24.21.0, pinned dependencies, and committed npm lockfile + `npm ci` gate before release.
+- CI never authenticates or deploys to any platform. Build artifact and dependency vulnerability report are retained for seven days.
 
-```bash
+## On a compatible developer machine
+
+```sh
 cd skills/pryntor-void/examples/hello
-npm install --no-audit --no-fund
+npm ci --no-audit --no-fund
+npm run policy
 npm run build
 npm run smoke
+npm run smoke:prod
+npm audit --audit-level=high
 ```
 
-Use a throwaway shell/user; package install executes third-party scripts. CI runs in a disposable GitHub-hosted runner.
+Local build is R0; no Cloudflare account is required. CI executes an initial lockfile-bootstrap install *only once*, and the final release gate requires committed `package-lock.json` plus `npm ci`.
 
-## Evidence gates
+## Deployment compatibility and release gates
 
-- **Repository**: pin upstream package, no production token, no deploy step.
-- **CI**: package installation, real Void+Vite build, local dev-server HTTP checks (`/` and `/api/health`). Check workflow logs and run conclusion, not just the existence of a YAML.
-- **Release**: production deployment remains HOLD pending independent security, cost/terms and credential review.
-- **Venture fit**: LVL7 interactive prototypes first; Pryntor Mission Control internal demos next; BTWW experimental microsites optionally. Recover is currently Python/merchant-sensitive; Tirisano is WordPress, so neither should be migrated automatically.
+Void's Node target can deploy `dist/ssr` and `dist/client` to a compatible Node host but **does not support** `void/db`, `void/kv`, `void/ai`, `void/auth`, `void/env`, `void/storage`, managed WebSockets or other Cloudflare-specific bindings. Those cannot be silently ported.
 
-## Costs and portability
+Before production: review dependency audit (including high/critical), verify no secrets, real data privacy, auth/abuse protection if routes expand, observability, backup/restore if data is added, health checks, resource budgets, deploy target access, CI branch protection, rollback and independent human approval. For any real app, test its own code and dependencies, not just this fixture.
 
-`void@1.1.11` is MIT. A local build needs no Cloudflare account. Direct deployments may fit Cloudflare Workers Free quotas but still need account authentication. Self-hosted shared platform requires paid Workers for Platforms, a hosted PostgreSQL database and related services. Void supports standalone Node/Bun/Deno builds with limitations to Cloudflare binding APIs. These are architecture choices, not proof of cross-platform production compatibility.
+Production deploy for a standalone Node host is not `void deploy`: publish the *same tested artifact* with the Node runtime and start `node dist/ssr/index.js`. Smoke the resulting HTTPS URL, verify security, rollback capability and no-spend budget. Do not promote this reference fixture as a commercial app.
 
-## Security
-
-No real customer, merchant, payment or travel details; no generated API keys. Inspect dependencies and run an independent audit before use with customer data. CI intentionally lacks `CLOUDFLARE_API_TOKEN` and any Void platform credentials.
+See `PRODUCTION_GATE.md` for the recorded release decision.
