@@ -1,0 +1,113 @@
+{
+  "name": "Signal / Motion Director original demonstration",
+  "brand": "PRYNTOR / LAB",
+  "synthetic_demo": true,
+  "channel": "social",
+  "aspect_ratio": "1:1",
+  "width": 720,
+  "height": 720,
+  "fps": 24,
+  "bpm": 120,
+  "audience": "operators overwhelmed by noise",
+  "message": "See the signal",
+  "music": null,
+  "rights": "original vector scenes; no third-party music",
+  "shots": [
+    {
+      "id": "S01",
+      "type": "hook",
+      "duration": 4,
+      "headline": "Too much noise.",
+      "subhead": "Not enough signal.",
+      "actions": [
+        "headline emerges",
+        "noise compresses into a line"
+      ],
+      "annotation": "Oversized typography; compress to a single pulse. Hard beat cut.",
+      "tool": "code",
+      "approved": false,
+      "notes": []
+    },
+    {
+      "id": "S02",
+      "type": "toggle",
+      "duration": 5,
+      "headline": "Turn clarity on.",
+      "subhead": "One action changes the view.",
+      "actions": [
+        "toggle engages",
+        "switch morphs into command button",
+        "button expands"
+      ],
+      "annotation": "Morph geometry continuously; small overshoot; keep labels readable.",
+      "tool": "code",
+      "approved": false,
+      "notes": []
+    },
+    {
+      "id": "S03",
+      "type": "cards",
+      "duration": 5,
+      "headline": "Everything in focus.",
+      "subhead": "Signal rises above the noise.",
+      "actions": [
+        "three cards enter",
+        "priority card expands",
+        "secondary cards recede"
+      ],
+      "annotation": "Stagger by half-beats; maintain card corner radius continuity.",
+      "tool": "code",
+      "approved": false,
+      "notes": []
+    },
+    {
+      "id": "S04",
+      "type": "device",
+      "duration": 6,
+      "headline": "Made for decisions.",
+      "subhead": "Your workspace, in motion.",
+      "actions": [
+        "device enters",
+        "interface scrolls",
+        "action confirms"
+      ],
+      "annotation": "Cinematic device crop; screen animation remains legible; native mockup fallback.",
+      "tool": "device",
+      "approved": false,
+      "notes": []
+    },
+    {
+      "id": "S05",
+      "type": "data",
+      "duration": 5,
+      "headline": "Spot what matters.",
+      "subhead": "From activity to action.",
+      "actions": [
+        "metrics rise",
+        "chart resolves",
+        "highlight locks"
+      ],
+      "annotation": "Avoid data claims; synthetic values only; camera push on downbeat.",
+      "tool": "code",
+      "approved": false,
+      "notes": []
+    },
+    {
+      "id": "S06",
+      "type": "cta",
+      "duration": 5,
+      "headline": "SEE THE SIGNAL.",
+      "subhead": "A better way to move.",
+      "actions": [
+        "search field appears",
+        "search becomes action button",
+        "brand lockup lands"
+      ],
+      "annotation": "Search-to-CTA shape morph; confident 0.4-second hold at end.",
+      "tool": "code",
+      "approved": false,
+      "notes": []
+    }
+  ],
+  "history": []
+}
