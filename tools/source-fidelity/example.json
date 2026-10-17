@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "source": {
+    "ref": "synthetic:demo",
+    "text": "Campaign PRY-QA-17 | spend R1,240 | market UK | utm_campaign=q4_launch",
+    "sha256": "0f71740ea358b7169105cb6e985317eaaec22ad73759eca459bf4572a032511d"
+  },
+  "answer": "Verified PRY-QA-17 with spend R1,240 and utm_campaign=q4_launch",
+  "claims": [
+    {
+      "id": "copy-1",
+      "type": "copy",
+      "value": "PRY-QA-17",
+      "sourceSpan": [
+        9,
+        18
+      ],
+      "answerSpan": [
+        9,
+        18
+      ]
+    },
+    {
+      "id": "copy-2",
+      "type": "copy",
+      "value": "R1,240",
+      "sourceSpan": [
+        27,
+        33
+      ],
+      "answerSpan": [
+        30,
+        36
+      ]
+    },
+    {
+      "id": "copy-3",
+      "type": "copy",
+      "value": "utm_campaign=q4_launch",
+      "sourceSpan": [
+        48,
+        70
+      ],
+      "answerSpan": [
+        41,
+        63
+      ]
+    }
+  ]
+}

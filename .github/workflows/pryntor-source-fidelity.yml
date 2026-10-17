@@ -1,0 +1,34 @@
+name: Pryntor source fidelity R0
+on:
+  pull_request:
+    paths:
+      - 'tools/source-fidelity/**'
+      - 'skills/pryntor-source-fidelity/**'
+      - '.github/workflows/pryntor-source-fidelity.yml'
+      - 'AGENTS.md'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/source-fidelity/**'
+      - 'skills/pryntor-source-fidelity/**'
+      - '.github/workflows/pryntor-source-fidelity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-source-verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preflight runtime
+        run: node --version
+      - name: Exact-span tests and negative cases
+        run: node --test tools/source-fidelity/test.mjs
+      - name: Real CLI smoke
+        run: |
+          node tools/source-fidelity/audit.mjs tools/source-fidelity/example.json
+          node --check tools/source-fidelity/audit.mjs
