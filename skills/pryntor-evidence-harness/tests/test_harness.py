@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
-from harness import evaluate, execute, load_contract, route_diagnostic, snapshot
+from harness import evaluate, execute, load_contract, route_diagnostic, snapshot, record_digest
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = load_contract(ROOT / 'contract.json')
@@ -36,12 +36,14 @@ class PolicyTests(unittest.TestCase):
         proof = execute(project, CONTRACT)
         proof['checks']['C2_description']['exit_code'] = None
         proof['checks']['C2_description']['runner_state'] = 'runner_error'
+        proof['record_digest'] = record_digest(proof)
         self.assertEqual(evaluate(CONTRACT, proof, snapshot(project))['requirements']['R2_description_search']['status'], 'unverified')
 
     def test_changed_command_is_unverified(self):
         project = ROOT / 'fixture'
         proof = execute(project, CONTRACT)
         proof['checks']['C1_title']['command'] = ['true']
+        proof['record_digest'] = record_digest(proof)
         self.assertEqual(evaluate(CONTRACT, proof, snapshot(project))['requirements']['R1_title_search']['status'], 'unverified')
 
     def test_valid_fixed_project_completes_contract_not_release(self):
@@ -68,7 +70,7 @@ class PolicyTests(unittest.TestCase):
     def test_low_confidence_stops(self):
         response = {'type': 'choice', 'choice': 'D2', 'confidence': .52,
                     'probabilities': {'D2': .68, 'D1': .32}}
-        self.assertEqual(route_diagnostic(response, {'D1', 'D2'})['reason'], 'low_confidence')
+        self.assertEqual(route_diagnostic(response, {'D1', 'D2'})['reason'], 'low_confidence_or_weak_winner')
 
     def test_unregistered_check_stops(self):
         response = {'type': 'choice', 'choice': 'DROP_TABLES', 'confidence': 1,
@@ -84,7 +86,7 @@ class PolicyTests(unittest.TestCase):
         project = ROOT / 'fixture'
         proof = execute(project, CONTRACT)
         altered = {**CONTRACT, 'requirements': {'R1_title_search': ['C1_title']}}
-        self.assertEqual(evaluate(altered, proof, snapshot(project))['reason'], 'contract_or_schema_mismatch')
+        self.assertEqual(evaluate(altered, proof, snapshot(project))['reason'], 'contract_mismatch')
 
     def test_nonfinite_judge_confidence_holds(self):
         response = {'type': 'choice', 'choice': 'D1', 'confidence': float('nan'),
