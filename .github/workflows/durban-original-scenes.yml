@@ -1,0 +1,36 @@
+name: Durban original cinematography – free scenes
+on:
+  pull_request:
+    paths:
+      - 'tools/durban-directors-cut/**'
+      - '.github/workflows/durban-original-scenes.yml'
+permissions:
+  contents: read
+jobs:
+  two-original-scenes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install only public demo client
+        run: python -m pip install --disable-pip-version-check --no-input 'gradio_client==1.13.1' pillow
+      - name: Free anonymous scene generation, no retries and no paid models
+        env:
+          HF_TOKEN: ''
+          HUGGING_FACE_HUB_TOKEN: ''
+          HUGGINGFACEHUB_API_TOKEN: ''
+          OPENAI_API_KEY: ''
+          RUNWAY_API_KEY: ''
+          ELEVENLABS_API_KEY: ''
+        run: python tools/durban-directors-cut/generate_cutaways.py
+      - name: Upload any genuine MP4 and status even if quota blocked
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: durban-scenes-no-spend-original
+          path: render_out/
+          if-no-files-found: error
+          retention-days: 7
