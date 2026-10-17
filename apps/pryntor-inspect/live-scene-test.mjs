@@ -4,9 +4,9 @@ import {readFile} from 'node:fs/promises';
 import {analyze} from './inspector.mjs';
 import {CONCEPT_SAMPLES} from './concept-samples.mjs';
 
-test('hero and Ari partner are responsive original inline vectors, not cropped raster art',async()=>{
+test('hero and Kiko guide card are original vector-only brand elements',async()=>{
  const html=await readFile(new URL('./index.html',import.meta.url),'utf8');
- assert.equal((html.match(/class="ari-illustration/g)||[]).length,2);
+ assert.equal((html.match(/<svg class="kiko-art/g)||[]).length,2);
  assert.match(html,/class="kiko-art"/);
  assert.match(html,/class="v5-graph-wires"/);
  assert.match(html,/id="v5GraphNodes"/);
