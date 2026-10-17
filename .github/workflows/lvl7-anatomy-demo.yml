@@ -1,0 +1,43 @@
+name: LVL7 original Anatomy-inspired teaching instrument
+on:
+  pull_request:
+    paths:
+      - "examples/lvl7-spring-lab/**"
+      - ".github/workflows/lvl7-anatomy-demo.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  physical-model-and-real-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pure physical model regression
+        run: node --test examples/lvl7-spring-lab/tests/model.test.mjs
+      - name: JS parse and file integrity
+        run: |
+          node --check examples/lvl7-spring-lab/app.mjs
+          node --check examples/lvl7-spring-lab/model.mjs
+          test -s examples/lvl7-spring-lab/index.html
+          test -s examples/lvl7-spring-lab/styles.css
+      - name: Provision Playwright Chromium without using business credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$RUNNER_TEMP/pryntor-browser" --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          "$RUNNER_TEMP/pryntor-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Reproduce interactions and screenshot evidence on real browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          NODE_PATH="$RUNNER_TEMP/pryntor-browser/node_modules" node examples/lvl7-spring-lab/tests/browser-smoke.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lvl7-spring-actual-chromium-screenshots
+          path: examples/lvl7-spring-lab/screenshots/*.png
+          retention-days: 14
+          if-no-files-found: error

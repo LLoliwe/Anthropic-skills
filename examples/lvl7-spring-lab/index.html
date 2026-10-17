@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0e1825"><title>LVL7 Lab — Spring Equilibrium</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="shell">
+  <header class="mast"><div class="brand"><span class="mark" aria-hidden="true">L<span>7</span></span><span>LVL7 <small>EXPLAINER LAB</small></span></div><span class="lab-id">LAB NOTE / PHY-01</span></header>
+  <div class="eyebrow"><span class="pulse"></span> INTERACTIVE PHYSICS INSTRUMENT · ORIGINAL DESIGN</div>
+  <section class="intro"><div><h1>See force.<br><em>Measure change.</em></h1><p>Hang a mass on an ideal spring. Watch the mechanism settle into equilibrium—and see how every reading comes from the same physical model.</p></div><div class="side-note"><span>01 / 03</span><strong>Hooke’s law</strong><span>Static equilibrium · Vertical spring</span></div></section>
+  <section class="lab" aria-label="Spring and force interactive laboratory">
+  <div class="instrument"><div class="instrument-head"><span>APPARATUS / 01</span><span><i class="dot"></i> MODEL ACTIVE</span></div>
+  <svg viewBox="0 0 900 565" role="img" aria-labelledby="art-title art-description" preserveAspectRatio="xMidYMid meet">
+   <title id="art-title">Isometric spring extension apparatus</title><desc id="art-description">A spring hangs from a precision frame. Adjust the mass slider to lengthen the spring and move the ruler indicator; the force and extension readings update mathematically.</desc>
+   <defs>
+     <linearGradient id="metal" x1="0" x2="1"><stop offset="0" stop-color="#557189"/><stop offset="0.5" stop-color="#a4b6c2"/><stop offset="1" stop-color="#42586b"/></linearGradient>
+     <linearGradient id="gold" x1="0" x2="1"><stop offset="0" stop-color="#eec782"/><stop offset="0.55" stop-color="#fff2cb"/><stop offset="1" stop-color="#a8763f"/></linearGradient>
+     <linearGradient id="load" x1="0" x2="1"><stop offset="0" stop-color="#4f9fb7"/><stop offset="0.55" stop-color="#a9dfef"/><stop offset="1" stop-color="#2b667d"/></linearGradient>
+     <filter id="shadow" x="-20%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="13"/></filter>
+   </defs>
+   <!-- mechanical bench: isometric planes, feet, machined base and service access -->
+   <ellipse cx="445" cy="496" rx="280" ry="28" fill="#000" opacity=".16" filter="url(#shadow)"/>
+   <path d="M160 436L530 355L746 425L370 515Z" class="base-top"/>
+   <path d="M160 436L370 515V537L160 458Z" class="base-left"/>
+   <path d="M370 515L746 425V448L370 537Z" class="base-right"/>
+   <path d="M213 457L234 465L234 484L213 477Z M663 444L680 439L680 456L663 460Z" fill="#263749" stroke="#9cb5c3" stroke-width="2"/>
+   <path d="M200 428L532 359L711 420L371 498Z" fill="none" stroke="#bdcdd5" stroke-opacity=".55" stroke-width="2"/>
+   <path d="M220 439L548 371 M248 449L576 381 M276 459L605 391" stroke="#c5d6dc" stroke-opacity=".23"/>
+   <g class="screws" stroke="#d3e1e6" stroke-width="1.4" fill="#526778"><circle cx="208" cy="442" r="5"/><path d="M205 442h6 M208 439v6"/><circle cx="692" cy="421" r="5"/><path d="M689 421h6 M692 418v6"/><circle cx="367" cy="506" r="5"/><path d="M364 506h6 M367 503v6"/><circle cx="526" cy="376" r="5"/><path d="M523 376h6 M526 373v6"/></g>
+   <!-- left support with collars and fastening bolts -->
+   <path d="M300 437L300 127L325 119L325 431" fill="url(#metal)" stroke="#9eb3bf" stroke-width="3"/>
+   <path d="M294 411L330 399L342 408L305 421Z M294 145L328 134L339 143L306 154Z" class="joint"/>
+   <path d="M308 142V399 M317 139V396" stroke="#d6e6ec" stroke-opacity=".55" stroke-width="2"/>
+   <path d="M312 127L448 89L589 135L457 172Z" class="beam-top"/>
+   <path d="M312 127L457 172V191L312 146Z" class="beam-face"/>
+   <path d="M457 172L589 135V153L457 191Z" class="beam-right"/>
+   <path d="M326 126L445 95L566 135" stroke="#e0edf2" fill="none" opacity=".65"/>
+   <!-- rod and mounting hardware -->
+   <rect x="441" y="161" width="18" height="22" rx="4" fill="url(#gold)" stroke="#9f7445" stroke-width="2"/>
+   <rect x="435" y="175" width="30" height="10" rx="3" fill="#718b9c" stroke="#dce9ed" stroke-width="2"/>
+   <path d="M450 185V150" stroke="#d9e5ec" stroke-width="5"/>
+   <g fill="#b2c3cd"><circle cx="330" cy="148" r="3"/><circle cx="453" cy="182" r="3"/><circle cx="578" cy="155" r="3"/></g>
+   <!-- ruler: actual mechanism view, consistent with model's 0..50 mm span -->
+   <rect x="550" y="194" width="43" height="125" rx="5" fill="#26394e" stroke="#a8bdcc" stroke-width="2"/>
+   <path d="M559 203V313" stroke="#8ba7b8" stroke-width="1"/>
+   <g id="ruler-ticks" stroke="#cbdbe4" opacity=".9"></g>
+   <g fill="#bacbd6" class="svg-mono" font-size="12" text-anchor="start"><text x="598" y="209">0</text><text x="598" y="225">10</text><text x="598" y="240">20</text><text x="598" y="256">30</text><text x="598" y="272">40</text><text x="598" y="287">50 mm</text></g>
+   <g id="ruler-marker"><path d="M530 206L547 197L547 215Z" fill="#f7c276"/><path d="M547 206H568" stroke="#e5b36f" stroke-width="3"/></g>
+   <!-- physical extension: coils are regenerated from same model as readout -->
+   <path id="coils" d="" stroke="url(#gold)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+   <path d="M442 149H458" stroke="#e2c799" stroke-width="6" stroke-linecap="round"/>
+   <g id="moving-load">
+    <rect x="441" y="261" width="18" height="18" rx="4" fill="url(#metal)"/>
+    <path d="M445 279L445 297M455 279L455 297" stroke="#b5c9d6" stroke-width="3"/>
+    <path d="M389 298L447 280L508 303L450 323Z" fill="#9fd2df" stroke="#d4edf6" stroke-width="2"/>
+    <path d="M389 298L450 323V368L389 345Z" fill="url(#load)" stroke="#9dcbd7" stroke-width="2"/>
+    <path d="M450 323L508 303V345L450 368Z" fill="#39798e" stroke="#b0dae4" stroke-width="2"/>
+    <path d="M401 317L437 330 M400 327L437 340 M462 334L496 320" stroke="#d5edf2" stroke-opacity=".5" stroke-width="2"/>
+    <path d="M447 282L447 292" stroke="#edf2e7" stroke-width="4"/>
+    <text id="load-label" x="451" y="350" fill="#f0fcff" font-size="17" text-anchor="middle" font-family="ui-monospace,monospace" font-weight="700">1000 g</text>
+    <path d="M506 311L551 206" stroke="#f5be65" stroke-dasharray="4 7" opacity=".0"/>
+   </g>
+   <!-- engraved bottom equipment badges -->
+   <path d="M253 470L376 505L489 478" fill="none" stroke="#d5e1e8" stroke-opacity=".55"/>
+   <text x="316" y="475" fill="#d7e5e9" font-size="13" font-weight="700" letter-spacing="3" transform="rotate(17 316 475)">LVL7 • LAB</text>
+   <text x="657" y="376" fill="#99b8cb" font-size="12" letter-spacing="3">K 400 N/m</text>
+   <g class="svg-mono" fill="#7e9eb2" font-size="13"><text x="105" y="107">A / MOUNT</text><path d="M210 104H303" stroke="#6e889c"/><text x="639" y="173">B / SCALE</text><path d="M641 183H710" stroke="#6e889c"/><text x="647" y="484">C / BASE</text></g>
+  </svg>
+  <div class="instrument-footer"><span>ILLUSTRATION IS SCHEMATIC · DIMENSIONS NOT TO SCALE</span><span>IDEAL ELASTIC SPRING</span></div></div>
+  <aside class="console" aria-label="Control and measured quantities"><div class="console-top"><span>CONTROL PANEL</span><button type="button" id="theme-toggle" class="quiet" aria-label="Switch to light mode">Light mode</button></div>
+  <div class="input-label"><label for="mass">Hanging mass</label><strong id="mass-label">1000 g</strong></div>
+  <input id="mass" type="range" min="0" max="2000" step="100" value="1000" aria-describedby="range-description"><div class="range-ends"><span>0 g</span><span>2 000 g</span></div>
+  <p class="sr-only" id="range-description">Use arrow keys to adjust the mass in 100 gram steps.</p>
+  <div class="steppers"><button type="button" id="step-minus">− 100 g</button><button type="button" id="step-plus">+ 100 g</button></div>
+  <div class="readings"><div class="reading"><span>WEIGHT FORCE</span><strong id="force">9.81 N</strong><small>F = mg</small></div><div class="reading accent"><span>SPRING EXTENSION</span><strong id="extension">24.53 mm</strong><small>x = F ÷ k</small></div></div>
+  <div class="model-card"><span>MODEL / 01</span><p>F = kx</p><div id="formula">x = (1.00 × 9.81) ÷ 400 = 0.0245 m</div><small>k = 400 N/m &nbsp;·&nbsp; g = 9.81 m/s²</small></div>
+  <div class="actions"><button id="play-toggle" aria-pressed="false" type="button">Play motion</button><button id="reset" type="button" class="quiet">Reset</button></div>
+  <div id="live-hint" class="sr-only" aria-live="polite" aria-atomic="true"></div></aside>
+  </section>
+  <footer><p><strong>What you're seeing.</strong> At rest, spring force balances weight. The extension increases linearly with mass while the ideal spring constant stays unchanged. This is a teaching model—not a calibrated physical instrument or safety calculation.</p><div><span>LVL7 / PRYNTOR</span><span>EDUCATIONAL PROTOTYPE • NOT PUBLISHED</span></div></footer>
+</main>
+<script type="module" src="app.mjs"></script>
+<script>for(let i=0;i<=50;i+=2){const y=206+i*1.56;const l=i%10===0?19:i%5===0?13:7;const node=document.createElementNS('http://www.w3.org/2000/svg','path');node.setAttribute('d',`M ${560} ${y} h ${l}`);document.querySelector('#ruler-ticks').appendChild(node);}</script>
+</body></html>
