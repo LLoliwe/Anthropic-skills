@@ -195,20 +195,35 @@ def scene_toggle(draw, shot, u):
         draw.line([(220, 680), (220 + 560*c, 680)], fill=INK, width=5)
 
 
+def card_geometry(index: int) -> tuple[int, int, int, int]:
+    """Non-overlapping target card boxes, within the 1000px safe canvas."""
+    if index not in (0, 1, 2):
+        raise ValueError("Card index must be 0, 1 or 2")
+    y = 347 + index * 160
+    return (82, y, 918, y + 140)
+
+
 def scene_cards(draw, shot, u):
     title(draw, shot)
+    # The original 230px-tall cards were only 112px apart: their labels
+    # occluded one another. Compact, independently readable rows preserve
+    # the stagger while keeping the three headlines visible at the end.
     colors = ["#DCE3D9", "#D2DBD0", "#FDFDF8"]
-    texts = [("01", "Activity"), ("02", "Priorities"), ("03", "Signal")]
+    texts = ["Activity", "Priorities", "Signal"]
     for i in range(3):
-        a = ease((u - i * 0.16) / 0.43)
-        x = 70 + i * 35
-        y = int(mix(960, 375 + i * 112, a))
-        rect(draw, (x, y, 930-i*35, y+230), colors[i], 30, outline="#C5CCC2", width=2)
-        label(draw, (x+40, y+34), texts[i][0], 26, MUTED, True)
-        label(draw, (x+40, y+88), texts[i][1], 45, INK, True)
-        if i == 2:
-            w = 480 * ease((u - 0.6) / 0.3)
-            rect(draw, (x+40, y+170, x+40+w, y+183), LIME, 6)
+        progress = ease((u - i * 0.14) / 0.34)
+        if progress <= 0:
+            continue
+        x1, target_y, x2, bottom = card_geometry(i)
+        y = int(mix(975, target_y, progress))
+        rect(draw, (x1, y, x2, y + (bottom - target_y)),
+             colors[i], 24, outline="#C5CCC2", width=2)
+        label(draw, (x1 + 32, y + 41), f"{i+1:02d}", 27, MUTED, True)
+        label(draw, (x1 + 120, y + 37), texts[i], 42, INK, True)
+        bar_width = 100 + 90 * ease((u - 0.55) / 0.35)
+        rect(draw, (x2 - 245, y + 66, x2 - 245 + bar_width, y + 77),
+             LIME, 5)
+
 
 
 def scene_device(draw, shot, u):
