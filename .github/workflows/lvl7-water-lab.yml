@@ -1,0 +1,54 @@
+name: LVL7 Water Lab — actual Chromium browser proof
+on:
+  pull_request:
+    paths:
+      - 'examples/lvl7-water-lab/**'
+      - '.github/workflows/lvl7-water-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-water-lab-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate actual original file and no external runtime resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check examples/lvl7-water-lab/tests/browser-smoke.cjs
+          node --input-type=module <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const html=readFileSync('examples/lvl7-water-lab/index.html','utf8');
+          for(const required of ['function waterState','function buildGraph','name="viewport"','id="energy"','id="reason-feedback"']){
+            assert(html.includes(required),'Missing original demo feature '+required);
+          }
+          assert(!/<script[^>]+src=/i.test(html),'Unexpected remote script dependency');
+          assert(!/fetch\s*\(/i.test(html),'Unexpected runtime fetch');
+          console.log('Original single-file Water Lab integrity: PASS');
+          NODE
+      - name: Install tested Playwright browser runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$RUNNER_TEMP/lvl7-browser" --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          "$RUNNER_TEMP/lvl7-browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Real 1440, 390 and reduced-motion Chromium interactions
+        shell: bash
+        run: |
+          set -euo pipefail
+          NODE_PATH="$RUNNER_TEMP/lvl7-browser/node_modules" node examples/lvl7-water-lab/tests/browser-smoke.cjs
+      - name: Save genuine browser screenshots and source artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lvl7-water-lab-original-browser-evidence
+          path: |
+            examples/lvl7-water-lab/index.html
+            examples/lvl7-water-lab/screenshots/*.png
+          retention-days: 14
+          if-no-files-found: error
