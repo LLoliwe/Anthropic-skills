@@ -1,4 +1,5 @@
 import {analyze,EXAMPLE,LIMITS} from './inspector.mjs';
+import {setupV1} from './v1-ui.mjs';
 const $=id=>document.getElementById(id);
 const filePicker=$('filePicker'),dropzone=$('dropzone'),empty=$('emptyView'),results=$('resultsView'),status=$('statusMessage');
 let report=null,selection=0;
@@ -20,6 +21,7 @@ function renderFile(index){
  if(row.imports.length===0)deps.append(el('span',null,'No static imports identified'));
  else row.imports.forEach(x=>deps.append(el('span',null,x)));
  detail.append(deps);
+ v1.onFileChange(index);
 }
 function render(r){
  report=r;selection=0;empty.hidden=true;results.hidden=false;setStatus();
@@ -41,8 +43,11 @@ function render(r){
  for(const f of r.findings){
   const row=el('div','finding'),icon=el('span','finding-icon',f.severity==='High'?'!':f.severity==='Review'?'·':'i'),body=el('div','finding-body');
   body.append(el('h5',null,f.title+' · '+f.severity),el('p',null,f.help),el('small',null,f.file+' · line '+f.line));
-  row.append(icon,body);findings.append(row);
+  const jump=el('button','finding-jump','View file ↗');jump.type='button';jump.setAttribute('aria-label','View '+f.file+' from '+f.title);
+  jump.addEventListener('click',()=>{const index=report.files.findIndex(x=>x.name===f.file);if(index!==-1){renderFile(index);$('fileDetail').scrollIntoView({block:'center'});}});
+  row.append(icon,body,jump);findings.append(row);
  }
+ v1.onReport();
  results.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
 }
 async function scanFileObjects(fileList){
@@ -69,9 +74,12 @@ filePicker.addEventListener('change',()=>scanFileObjects(filePicker.files));
 for(const name of ['dragenter','dragover'])dropzone.addEventListener(name,event=>{event.preventDefault();dropzone.classList.add('drag-over')});
 for(const name of ['dragleave','drop'])dropzone.addEventListener(name,event=>{event.preventDefault();dropzone.classList.remove('drag-over')});
 dropzone.addEventListener('drop',event=>scanFileObjects(event.dataTransfer.files));
-$('resetButton').addEventListener('click',()=>{report=null;empty.hidden=false;results.hidden=true;setStatus();$('fileRows').replaceChildren();$('fileDetail').replaceChildren();$('findings').replaceChildren();filePicker.value='';dropzone.focus()});
-$('exportButton').addEventListener('click',()=>{
+function resetWorkspace(){report=null;empty.hidden=false;results.hidden=true;setStatus();$('fileRows').replaceChildren();$('fileDetail').replaceChildren();$('findings').replaceChildren();filePicker.value='';v1.onReset();dropzone.focus();}
+$('resetButton').addEventListener('click',resetWorkspace);
+function exportReport(){
  if(!report)return;
  const blob=new Blob([JSON.stringify(report,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
- a.href=url;a.download='pryntor-inspect-report.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
-});
+ a.href=url;a.download='pryntor-inspect-v1-report.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$('exportButton').addEventListener('click',exportReport);
+const v1=setupV1({getReport:()=>report,selectFile:renderFile,runSample:showSample,resetWorkspace,exportReport,openPicker});
