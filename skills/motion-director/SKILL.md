@@ -80,3 +80,9 @@ Log each revision and re-render. Do not fabricate approval or claim model-genera
 ## Deliverables and exit gate
 
 A valid run must provide: source brief, original script, timed shot plan, actual preview or final file, contact sheet, QA report, provenance log, and a human review status. Distinguish **planned**, **rendered**, **reviewed**, **approved**, and **published**. A shot marked rendered is not automatically approved.
+
+## Audio / Earshot production gate (PRY-195)
+
+Every actual audio-bearing rough cut must undergo **offline technical audio QA** before director review. Run `python skills/motion-director/scripts/audio_gate.py <rendered-media> --report <evidence.json>`, inspect all failure and warning codes, and attach rights/provenance evidence. Record deliberate mute via `--intentional-mute 'reason'` with human approval. For candidate music, do not mistake a synthetic 120 BPM beat grid for measured audio onset synchronization.
+
+Earshot v0.2 ([official upstream](https://github.com/Leonxlnx/earshot), MIT) adds optional `describe`, `timeline`, `critique`, `forge`, `fit` and MCP workflows **only after a real pinned package/model installation has been tested**. This draft includes a gated offline bridge; it does not include Earshot's model weights or demonstrate its sound-to-code feature. See [AUDIO_EARSHOT.md](AUDIO_EARSHOT.md). Do not opt into cloud audio uploads, represent subjective aesthetic judgments as automated PASS, or publish without rights and director approval.
