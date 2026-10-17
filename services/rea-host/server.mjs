@@ -24,7 +24,7 @@ async function boot(){
  try{const result=await c.start(path.join(ROOT,'fixture'));if(stopping||client!==c)return;
   Object.assign(state,{ready:true,status:'verified',...result,checkedAt:new Date().toISOString()});
   console.log(JSON.stringify({event:'rea-fixture-verified',toolCount:result.toolCount,graphNodes:result.graphNodes,graphEdges:result.graphEdges}));
- }catch{state.ready=false;state.status='verification-failed';c.close();schedule();console.error('REA fixture verification failed')}
+ }catch(e){const code=String(e?.message||'UNKNOWN').replace(/[^A-Za-z0-9_-]/g,'_').slice(0,90);state.ready=false;state.status='verification-failed';state.lastErrorCode=code;state.lastPhase=c.phase;c.close();schedule();console.error('REA fixture verification failed: '+code+' phase='+c.phase)}
 }
 server.listen(PORT,'0.0.0.0',()=>{console.log(JSON.stringify({event:'server-listening',port:PORT}));void boot()});
 function shutdown(){if(stopping)return;stopping=true;if(retry)clearTimeout(retry);client?.close();server.close(()=>process.exit(0));setTimeout(()=>process.exit(0),4000).unref()}

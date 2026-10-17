@@ -17,7 +17,7 @@ export function verifyEvidence(e){
  return {graphNodes:g.nodes.length,graphEdges:g.edges.length,evidenceId:e.evidence_id||null};
 }
 export class Client{
- constructor(bin,cwd,onExit){this.bin=bin;this.cwd=cwd;this.onExit=onExit;this.id=0;this.pending=new Map();this.buf=Buffer.alloc(0);this.dead=false;}
+ constructor(bin,cwd,onExit){this.bin=bin;this.cwd=cwd;this.onExit=onExit;this.id=0;this.pending=new Map();this.buf=Buffer.alloc(0);this.dead=false;this.phase='created';}
  fail(e){for(const [id,p] of this.pending){clearTimeout(p.t);p.reject(e);this.pending.delete(id)}}
  close(){if(this.dead)return;this.dead=true;this.fail(Error('MCP_CLOSED'));if(this.proc?.pid)try{process.kill(-this.proc.pid,'SIGKILL')}catch{}}
  read(chunk){
@@ -44,13 +44,13 @@ export class Client{
   this.proc=spawn(this.bin,['mcp'],{cwd:this.cwd,stdio:['pipe','pipe','pipe'],detached:true,env:{...process.env,NO_COLOR:'1'}});
   this.proc.stdout.on('data',b=>this.read(b));this.proc.stderr.resume();
   this.proc.on('error',()=>this.fail(Error('MCP_SPAWN_FAILED')));
-  this.proc.on('exit',()=>{this.fail(Error('MCP_EXITED'));if(!this.dead)this.onExit()});
-  const hello=await this.send('initialize',{protocolVersion:'2025-03-26',capabilities:{},clientInfo:{name:'pryntor-rea-host',version:'0.1.0'}});
+  this.proc.on('exit',(code,signal)=>{this.fail(Error('MCP_EXIT_'+(signal||code)+'_PHASE_'+this.phase));if(!this.dead)this.onExit()});
+  this.phase='initialize';const hello=await this.send('initialize',{protocolVersion:'2025-03-26',capabilities:{},clientInfo:{name:'pryntor-rea-host',version:'0.1.0'}});
   if(!hello?.protocolVersion)throw Error('BAD_HELLO');
   await this.send('notifications/initialized',{},true);
-  const tools=await this.send('tools/list',{});
+  this.phase='tools_list';const tools=await this.send('tools/list',{});
   if(!Array.isArray(tools?.tools)||!tools.tools.some(t=>t.name==='analyze_javascript_application'))throw Error('TOOL_MISSING');
-  const reply=await this.send('tools/call',{name:'analyze_javascript_application',arguments:{input_path:dir,format:'directory'}});
+  this.phase='tools_call';const reply=await this.send('tools/call',{name:'analyze_javascript_application',arguments:{input_path:dir,format:'directory'}});
   return {toolCount:tools.tools.length,...verifyEvidence(evidenceOf(reply))};
  }
 }
