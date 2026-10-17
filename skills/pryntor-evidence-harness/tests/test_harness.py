@@ -1,5 +1,7 @@
+import os
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 from harness import evaluate, execute, load_contract, route_diagnostic, snapshot
 
@@ -94,6 +96,18 @@ class PolicyTests(unittest.TestCase):
         proof = execute(project, CONTRACT)
         proof.pop('contract_digest')
         self.assertEqual(evaluate(CONTRACT, proof, snapshot(project))['decision'], 'hold')
+
+    def test_subprocess_does_not_inherit_secret_environment(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            project = Path(tmp)
+            (project / 'file.txt').write_text('fixture')
+            contract = {'schema': 'pryntor-evidence-v1',
+                        'requirements': {'R1': ['C1']},
+                        'checks': {'C1': {'command': ['python3', '-c',
+                            "import os,sys;sys.exit(0 if 'TYPESAFE_API_KEY' not in os.environ else 1)"]}}}
+            with patch.dict(os.environ, {'TYPESAFE_API_KEY': 'SHOULD_NOT_ESCAPE'}):
+                report = evaluate(contract, execute(project, contract), snapshot(project))
+            self.assertEqual(report['decision'], 'contract_satisfied')
 
     def test_empty_project_fails(self):
         with tempfile.TemporaryDirectory() as tmp:
