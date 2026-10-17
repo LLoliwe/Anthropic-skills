@@ -1,13 +1,7 @@
 import {spawn} from 'node:child_process';
 const LIMIT=32_000_000;
 export function evidenceOf(reply){
- if(!reply)throw Error('MCP_TOOL_ERROR');
- if(reply.isError){
-  const raw=(reply.content||[]).filter(p=>p?.type==='text').map(p=>String(p.text)).join(' ').slice(0,800);
-  const safe=JSON.stringify(raw).slice(0,550);
-  console.error('REA original-fixture-only tool error: '+safe.slice(0,550));
-  throw Error('MCP_TOOL_ERROR');
- }
+ if(!reply||reply.isError)throw Error('MCP_TOOL_ERROR');
  const xs=[reply.structuredContent];
  for(const p of reply.content||[])if(p?.type==='text')try{xs.push(JSON.parse(p.text))}catch{}
  for(const x of xs)for(const e of [x,x?.result,x?.evidence])if(e?.operation==='analyze_javascript_application')return e;

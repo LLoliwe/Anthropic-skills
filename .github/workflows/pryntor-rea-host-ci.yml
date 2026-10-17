@@ -1,6 +1,7 @@
 name: Pryntor REA isolated cloud host
 on:
   push:
+    branches: [main]
     paths: ["services/rea-host/**", ".github/workflows/pryntor-rea-host-ci.yml"]
   pull_request:
     paths: ["services/rea-host/**", ".github/workflows/pryntor-rea-host-ci.yml"]
@@ -25,7 +26,7 @@ jobs:
           node --check services/rea-host/server.mjs
       - name: Real MCP fixture test on running HTTP host
         run: |
-          PORT=19081 node services/rea-host/server.mjs > "$RUNNER_TEMP/rea-host.log" 2>&1 &
+          NODE_OPTIONS=--max-old-space-size=384 PORT=19081 node services/rea-host/server.mjs > "$RUNNER_TEMP/rea-host.log" 2>&1 &
           host_pid=$!
           trap 'kill "$host_pid" 2>/dev/null || true' EXIT
           node --input-type=module <<'NODE'
