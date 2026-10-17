@@ -2,7 +2,7 @@
 
 ## Governance
 
-Status: R0 synthetic prototype, independent review needed. No production integration, Graphify package installation, Jev key, hosted indexing, active background worker or paid service has been demonstrated by this package. R0 spend verified within this local run only, not across external provider accounts.
+Status: Sentinel V2 synthetic prototype, independent review needed. Graphify 0.9.92 was installed on a disposable GitHub runner for synthetic mapping only; no production Graphify installation, Jev key, hosted indexing, active background worker or paid service is demonstrated by this package. R0 spend verified within this local run only, not across external provider accounts.
 
 Canonical connected tickets: PRY-26 (portable worker and continuity), PRY-86 (security and commissioning), PRY-15 (source and license decision). Keep TRIAGE-001 as the sole dispatcher and ACCESS-01 as security authority.
 
@@ -22,7 +22,7 @@ Do not bring employer/Jellyfish, private customer, child, medical or owner crede
 
 ## Rollout sequence
 
-1. Review the original harness source in PR, run 16 tests and verify fail-closed outcomes on an unchanged and deliberately broken fixture.
+1. Review the original harness source in PR, run 33 tests and verify fail-closed outcomes on an unchanged and deliberately broken fixture.
 2. Independently evaluate security (registered-command trust boundary, sandbox, output redaction, symlinks, untrusted PR code, replay tamper resistance). The digest is not a signed attestation.
 3. Evaluate Graphify's official Apache-2.0 repository and the `graphifyy` package. Pin a specific reviewed release and hash before invoking it in an isolated synthetic project. Graphify's structural map is optional and must not override acceptance tests.
 4. Compare deterministic routing and run-all-cheap-diagnostics against Jev's allowlisted recommendations on blinded cases. API call count and cost default to zero. Seek sponsored credits only if pricing, privacy and billing caps are verified first.
@@ -38,3 +38,12 @@ Do not bring employer/Jellyfish, private customer, child, medical or owner crede
 - Commercial: shipping lead-time reduction, paid customer conversion, and bank-confirmed settled revenue, recorded separately from estimates.
 
 Current sample is not evidence of an enterprise-scale speedup, active employees or profit increase.
+
+## V2 upgrade and release gate
+
+- Trusted contract approval is an explicit pinned checksum in CI. Never generate and approve a checksum from an untrusted PR in the same step.
+- Add immutable write-once JSON and static HTML inspector to each *synthetic* pilot run. Replays recompute checksums and always evaluate against the current project.
+- Human reviewer must inspect actual test coverage, Graphify map correctness, completeness of source scope, and source/contract provenance.
+- Separate source-inspection/diagnostic improvement from product business acceptance.
+- An independent owner-approved **Recover synthetic merchant-flow adapter** is the first proposed next pilot; do not claim it exists or is tested yet. Do not touch real PayPal/CRM credentials or external customers.
+- Require independent final acceptance, a negative mutation scenario, red-team review, exact-head hosted CI and verified R0 spend before scaling.
