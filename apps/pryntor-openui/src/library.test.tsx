@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {Renderer} from '@openuidev/react-lang';
+import {library,payload,validatePayload,selectTasks,lanes,states} from './library';
+test('every allowed lane/state payload passes actual OpenUI parser',()=>{for(const l of lanes)for(const s of states)validatePayload(payload(l,s));});
+test('actual OpenUI renderer produces library component markup',()=>{const html=renderToStaticMarkup(<Renderer response={payload('BTWW','Ready')} library={library} isStreaming={false}/>);assert.match(html,/Build the dawn edition/);assert.doesNotMatch(html,/Keep the handoff human/);});
+test('unknown components, invalid enums and unresolved references denied',()=>{for(const s of ['root = Unknown()','root = Mission("Secret", "Ready")','root = Mission(missing, "Ready")'])assert.throws(()=>validatePayload(s));});
+test('oversized and filter injection denied',()=>{assert.throws(()=>validatePayload('x'.repeat(4097)));assert.throws(()=>payload('All"); Unknown(','All'));});
+test('empty state and lane boundaries',()=>{assert.equal(selectTasks('LVL7','Ready').length,0);assert.ok(selectTasks('Tirisano','All').every(t=>t.lane==='Tirisano'));});
