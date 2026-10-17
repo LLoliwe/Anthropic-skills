@@ -29,7 +29,7 @@ def test_missing_media(tmp_path):
     with pytest.raises(ValueError):get_video_metadata(tmp_path/'missing.mp4')
 
 def test_sample_limited():
-    assert sample_seconds(300,1,3)==[0,1,2]
+    assert sample_seconds(300,1,3)==[0.0,149.95,299.9]
 
 def test_sample_last_frame():
     assert sample_seconds(2,1,5)==[0,1,1.9]
@@ -77,3 +77,30 @@ def test_empty_owner_rejected(video,tmp_path):
 def test_json_file_written(video,tmp_path):
     intake(video,tmp_path/'out','owner','owned','restricted')
     assert json.loads((tmp_path/'out'/'evidence.json').read_text())['schema']=='pryntor.video-evidence.v1'
+
+def test_reject_unauthorized_third_party_upload(video,tmp_path):
+    e=intake(video,tmp_path/'out','owner','owned','restricted')
+    e['source']['third_party_upload_allowed']=True
+    with pytest.raises(ValueError,match='third-party'):
+        validate(e)
+
+def test_full_video_coverage_under_frame_limit():
+    t=sample_seconds(180,1,12)
+    assert len(t)==12 and t[-1]==179.9 and t[0]==0
+    assert all(a<b for a,b in zip(t,t[1:]))
+
+def test_reject_invalid_hash(video,tmp_path):
+    e=intake(video,tmp_path/'out','owner','owned','restricted')
+    e['source']['sha256']='z'*64
+    with pytest.raises(ValueError):validate(e)
+
+def test_private_output_permissions(video,tmp_path):
+    out=tmp_path/'out'
+    intake(video,out,'owner','owned','restricted')
+    assert out.stat().st_mode & 0o077==0
+    assert (out/'evidence.json').stat().st_mode & 0o077==0
+
+def test_no_bool_observation_timestamp(video,tmp_path):
+    e=intake(video,tmp_path/'out','owner','owned','restricted')
+    e['observations']=[{'kind':'observed','claim':'event','time_seconds':True,'evidence_frames':['not_here.jpg']}]
+    with pytest.raises(ValueError):validate(e)
