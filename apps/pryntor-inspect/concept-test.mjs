@@ -27,8 +27,8 @@ test('Coded reference layout is live semantic HTML, not a whole screenshot',asyn
  }
  assert.match(html,/class="concept-sidebar"/);
  assert.match(html,/data-concept-sample="web"/);
- assert.match(html,/class="ari-illustration"/);
- assert.match(html,/class="ari-illustration ari-card-illustration"/);
+ assert.match(html,/class="ari-illustration ari-v6"/);
+ assert.match(html,/class="ari-illustration ari-card-illustration ari-v6"/);
  assert.match(html,/no customer files leave this browser|no source upload|no upload/i);
  assert.match(html,/connect-src 'none'/);
  assert.doesNotMatch(html,/id="fakeChat"/);

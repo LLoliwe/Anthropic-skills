@@ -40,6 +40,8 @@ function renderGraph(current,preview=false){
     const index=(report||data).files.findIndex(f=>f.name===file.name);
     if(index!==-1)$('fileRows').children[index]?.click();
    }
+   // Sample loading fires asko:report synchronously; preserve the tapped node after that reset.
+   chosen=i;
    renderGraph(report||data,false);
    status.textContent='Selected '+filename(file.name)+' · '+file.imports.length+' detected imports';
   });
