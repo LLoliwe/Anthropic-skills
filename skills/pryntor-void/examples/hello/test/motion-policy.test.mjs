@@ -26,6 +26,8 @@ test('Motion is controlled, reduced-motion safe, and offline',()=>{
  assert.match(html,/html\.motion-off/);
  assert.match(html,/IntersectionObserver/);
  assert.match(html,/radar-sculpt/);
+ assert.match(html,/max-width:420px/);
+ assert.match(html,/\.mode \.online/);
  assert.match(html,/cancelAnimationFrame/);
  assert.match(html,/pointermove/);
  assert.doesNotMatch(html,/<video[^>]*autoplay|<audio[^>]*autoplay/i);
