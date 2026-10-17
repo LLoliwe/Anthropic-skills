@@ -1,0 +1,18 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {buildGraph, pathway, searchTopics} from '../graph.mjs';
+const topics = {topics:[{id:'a',name:'Count',subject:'Mathematics'}, {id:'b',name:'Add',subject:'Mathematics'},{id:'c',name:'Fractions',subject:'Mathematics'}, {id:'d',name:'Draw',subject:'Arts'}]};
+const edges = {dependencies:[{topicId:'b',prerequisiteId:'a',strength:'hard',reason:'count first'}, {topicId:'c',prerequisiteId:'b',strength:'hard'}, {topicId:'c',prerequisiteId:'d',strength:'soft'}]};
+const data = (t=topics,e=edges) => buildGraph(t,e);
+test('genuine multi-hop dependencies appear BEFORE target',()=>assert.deepEqual(pathway(data(),'c').map(t=>t.id),['a','b','d','c']));
+test('soft dependencies can be excluded without dropping hard prerequisites',()=>assert.deepEqual(pathway(data(),'c',{includeSoft:false}).map(t=>t.id),['a','b','c']));
+test('search is case insensitive and returns stable identifiers',()=>assert.deepEqual(searchTopics(data(),'FRA').map(t=>t.id),['c']));
+test('empty search does not return all topics',()=>assert.deepEqual(searchTopics(data(),'   '),[]));
+test('unknown topics are refused',()=>assert.throws(()=>pathway(data(),'never'),/Unknown topic/));
+test('cycles are refused even outside active path',()=>assert.throws(()=>data(topics,{dependencies:[...edges.dependencies,{topicId:'a',prerequisiteId:'c',strength:'hard'}]}),/cycle/i));
+test('missing dependencies are refused',()=>assert.throws(()=>data(topics,{dependencies:[{topicId:'b',prerequisiteId:'ghost',strength:'hard'}]}),/Dangling/));
+test('duplicate topic IDs are refused',()=>assert.throws(()=>data({topics:[...topics.topics,topics.topics[0]]},edges),/duplicate/));
+test('duplicate edges are refused',()=>assert.throws(()=>data(topics,{dependencies:[...edges.dependencies,edges.dependencies[0]]}),/Duplicate/));
+test('self dependencies are refused',()=>assert.throws(()=>data(topics,{dependencies:[{topicId:'a',prerequisiteId:'a',strength:'hard'}]}),/Self/));
+test('unsupported dependency strengths are refused',()=>assert.throws(()=>data(topics,{dependencies:[{topicId:'a',prerequisiteId:'b',strength:'mandatory'}]}),/strength/));
+test('empty data is a valid acyclic structure but has no learning path',()=>assert.equal(data({topics:[]},{dependencies:[]}).edgeCount,0));

@@ -1,0 +1,47 @@
+name: Pryntor original learning graph R0
+on:
+  pull_request:
+    paths:
+      - 'tools/learning-graph/**'
+      - 'skills/pryntor-learning-graph/**'
+      - '.github/workflows/pryntor-learning-graph.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-engine-and-source-pinned-v1:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Original offline adversarial regressions
+        run: |
+          node --check tools/learning-graph/graph.mjs
+          node --check tools/learning-graph/cli.mjs
+          node --test tools/learning-graph/tests/graph.test.mjs
+      - name: Fetch unchanged upstream Marble v1 from fixed commit and verify byte hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/marble-v1"
+          base=https://raw.githubusercontent.com/withmarbleapp/os-taxonomy/96a7933754af672e1bfdbf7ecb05c325860c6e0d/data
+          for file in topics.json dependencies.json; do
+            curl --fail --location --retry 2 --silent --show-error "$base/$file" --output "$RUNNER_TEMP/marble-v1/$file"
+          done
+          cd "$RUNNER_TEMP/marble-v1"
+          printf '%s  %s\n' '2d99fc3b5e57d9ddb86b6c179b58a1b0390f048d9798585fe03b13cbc183719b' topics.json '86a24efb44b480e5be23082b4bdea653f69f6d6fd54c5409a2f33c185be1d87f' dependencies.json | sha256sum -c -
+      - name: Validate real upstream DAG and expected v1 counts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node tools/learning-graph/cli.mjs "$RUNNER_TEMP/marble-v1/topics.json" "$RUNNER_TEMP/marble-v1/dependencies.json" summary > "$RUNNER_TEMP/graph-result.json"
+          node --input-type=module - "$RUNNER_TEMP/graph-result.json" <<'NODE'
+          import {readFileSync} from 'node:fs';
+          import assert from 'node:assert/strict';
+          const x = JSON.parse(readFileSync(process.argv[2], 'utf8'));
+          assert.deepEqual(x, {topicCount: 1590, dependencyCount: 3221, acyclic: true});
+          console.log('Verified real Marble v1: 1590 nodes / 3221 edges / DAG acyclic. No child data.');
+          NODE
