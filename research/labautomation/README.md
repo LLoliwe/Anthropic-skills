@@ -1,3 +1,9 @@
+# CURRENT POLICY (17 OCT 2026): AUTOMATED FORUM ACCESS DISABLED
+
+The published forum Terms of Service, https://labautomation.io/tos, section Acceptable Use paragraph 5, explicitly prohibits automated access/monitoring except a public-search-engine indexing exception. Public JSON response success does NOT convey permission. The historical example `public_forum.py` now fails closed before network access unless written operator permission has been obtained *and* the local `LABAUTOMATION_FORUM_WRITTEN_PERMISSION=YES` gate is deliberately activated. It is **NOT** run by GitHub Actions. Do not use credentials or automate the forum based on this note.
+
+**Active implementation (after merge):** `github_oss_radar.py`, `test_github_oss_radar.py`, and the scoped `lab-oss-radar.yml` workflow use *GitHub public repository metadata* only. On merge to default branch, GitHub will attempt a weekly scheduled scan each Monday near 08:17 SAST and store a short-lived artifact. PR runs execute offline tests only. A successful GitHub-hosted run and permission/security review must precede 'production-ready' language. No forum scraping, private messages or posts.
+
 # Lab Automation Forums — free/OSS opportunity register (2026-10-17)
 
 **Status:** original research notes only. NOT an installation, deployment, independent QA, or endorsement.  

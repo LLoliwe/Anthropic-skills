@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -26,6 +27,8 @@ def public_json(path: str) -> dict:
     """Fetch only a fixed set of public routes on the fixed Discourse host."""
     if not re.fullmatch(r"/(?:latest|categories)\.json|/c/[a-z0-9-]+/[0-9]+\.json", path):
         raise ValueError("Unsafe/unsupported public Discourse path")
+    if os.environ.get("LABAUTOMATION_FORUM_WRITTEN_PERMISSION") != "YES":
+        raise PublicForumError("Automated forum access disabled: operator permission required")
     req = Request(BASE + path, headers={"User-Agent": USER_AGENT, "Accept": "application/json"}, method="GET")
     try:
         with urlopen(req, timeout=15) as response:

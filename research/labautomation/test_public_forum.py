@@ -53,16 +53,20 @@ class AdapterTests(unittest.TestCase):
             self.assertNotIn("api-key", {x.lower() for x in req.headers})
             self.assertEqual(timeout, 15)
             return FakeResponse(json.dumps(TOPICS).encode(), req.full_url)
-        with patch.object(m, "urlopen", side_effect=fake_open):
+        with patch.dict(m.os.environ, {"LABAUTOMATION_FORUM_WRITTEN_PERMISSION": "YES"}), patch.object(m, "urlopen", side_effect=fake_open):
             self.assertEqual(m.public_json("/latest.json"), TOPICS)
+    def test_no_permission_fails_before_network(self):
+        with patch.dict(m.os.environ, {}, clear=True), patch.object(m, "urlopen") as opener:
+            with self.assertRaises(m.PublicForumError): m.public_json("/latest.json")
+            opener.assert_not_called()
     def test_reject_other_host_and_unlisted_paths(self):
         for path in ["https://evil.com", "/users/me.json", "//evil.com/data", "/t/123.json", "/c/../1.json"]:
             with self.assertRaises(ValueError): m.public_json(path)
     def test_reject_external_redirect(self):
-        with patch.object(m, "urlopen", return_value=FakeResponse(b'{}', "https://evil.com")):
+        with patch.dict(m.os.environ, {"LABAUTOMATION_FORUM_WRITTEN_PERMISSION": "YES"}), patch.object(m, "urlopen", return_value=FakeResponse(b'{}', "https://evil.com")):
             with self.assertRaises(m.PublicForumError): m.public_json("/latest.json")
     def test_reject_garbled_json(self):
-        with patch.object(m, "urlopen", return_value=FakeResponse(b'<html>', "https://labautomation.io/latest.json")):
+        with patch.dict(m.os.environ, {"LABAUTOMATION_FORUM_WRITTEN_PERMISSION": "YES"}), patch.object(m, "urlopen", return_value=FakeResponse(b'<html>', "https://labautomation.io/latest.json")):
             with self.assertRaises(m.PublicForumError): m.public_json("/latest.json")
     def test_end_to_end_offline_category(self):
         def fake(path):
