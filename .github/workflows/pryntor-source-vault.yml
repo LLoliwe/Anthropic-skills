@@ -1,0 +1,36 @@
+name: Pryntor Source Vault R0
+on:
+  pull_request:
+    paths:
+      - 'tools/pryntor-source-vault/**'
+      - 'skills/pryntor-source-vault/**'
+      - '.github/workflows/pryntor-source-vault.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/pryntor-source-vault/**'
+      - 'skills/pryntor-source-vault/**'
+      - '.github/workflows/pryntor-source-vault.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python stdlib offline tests
+        run: python3 -m unittest discover -s tools/pryntor-source-vault -p 'test_*.py' -v
+      - name: CLI acceptance smoke using a temporary database
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp=$(mktemp -d)
+          trap 'rm -rf "$tmp"' EXIT
+          printf '%s\n' 'Synthetic source capsule for archive acceptance.' > "$tmp/capsule.txt"
+          python3 tools/pryntor-source-vault/vault.py --db "$tmp/vault.sqlite3" init
+          python3 tools/pryntor-source-vault/vault.py --db "$tmp/vault.sqlite3" add --url 'https://example.org/source?utm_source=fixture' --title 'Synthetic example' --text-file "$tmp/capsule.txt" --tags research
+          python3 tools/pryntor-source-vault/vault.py --db "$tmp/vault.sqlite3" search 'capsule' | grep -F 'example.org/source'
+          python3 tools/pryntor-source-vault/vault.py --db "$tmp/vault.sqlite3" export --out "$tmp/public.jsonl"
+          test "$(wc -l < "$tmp/public.jsonl")" -eq 1
