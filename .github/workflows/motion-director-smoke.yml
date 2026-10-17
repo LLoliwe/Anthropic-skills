@@ -17,14 +17,14 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install -r skills/motion-director/requirements.txt
-      - run: python -m unittest discover -s skills/motion-director/tests -v
-      - run: python skills/motion-director/scripts/motion_director.py qa skills/motion-director/examples/signal-demo.json
-      - run: python skills/motion-director/scripts/motion_director.py handoff skills/motion-director/examples/signal-demo.json --outdir /tmp/motion-handoff
-      - run: python skills/motion-director/scripts/motion_director.py qa-frames skills/motion-director/examples/signal-demo.json --output /tmp/motion-handoff/frame_qa.json
       - name: Install FFmpeg
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y ffmpeg
+      - run: python -m unittest discover -s skills/motion-director/tests -v
+      - run: python skills/motion-director/scripts/motion_director.py qa skills/motion-director/examples/signal-demo.json
+      - run: python skills/motion-director/scripts/motion_director.py handoff skills/motion-director/examples/signal-demo.json --outdir /tmp/motion-handoff
+      - run: python skills/motion-director/scripts/motion_director.py qa-frames skills/motion-director/examples/signal-demo.json --output /tmp/motion-handoff/frame_qa.json
       - name: Render original 30-second rough cut
         run: |
           python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --output /tmp/motion-rough-cut.mp4
