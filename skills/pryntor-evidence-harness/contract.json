@@ -1,0 +1,11 @@
+{
+  "schema": "pryntor-evidence-v1",
+  "requirements": {
+    "R1_title_search": ["C1_title"],
+    "R2_description_search": ["C2_description"]
+  },
+  "checks": {
+    "C1_title": {"command": ["python3", "-B", "-m", "unittest", "checks.SearchRequirements.test_title"], "timeout_seconds": 10},
+    "C2_description": {"command": ["python3", "-B", "-m", "unittest", "checks.SearchRequirements.test_description"], "timeout_seconds": 10}
+  }
+}

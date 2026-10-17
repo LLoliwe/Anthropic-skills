@@ -1,0 +1,86 @@
+name: Pryntor Sentinel V2 - offline agent integrity
+on:
+  pull_request:
+    paths:
+      - 'skills/pryntor-evidence-harness/**'
+      - '.github/workflows/pryntor-agent-integrity-r0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sentinel-v2-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  synthetic-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    defaults:
+      run:
+        working-directory: skills/pryntor-evidence-harness
+    steps:
+      - name: Checkout the exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Run 33 unit, policy, and adversarial tests
+        run: python3 -B -m unittest discover -s tests -v
+      - name: Enforce explicitly pinned trusted contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(python3 -B harness.py digest --contract contract.json)" = "2c818ceea2656b76bf125282c73213c251b077350d8aefc23b1e24a9d4a02699"
+          set +e
+          python3 -B harness.py run --project fixture --contract contract.json --evidence "$RUNNER_TEMP/unapproved.json"
+          rc=$?
+          set -e
+          test "$rc" -eq 2
+          test ! -e "$RUNNER_TEMP/unapproved.json"
+      - name: Independently assert intentional HOLD, not any nonzero
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          python3 -B harness.py run --project fixture --contract contract.json \
+            --approved-contract-sha256 2c818ceea2656b76bf125282c73213c251b077350d8aefc23b1e24a9d4a02699 \
+            --evidence "$RUNNER_TEMP/sentinel-v2-synthetic.json" \
+            --html "$RUNNER_TEMP/sentinel-v2-synthetic.html" \
+            --claim "Worker said everything is done" > "$RUNNER_TEMP/sentinel-v2-verdict.json"
+          rc=$?
+          set -e
+          test "$rc" -eq 2
+          python3 -B - <<'PY'
+          import json, os
+          from pathlib import Path
+          from harness import load_contract, evaluate, snapshot
+          root = Path('fixture')
+          contract = load_contract(Path('contract.json'))
+          ev = json.loads((Path(os.environ['RUNNER_TEMP']) / 'sentinel-v2-synthetic.json').read_text())
+          verdict = evaluate(contract, ev, snapshot(root))
+          assert ev['schema'] == 'pryntor-evidence-v2'
+          assert verdict['decision'] == 'hold'
+          assert verdict['requirements']['R1_title_search']['status'] == 'passed'
+          assert verdict['requirements']['R2_description_search']['status'] == 'failed'
+          assert verdict['release_authorized'] is False
+          page = (Path(os.environ['RUNNER_TEMP']) / 'sentinel-v2-synthetic.html').read_text()
+          assert 'RELEASE AUTHORIZED: NO' in page
+          PY
+      - name: Install integrity-checked Graphify in disposable environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip download --quiet --no-deps --only-binary=:all: 'graphifyy==0.9.92' --dest "$RUNNER_TEMP/graphify-wheel"
+          echo "9722846e627a369150107dd792145c3e3a53e3d3da46f7a7bff9f96b75da857c  $RUNNER_TEMP/graphify-wheel/graphifyy-0.9.92-py3-none-any.whl" | sha256sum --check
+          python3 -m venv "$RUNNER_TEMP/graphify-venv"
+          "$RUNNER_TEMP/graphify-venv/bin/python" -m pip install --quiet "$RUNNER_TEMP/graphify-wheel/graphifyy-0.9.92-py3-none-any.whl"
+      - name: Build Graphify map of actual Sentinel source, offline parsing
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/graphify-venv/bin/graphify" --version
+          "$RUNNER_TEMP/graphify-venv/bin/graphify" extract . --code-only
+          "$RUNNER_TEMP/graphify-venv/bin/graphify" cluster-only . --no-label
+          "$RUNNER_TEMP/graphify-venv/bin/graphify" export html
+          test -s graphify-out/graph.json
+          test -s graphify-out/graph.html
+          grep -q 'snapshot' graphify-out/graph.json
+          grep -q 'route_diagnostic' graphify-out/graph.json

@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.key
+graphify-out/
+runs/
+*evidence*.json
+!contract.json
+*.html
