@@ -1,29 +1,80 @@
-# Pryntor Evidence Harness: zero-spend R0
+# Pryntor Sentinel V2
 
-This is a runnable, deliberately **offline** prototype, not an installed agent, a production release gate or a deployment. No accounts, keys, third-party packages, Graphify installation or Jev API calls are needed. It provides the most important control from the Jev harness article: independent proof of every mandatory requirement.
+**Inspectable, fail-closed acceptance for agent-written code.** Pure Python 3.10+, offline, no runtime packages or API keys. Source-code graph analysis is an optional, separate workflow using the reviewed Graphify package. The evidence harness does not summon an agent, perform autonomous repairs, connect to Jev, or deploy code.
 
-## Quickstart
+## What changed from R0
+
+- **A usable audit page:** generates a static `sentinel-dashboard.html`, with a requirement-by-requirement evidence table and explicit release HOLD. Strict CSP, escaped untrusted strings, no external resources.
+- **Approval at the command boundary:** a run/replay requires a **pinned, reviewed canonical contract digest**. Merely having a contract file isn't approval. This is defense against accidental drift, not an authorization server.
+- **More defensible evidence:** V2 records have a unique run ID, policy ID, project and contract digests, per-check stdout/stderr hashes and byte counts, and a record checksum. Missing, modified, incomplete and stale records HOLD. A checksum is NOT authentication or a digital signature; anyone able to alter records can recompute it.
+- **Safer bounded checks:** direct process invocation, new process session, terminate same-session descendants even after a parent timeout, optional short redacted output only, untrusted environment credentials stripped, memory-bounded capture. The check still has host network, filesystem permissions and could evade process groups: use a locked-down disposable runner.
+- **Less misleading model routing:** optional Choice suggestions require valid distributions and separately satisfy both confidence and winner-probability thresholds. The model never chooses executable text or clears release.
+- **Adversarial regression suite:** original 17 tests plus 16 new integrity, process, privacy, dashboard and CLI checks, 33 total. The sample has an intentional R2 failure.
+
+## Run a zero-cost demonstration
 
 ```bash
-cd pryntor_evidence_harness
+cd pryntor-evidence-harness
 python3 -B -m unittest discover -s tests -v
-python3 -B harness.py run --project fixture --contract contract.json --evidence /tmp/pryntor-run.json --claim 'Worker says DONE'
-# exit 2, HOLD: title passes, description fails
-python3 -B harness.py replay --project fixture --contract contract.json --evidence /tmp/pryntor-run.json
+python3 -B harness.py digest --contract contract.json
 ```
 
-Run from Python 3.10 or newer on Linux/macOS with `python3` in PATH. The harness computes a SHA256 snapshot of the project before and after each check, runs only **registered** commands, separately records worker claims, and makes a `contract_satisfied` decision only when all mandatory check results pass against the current snapshot. Any missing, stale, failing, mutated, crashing or unknown check holds. `release_authorized` is **always false** pending independent signoff.
+For the included `contract.json` the approved demo digest is:
 
-`route_diagnostic` is a pure function for a possible future Jev adapter. It strictly validates a typed Choice distribution, confidence and permitted check ID; its output is a suggestion or stop, never a shell invocation. Jev is NOT connected. There is no estimated gain, monetisation, semantic accuracy or 1,000x claim without new measurements.
+```
+2c818ceea2656b76bf125282c73213c251b077350d8aefc23b1e24a9d4a02699
+```
 
-**Security model:** The contract is a trusted code-owned registry. Its commands execute locally with the caller's permissions and MUST be code-reviewed. Do not let an AI model, untrusted PR, customer, or web page edit it or supply executable commands. Subprocesses run with an environment allowlist, excluding model API keys and ambient cloud credentials. `shell=False` and environment stripping are still not a sandbox. Run the harness in a disposable, least-privileged environment without secrets or network egress. Avoid logging sensitive output and avoid exposing generated evidence publicly. Digest checks detect staleness, not malicious forgery or cryptographic authenticity. This sample's fixture contains an intentional bug.
+After reviewing the contract, run once using unique output file paths **outside** the project:
 
-## Adoption gates
+```bash
+python3 -B harness.py run \
+  --project fixture --contract contract.json \
+  --approved-contract-sha256 2c818ceea2656b76bf125282c73213c251b077350d8aefc23b1e24a9d4a02699 \
+  --evidence /tmp/pryntor-sentinel-example.json \
+  --html /tmp/pryntor-sentinel-example.html \
+  --claim 'Worker says everything is finished'
+```
 
-1. Confirm company-owned private repository and select one synthetic, narrow requirement from PRY-26 / PRY-86.
-2. Add author-maintained checks and test missing, failing, stale, and recovery paths.
-3. Pin and security-review Graphify source/package, use its code-only local mode on non-sensitive fixture first, compare graph edges against actual source.
-4. Compare fixed/all diagnostic policies to optional Jev on held-out cases, with per-call explicit spend approval; default is no Jev calls.
-5. Require independent security and product QA, reviewed CI, cost confirmation and founder release approval before extending beyond R0.
+The intended exit status is **2 (HOLD)**. Title search passes, description search fails. The worker's claim is visible but not evidence. Replaying against the **same** project and approved contract digest also returns HOLD:
 
-Upstream inspiration: Graphify Labs `Graphify-Labs/graphify` (Apache-2.0), TypeSafe AI Jev, and `Archive228/jev-harness-engineering` (verify source rights before copying). No upstream code has been copied.
+```bash
+python3 -B harness.py replay \
+  --project fixture --contract contract.json \
+  --approved-contract-sha256 2c818ceea2656b76bf125282c73213c251b077350d8aefc23b1e24a9d4a02699 \
+  --evidence /tmp/pryntor-sentinel-example.json
+```
+
+The default record omits stdout/stderr tails to minimize accidental information disclosure. `--include-output` enables short, best-effort redacted tails for **synthetic checks only**. Evidence and HTML files are created with mode 0600 and not overwritten.
+
+## Actual guarantees and limits
+
+| Control | What it establishes | What it does not establish |
+|---|---|---|
+| Project SHA-256 | Byte changes across included regular files | Authenticity, excluded-path integrity, or malicious mutation-and-revert |
+| Pinned contract SHA-256 | Executed contract matches a supplied known digest | Who approved the digest, safe check content, or any authorization |
+| JSON record checksum | Accidental record alteration after capture | Protection against deliberate rewriting/forgery |
+| Bounded checks | Timeout and same-session descendant cleanup | Container sandboxing, egress control, or escaping children |
+| All checks pass | Defined contract currently satisfied | Security review, licensing, customer suitability, product release |
+| Model hint | Candidate allowlisted diagnostic only | Trustworthy confidence calibration or an executable action |
+
+**`release_authorized` is always `false`.** See `SECURITY.md` and `ROLLOUT.md` before pointing this at anything except disposable fixtures. Never run an untrusted contract or checkout on a privileged runner, and don't index live customer/private repos in hosted Graphify by default.
+
+## Architecture
+
+```
+Trusted and pinned contract
+        │
+        ├── Source snapshot before
+        │       └── Bounded registered checks, one by one
+        │               ├── Exit status + output digest
+        │               └── Source snapshot after
+        │
+        ├── Evidence record with audit checksum
+        ├── Deterministic policy evaluation (no LLM)
+        └── JSON verdict + static inspector
+             ├── HOLD: missing/failing/stale/invalid
+             └── CONTRACT SATISFIED, RELEASE STILL HELD
+```
+
+**Company rollout:** PRY-26, PRY-86, PRY-15. Existing single-dispatcher, security, spending, product-review and founder release authorities remain unchanged. Hosted CI results and exact source heads must be checked on the GitHub PR.
