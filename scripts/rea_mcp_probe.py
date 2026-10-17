@@ -50,7 +50,7 @@ def validate_fixture_evidence(evidence):
                 for obs in node.get("observations", []) if isinstance(obs, dict)]
     if not all(any(filename in name for name in observed) for filename in ("index.js", "format.js")):
         raise RuntimeError("Evidence did not observe both fixture modules")
-    if not any(edge.get("relationship") == "imports" for edge in graph.get("edges", [])):
+    if not any(edge.get("relation") == "imports" for edge in graph.get("edges", [])):
         raise RuntimeError("Evidence did not recover fixture import relationship")
     return len(graph["nodes"])
 
@@ -164,7 +164,7 @@ for raw in sys.stdin:
  elif p.get('method')=='tools/list':
   print(json.dumps({'jsonrpc':'2.0','id':p['id'],'result':{'tools':[{'name':'analyze_javascript_application','description':'X'*3_000_000,'inputSchema':{'type':'object'}}]}}),flush=True)
  elif p.get('method')=='tools/call':
-  print(json.dumps({'jsonrpc':'2.0','id':p['id'],'result':{'isError':False,'structuredContent':{'operation':'analyze_javascript_application','provider':{'id':'rea-javascript-application'},'normalized_result':{'graph':{'nodes':[{'observations':[{'label':'index.js'}]},{'observations':[{'label':'format.js'}]}],'edges':[{'relationship':'imports'}]}}}}}),flush=True)
+  print(json.dumps({'jsonrpc':'2.0','id':p['id'],'result':{'isError':False,'structuredContent':{'operation':'analyze_javascript_application','provider':{'id':'rea-javascript-application'},'normalized_result':{'graph':{'nodes':[{'observations':[{'label':'index.js'}]},{'observations':[{'label':'format.js'}]}],'edges':[{'relation':'imports'}]}}}}}),flush=True)
 """
     with tempfile.TemporaryDirectory() as base:
         target = Path(base) / "rea-owned-js"

@@ -51,7 +51,7 @@ jobs:
           observed = [str(obs.get("label", "")) for node in graph["nodes"] for obs in node.get("observations", []) if isinstance(obs, dict)]
           if not all(any(filename in name for name in observed) for filename in ("index.js", "format.js")):
               raise SystemExit("FAIL: graph omitted source fixture modules")
-          if not any(edge.get("relationship") == "imports" for edge in graph.get("edges", [])):
+          if not any(edge.get("relation") == "imports" for edge in graph.get("edges", [])):
               raise SystemExit("FAIL: graph omitted source import relationship")
           print(json.dumps({"status": "real-rea-static-js-analysis-passed", "operation": record["operation"], "node_count": len(graph["nodes"]), "evidence_bytes": target.stat().st_size}))
           PY
