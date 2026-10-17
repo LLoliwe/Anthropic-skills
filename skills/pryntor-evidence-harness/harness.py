@@ -72,6 +72,9 @@ def execute(project: Path, contract: dict, claim: str = '') -> dict:
     project = project.resolve(strict=True)
     initial = snapshot(project)
     records = {}
+    # Deliberately strip API keys, cloud credentials and agent configuration.
+    subprocess_env = {key: os.environ[key] for key in ('PATH', 'LANG', 'LC_ALL', 'SYSTEMROOT') if key in os.environ}
+    subprocess_env.update({'PYTHONDONTWRITEBYTECODE': '1', 'PYTHONNOUSERSITE': '1'})
     for check_id, spec in contract['checks'].items():
         before = snapshot(project)
         started = datetime.now(timezone.utc).isoformat()
@@ -79,7 +82,7 @@ def execute(project: Path, contract: dict, claim: str = '') -> dict:
         try:
             result = subprocess.run(spec['command'], shell=False, cwd=project, capture_output=True,
                                     text=True, errors='replace', timeout=spec.get('timeout_seconds', 30),
-                                    env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'})
+                                    env=subprocess_env)
             code, stdout, stderr = result.returncode, result.stdout[-MAX_OUTPUT:], result.stderr[-MAX_OUTPUT:]
             state = 'executed'
         except (subprocess.TimeoutExpired, OSError) as error:
