@@ -4,10 +4,10 @@ import {readFile} from 'node:fs/promises';
 import {analyze} from './inspector.mjs';
 import {CONCEPT_SAMPLES} from './concept-samples.mjs';
 
-test('hero and Kiko guide card are original vector-only brand elements',async()=>{
+test('hero and original expressive Ari card are both real scalable vector art',async()=>{
  const html=await readFile(new URL('./index.html',import.meta.url),'utf8');
  assert.equal((html.match(/<svg class="ari-illustration ari-v8/g)||[]).length,2);
- assert.match(html,/class="ari-illustration ari-v8"/);
+ assert.match(html,/class="ari-illustration ari-v8 ari-v8-hero"/);
  assert.match(html,/class="v5-graph-wires"/);
  assert.match(html,/id="v5GraphNodes"/);
  assert.match(html,/id="v5DemoStage"/);
