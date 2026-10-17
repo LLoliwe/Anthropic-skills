@@ -41,7 +41,7 @@ test('real BUILT Void Node server serves HTML/API without credentials or dummy s
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
     assert.ok(html, 'Built Node server failed real HTTP routes. Logs: ' + logs);
-    assert.match(html, /Pryntor Void Pilot/);
+    assert.match(html, /Launch Desk — Pryntor/);
     assert.match(html, /href="\/api\/health"/);
     assert.deepEqual(api, { ok: true, service: 'pryntor-void-pilot', deployment: 'local-only' });
     assert.doesNotMatch(html + JSON.stringify(api), new RegExp(marker));
