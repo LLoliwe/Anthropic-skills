@@ -1,0 +1,46 @@
+{
+  "venture": "LVL7 primary science experience, internal R1",
+  "userTask": "Manipulate water energy to see phase changes, then find the first reasoning error",
+  "designDirection": "Original deep-sea scientific editorial illustration with warm, contextual water guide Pip, not an Asko visual clone",
+  "references": [
+    {
+      "creator": "Pryntor Asko V2 original founder-approved design",
+      "url": "https://github.com/LLoliwe/Anthropic-skills/pull/24",
+      "mechanism": "Human-centred original illustration and genuinely working source-grounded helper",
+      "originalTranslation": "Pip is a fresh illustrated water droplet whose controls explain actual model state and guide an experiment",
+      "doNotCopy": "Do not reuse Ari, black cat, Asko wordmark, composition, illustrations or copied palette",
+      "rights": "Pryntor owns internal reference mechanism; Asko remains brand/naming-review pending"
+    },
+    {
+      "creator": "Marble Skill Taxonomy by Generative Spark",
+      "url": "https://github.com/withmarbleapp/os-taxonomy",
+      "mechanism": "Children learn from prerequisite concept links and directly manipulated experiments",
+      "originalTranslation": "Original six-node fixture and custom water beaker connected to deterministic local controls",
+      "doNotCopy": "No Marble proprietary Water Lab code, verbatim dataset records or externally licensed curricula",
+      "rights": "Marble ODbL 1.0 graph, CC BY-SA 4.0 authored text; separate external standards rights; no Marble data vendored"
+    },
+    {
+      "creator": "Pryntor Water Lab internal engineering R0",
+      "url": "https://github.com/LLoliwe/Anthropic-skills/pull/30",
+      "mechanism": "Real interactive beaker and heating curve update from original deterministic physical model",
+      "originalTranslation": "Keep original R0 intact and add a separate first-run reference-translated guide",
+      "doNotCopy": "Do not overwrite R0 or claim prior educational approval",
+      "rights": "Original Pryntor internal codebase; release separately gated"
+    }
+  ],
+  "originalAssets": [
+    "Hand-authored fresh Pip droplet SVG illustrated expressly for LVL7, not copied from Asko or Marble"
+  ],
+  "interaction": "Pip jumps to boiling, explains the current waterState energy and phase, and opens the real concept pathway using keyboard-operable native buttons",
+  "dataTruth": "Temperature and vapour percentages come from original deterministic simulator; helper not falsely called an AI model",
+  "learnerSafety": "Illustrated no-loss 100 gram pure water simulation only; no real hazardous heating instructions or mastery claim; independent educator review pending",
+  "privacy": "No network fetch, sign-in, tracking, learner records or analytics in standalone HTML",
+  "reviewState": "Asko founder approved as historical baseline only; this LVL7 Pip concept has not received independent creative, expert accessibility or pedagogy approval",
+  "releaseStatus": "internal-r1-prototype",
+  "testFiles": [
+    "browser_smoke.py"
+  ],
+  "artifactFiles": [
+    "index.html"
+  ]
+}
