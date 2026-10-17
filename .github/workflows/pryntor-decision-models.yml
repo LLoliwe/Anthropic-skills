@@ -1,0 +1,29 @@
+name: Pryntor Decision Models offline pilot
+on:
+  pull_request:
+    paths:
+      - "skills/pryntor-decision-models/**"
+      - ".github/workflows/pryntor-decision-models.yml"
+  push:
+    branches: [main]
+    paths:
+      - "skills/pryntor-decision-models/**"
+      - ".github/workflows/pryntor-decision-models.yml"
+permissions:
+  contents: read
+jobs:
+  synthetic-offline-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax validation
+        run: python3 -m py_compile skills/pryntor-decision-models/scripts/decision_models.py
+      - name: Run offline tests
+        run: python3 -m unittest discover -s skills/pryntor-decision-models/tests -v
+      - name: Dry run (NO API KEY, NO LIVE)
+        env:
+          PRYNTOR_DM_LIVE: "0"
+        run: python3 skills/pryntor-decision-models/scripts/decision_models.py --case 0 > /tmp/dm-offline.json
+      - name: Verify offline marker
+        run: python3 -c "import json; assert json.load(open('/tmp/dm-offline.json'))['mode'] == 'OFFLINE'"
