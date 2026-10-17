@@ -27,8 +27,8 @@ test('Coded reference layout is live semantic HTML, not a whole screenshot',asyn
  }
  assert.match(html,/class="concept-sidebar"/);
  assert.match(html,/data-concept-sample="web"/);
- assert.match(html,/class="ari-illustration ari-v6"/);
- assert.match(html,/class="ari-illustration ari-card-illustration ari-v6"/);
+ assert.match(html,/class="kiko-art"/);
+ assert.match(html,/class="kiko-art kiko-card-art"/);
  assert.match(html,/no customer files leave this browser|no source upload|no upload/i);
  assert.match(html,/connect-src 'none'/);
  assert.doesNotMatch(html,/id="fakeChat"/);
@@ -36,7 +36,7 @@ test('Coded reference layout is live semantic HTML, not a whole screenshot',asyn
 test('No raster cutouts in hero or the interactive guide card',async()=>{
  const html=await readFile(new URL('./index.html',import.meta.url),'utf8');
  assert.doesNotMatch(html,/concept-(?:hero|portrait)\.webp/);
- assert.equal((html.match(/<svg class="ari-illustration/g)||[]).length,2);
+ assert.equal((html.match(/<svg class="kiko-art/g)||[]).length,2);
  assert.match(html,/class="v5-graph-wires"/);
  assert.match(html,/id="v5GraphNodes"/);
  assert.match(html,/id="v5DemoStage"/);
