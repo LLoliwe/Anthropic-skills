@@ -5,7 +5,8 @@ export const GET = defineHandler((c) => {
   c.header('X-Content-Type-Options', 'nosniff');
   return c.json({
     ok: true,
-    service: 'pryntor-void-pilot',
-    deployment: 'local-only',
+    service: 'pryntor-launch-desk',
+    runtime: 'node',
+    release: 'beta',
   });
 });

@@ -1,5 +1,10 @@
 # Void Node readiness gate — Pryntor — 17 Oct 2026
 
+## Public beta deployment — verified
+
+A live **public beta** is hosted at https://pryntor-launch-desk.onrender.com on **Render Free**, region Frankfurt, source commit `efaf21c03890144d6972dd642329cf79d9b42d2c`. Render deployment `dep-db9mgb6q1p3s738qa530` reported LIVE; independent HTML and health HTTPS fetches returned status 200. Service has `autoDeploy=no` and uses Node 24.21.0. The six-gate application stores user input **only in browser localStorage** and exports JSON locally; it does not accept server-side customer content. Costs are $0 plan selection, subject to Render bandwidth/build usage limits and suspension. Free instances spin down after 15 idle minutes and are explicitly unsuitable for reliable commercial production; third-party browser-interaction QA was attempted but timed out. **Commercial release and independent security approval remain HOLD.**
+
+
 ## Verified release matrix
 
 | Gate | Evidence | Status |
