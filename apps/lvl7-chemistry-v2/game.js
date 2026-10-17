@@ -30,9 +30,6 @@
   {cation:'Al',cCharge:3,anion:'O',aCharge:-2,name:'Aluminium oxide',why:'2 Al³⁺ provide +6; 3 O²⁻ provide −6, forming Al₂O₃.'},
   {cation:'K',cCharge:1,anion:'O',aCharge:-2,name:'Potassium oxide',why:'Two K⁺ ions neutralize one O²⁻, giving K₂O.'}
  ];
- const PERIODIC=[,cCharge:3,anion:'O',aCharge:-2,name:'Aluminium oxide',why:'2 Al³⁺ provide +6; 3 O²⁻ provide −6, forming Al₂O₃.'},
-  {cation:'K',cCharge:1,anion:'O',aCharge:-2,name:'Potassium oxide',why:'Two K⁺ ions neutralize one O²⁻, giving K₂O.'}
- ];
  const PERIODIC=[
   {group:'alkali metals',tiles:['Na','Ne','K','Mg','Li','Cl'],valid:['Na','K','Li'],tip:'Think Group 1 (excluding hydrogen).'},
   {group:'halogens',tiles:['Br','N','Cl','F','O','I'],valid:['Br','Cl','F','I'],tip:'These are Group 17 elements.'},
