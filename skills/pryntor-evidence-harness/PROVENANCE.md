@@ -7,3 +7,7 @@
 - REA is for binaries and packages, not an automatic substitute for source-code Graphify mapping. Prior company REA skill remains separately governed.
 
 Install any third-party component only on a specific, reviewed version. Verify license, hash, dependencies, network behavior and target-data rights first. Do not treat links or package names as proof of installation.
+
+## Reviewed Graphify candidate (not yet production installed)
+
+Official published candidate: graphifyy 0.9.92, released 16 Oct 2026 from Graphify-Labs/graphify commit 86c57be8204673c2a1b9849a3292a7dd3ab373d8. PyPI attested wheel sha256: `9722846e627a369150107dd792145c3e3a53e3d3da46f7a7bff9f96b75da857c`. Source license Apache-2.0. The optional code-only CLI path is `graphify extract . --code-only`, `graphify cluster-only . --no-label`, `graphify export html`. This is a candidate pin, not a full transitive dependency audit.
