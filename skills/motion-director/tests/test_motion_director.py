@@ -111,5 +111,31 @@ class MotionDirectorTests(unittest.TestCase):
         self.assertGreaterEqual(report["shot_metrics"][0]["mean_frame_difference"], 0)
 
 
+    def test_card_layout_prevents_occlusion(self):
+        boxes = [md.card_geometry(i) for i in range(3)]
+        for i, (left, top, right, bottom) in enumerate(boxes):
+            self.assertGreaterEqual(left, 60)
+            self.assertGreaterEqual(top, 300)
+            self.assertLessEqual(right, 940)
+            self.assertLessEqual(bottom, 855)
+            if i:
+                self.assertGreaterEqual(top - boxes[i-1][3], 15)
+
+    def test_card_colors_remain_visible_at_end_of_shot(self):
+        # Regression for the original 230px cards at 112px spacing:
+        # later cards covered earlier labels/content in the rendered film.
+        from PIL import ImageColor
+        frame = md.seek(self.p, 13.95)
+        expected = ["#DCE3D9", "#D2DBD0", "#FDFDF8"]
+        for i, color in enumerate(expected):
+            x1, top, x2, bottom = md.card_geometry(i)
+            x, y = int(850 * 0.72), int((top + 25) * 0.72)
+            actual = frame.getpixel((x, y))
+            target = ImageColor.getrgb(color)
+            self.assertLess(max(abs(a-b) for a, b in zip(actual, target)), 15,
+                            f"Card {i+1} is obscured or out of frame")
+
+
+
 if __name__ == "__main__":
     unittest.main()
