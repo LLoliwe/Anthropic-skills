@@ -1,0 +1,17 @@
+{
+  "name": "pryntor-void-pilot",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "smoke": "node --test test/smoke.mjs",
+    "policy": "node ../../scripts/policy-check.mjs"
+  },
+  "devDependencies": {
+    "void": "1.1.11",
+    "vite": "8.1.2",
+    "typescript": "5.9.3"
+  }
+}

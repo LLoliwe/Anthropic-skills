@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+const root = fileURLToPath(new URL('../', import.meta.url));
+const pkg = JSON.parse(readFileSync(root + 'examples/hello/package.json', 'utf8'));
+assert.equal(pkg.private, true);
+assert.equal(pkg.devDependencies.void, '1.1.11');
+assert.equal(pkg.scripts.build, 'vite build');
+assert.equal(pkg.scripts.smoke, 'node --test test/smoke.mjs');
+const workflow = readFileSync(fileURLToPath(new URL('../../../.github/workflows/pryntor-void-lab.yml', import.meta.url)), 'utf8');
+assert.doesNotMatch(workflow, /\bvoid deploy\b|CLOUDFLARE_API_TOKEN:|VOID_TOKEN:/);
+assert.match(workflow, /npm run build/);
+assert.match(workflow, /npm run smoke/);
+console.log('policy: dependency pin, no deploy, build and HTTP smoke checked');
