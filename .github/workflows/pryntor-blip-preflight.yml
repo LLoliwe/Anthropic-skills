@@ -1,0 +1,32 @@
+name: Pryntor ad preflight offline CI
+on:
+  push:
+    paths:
+      - "skills/pryntor-ad-launch-guard/**"
+      - ".github/workflows/pryntor-blip-preflight.yml"
+  pull_request:
+    paths:
+      - "skills/pryntor-ad-launch-guard/**"
+      - ".github/workflows/pryntor-blip-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  synthetic-guard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Standard-library unit tests
+        run: |
+          set -euo pipefail
+          cd skills/pryntor-ad-launch-guard
+          python3 -m unittest discover -s tests -v
+      - name: Accept synthetic, reject live
+        run: |
+          set -euo pipefail
+          cd skills/pryntor-ad-launch-guard
+          python3 scripts/validate_manifest.py examples/synthetic.json | grep PASS_OFFLINE_ONLY
+          if python3 scripts/validate_manifest.py examples/rejected.json; then
+            echo 'Unsafe manifest wrongly accepted' >&2
+            exit 1
+          fi

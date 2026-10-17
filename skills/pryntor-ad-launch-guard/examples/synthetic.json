@@ -1,0 +1,29 @@
+{
+  "mode": "dry_run",
+  "approval_status": "test_only",
+  "live": false,
+  "spend_enabled": false,
+  "budget": 0,
+  "tenant": "pryntor-studios",
+  "account_id": "test_PRYNTOR01",
+  "objective": "traffic",
+  "campaign_name": "Synthetic ad test",
+  "adset_name": "Mock adset",
+  "ads": [
+    {
+      "name": "Synthetic hero",
+      "publish": false,
+      "enhancements_enabled": false,
+      "approved_rights": true,
+      "cta": "LEARN_MORE",
+      "placements": [
+        "feed",
+        "reels"
+      ],
+      "media": [
+        "assets/hero.png"
+      ],
+      "url": "https://example.com/?utm_source=meta&utm_medium=paid_social&utm_campaign=synthetic"
+    }
+  ]
+}
