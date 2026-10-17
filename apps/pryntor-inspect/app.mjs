@@ -1,5 +1,6 @@
 import {analyze,EXAMPLE,LIMITS} from './inspector.mjs';
 import {setupV1} from './v1-ui.mjs';
+import {CONCEPT_SAMPLES} from './concept-samples.mjs';
 const $=id=>document.getElementById(id);
 const filePicker=$('filePicker'),dropzone=$('dropzone'),empty=$('emptyView'),results=$('resultsView'),status=$('statusMessage');
 let report=null,selection=0;
@@ -67,6 +68,14 @@ async function scanFileObjects(fileList){
 }
 function openPicker(){filePicker.click()}
 function showSample(){try{render(analyze(EXAMPLE,{mode:'sample'}))}catch(e){setStatus(e.message)}}
+document.addEventListener('asko:load-concept-sample',event=>{
+ const name=String(event.detail||'');
+ if(!Object.hasOwn(CONCEPT_SAMPLES,name))return;
+ try{
+  const result=analyze(CONCEPT_SAMPLES[name],{mode:'sample'});result.sampleId=name;render(result);
+  $('reportTitle').textContent=name==='web'?'Original web app sample':name==='mobile'?'Original mobile UI sample':'Original marketing site sample';
+ }catch(err){setStatus(err.message||'Unable to load sample.');}
+});
 $('sampleButton').addEventListener('click',showSample);
 $('heroSample')?.addEventListener('click',()=>{showSample();location.hash='workspace'});
 dropzone.addEventListener('click',openPicker);
