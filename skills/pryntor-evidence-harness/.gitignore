@@ -8,3 +8,4 @@ graphify-out/
 runs/
 *evidence*.json
 !contract.json
+*.html
