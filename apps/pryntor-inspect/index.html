@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./styles.css">
   <script defer type="module" src="./app.mjs"></script>
   <script defer type="module" src="./asko-guide.mjs"></script>
+  <script defer type="module" src="./v3-ui.mjs"></script>
 </head>
 <body>
   <div class="site">
@@ -102,7 +103,7 @@
       <section id="workspace" class="workspace-section">
         <div class="section-top"><div><p class="overline">YOUR WORKSPACE</p><h2>Make sense of the messy bits.</h2><p class="section-lead">Pick files you own or have permission to review. Asko maps detected imports, groups notes and lets you explore relationships entirely on this device.</p></div><span class="section-number">01 / 03</span></div>
         <div class="workspace-shell">
-          <div class="workspace-header"><div class="workspace-title"><span class="app-icon">⌘</span><div><strong>Local code explorer</strong><span>Local workspace · V2 preview</span></div></div><span class="local-indicator"><span class="pulse"></span> LOCAL ONLY</span></div>
+          <div class="workspace-header"><div class="workspace-title"><span class="app-icon">⌘</span><div><strong>Local code explorer</strong><span>Local workspace · V3 lab preview</span></div></div><span class="local-indicator"><span class="pulse"></span> LOCAL ONLY</span></div>
           <div id="emptyView" class="empty-view">
             <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Choose or drop source files">
               <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 16V4m-4 4 4-4 4 4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
@@ -122,6 +123,26 @@
               <div class="result-panel detail-panel"><div class="panel-title"><h4>Selected file</h4><span id="fileType">—</span></div><div id="fileDetail" class="file-detail" aria-live="polite"></div></div>
             </div>
             <section class="v1-architecture" id="architecturePanel" aria-labelledby="graphHeading"><div class="v1-graph-heading"><div><p class="v1-small">02 · PROJECT CONNECTIONS</p><h4 id="graphHeading">How the pieces connect.</h4><p>This local map shows detected static relative imports. It is a helpful approximation, not compiler-accurate navigation.</p></div><span id="graphSummary">No files yet</span></div><div class="v1-graph-grid"><div class="v1-graph-canvas" id="graphCanvas" aria-label="Interactive module map"></div><div class="v1-graph-side"><p class="v1-small">FILES IN CONTEXT</p><div id="graphList" class="v1-graph-list"></div><p class="v1-impact" id="impactHint">Choose a file to see context.</p></div></div></section>
+            <section class="v3-lab" id="impactExplorer" aria-labelledby="v3Heading">
+              <div class="v3-lab-top"><div><span class="v3-eyebrow">03 / PROJECT INTELLIGENCE LAB</span><h4 id="v3Heading">Know what a change touches.</h4><p>Inspired by the navigation workflows of world-leading developer tools. Explore actual detected imports—not guessed AI answers.</p></div><span class="v3-local-pill">100% ON DEVICE</span></div>
+              <div class="v3-lab-grid">
+                <div class="v3-panel">
+                  <div class="v3-panel-head"><div><span class="v3-eyebrow">CHANGE IMPACT</span><h5>What depends on this?</h5></div><button id="v3Export" type="button" class="v3-export">Export impact ↓</button></div>
+                  <label class="v3-field-label" for="v3Target">Choose a module to trace</label>
+                  <select id="v3Target" class="v3-select" aria-label="Choose a file to trace reverse import dependencies"></select>
+                  <p class="v3-summary" id="v3Summary" role="status">Scan files to explore impact.</p>
+                  <div class="v3-impact-list" id="v3ImpactList"></div>
+                  <p class="v3-disclaimer">Paths are based on detected static relative imports in your selected files. Not compiler-accurate or proof of runtime impact.</p>
+                </div>
+                <div class="v3-panel">
+                  <div class="v3-panel-head"><div><span class="v3-eyebrow">QUICK FIND</span><h5>Find the right file, fast.</h5></div><span class="v3-shortcut">LOCAL INDEX</span></div>
+                  <label class="v3-field-label" for="v3Search">Search this scanned project</label>
+                  <div class="v3-search-wrap"><input type="search" id="v3Search" placeholder="Try index, ts, eval, TODO…" autocomplete="off"><button type="button" id="v3SearchClear" aria-label="Clear project search">×</button></div>
+                  <div id="v3SearchResults" class="v3-search-results" aria-live="polite"><p class="v3-empty">Search file names, extensions, or review-note titles.</p></div>
+                  <p class="v3-disclaimer">Search covers the report inventory and review-note metadata, not arbitrary source text, code symbols or the wider internet.</p>
+                </div>
+              </div>
+            </section>
             <div class="insights"><div class="panel-title"><h4>Review suggestions</h4><span>Evidence to review, not a security certificate</span></div><div class="v1-review-toolbar" id="reviewToolbar"><div class="v1-filter-pills" role="group" aria-label="Filter suggestions by severity"><button type="button" class="active" data-review-level="all" aria-pressed="true">All</button><button type="button" data-review-level="High" aria-pressed="false">High</button><button type="button" data-review-level="Review" aria-pressed="false">Review</button><button type="button" data-review-level="Info" aria-pressed="false">Info</button></div><label for="reviewQuery" class="sr-only">Search findings</label><input id="reviewQuery" type="search" placeholder="Search notes or files" autocomplete="off"><span id="reviewCount">0 shown</span></div><div id="findings"></div><p id="reviewEmpty" class="no-findings" hidden>No matching suggestions. Try clearing your filters.</p></div>
             <div class="report-note"><span class="info-glyph">i</span><span>These are static, heuristic observations. We do not execute source files, validate runtime behaviour or claim a full REA reverse-engineering or penetration test.</span></div>
           </div>
