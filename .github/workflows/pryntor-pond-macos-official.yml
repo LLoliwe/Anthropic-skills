@@ -44,7 +44,10 @@ jobs:
               env={k:v for k,v in os.environ.items() if k not in ('GITHUB_TOKEN','GH_TOKEN','OPENAI_API_KEY','ANTHROPIC_API_KEY','NPM_TOKEN','AWS_ACCESS_KEY_ID','AWS_SECRET_ACCESS_KEY')}
               env['HOME']=home
               env['POND_TEST_PUBLIC_ONLY']='1'
-              proc=subprocess.Popen([binary,'--mcp'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,env=env,start_new_session=True)
+              env['POND_SANDBOX']='1'
+              stderr_path=os.path.join(home,'startup-stderr.log')
+              stderr_sink=open(stderr_path,'wb')
+              proc=subprocess.Popen([binary,'--mcp'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=stderr_sink,env=env,start_new_session=True)
               try:
                   request={"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"pryntor-disposable-ci","version":"0.1"}}}
                   proc.stdin.write((json.dumps(request)+'\n').encode()); proc.stdin.flush()
@@ -67,6 +70,17 @@ jobs:
                           print('MCP initialize PASS', json.dumps({"server":server,"result":"PASS"}))
                           break
                   else:
+                      print("MCP subprocess status", proc.poll(), "observed", repr(observed))
+                      stderr_sink.flush()
+                      stderr_sink.close()
+                      try:
+                          from pathlib import Path
+                          brief=Path(stderr_path).read_text(errors='replace')
+                          print("MCP startup stderr (last 1500 chars)",brief[-1500:])
+                          for log_path in Path(home).rglob("*.log"):
+                              if log_path == Path(stderr_path): continue
+                              print("Disposable log",log_path.name,log_path.read_text(errors='replace')[-1000:])
+                      except OSError as exc: print("Cannot access startup logs",str(exc))
                       raise TimeoutError("MCP initialize produced no usable response within 35s")
                   if not observed or observed[-1]["id"]!=1:
                       raise RuntimeError("MCP initialize not confirmed: "+repr(observed))
