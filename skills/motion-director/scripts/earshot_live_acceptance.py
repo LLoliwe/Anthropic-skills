@@ -87,7 +87,7 @@ async def mcp():
             names=[t.name for t in tools.tools]
             expected={"measure","critique","describe","timeline","doctor"}
             if not expected.issubset(set(names)):raise AssertionError(f"missing advertised tools {expected-set(names)}")
-            response=await session.call_tool("measure",{"file":str(OUT/"original-ding.wav")})
+            response=await session.call_tool("measure",{"path":str(OUT/"original-ding.wav")})
             if response.is_error: raise RuntimeError("MCP measure returned error: "+str(response.content)[:800])
             text="\n".join(str(getattr(c,"text", "")) for c in response.content)
             if not text.strip():raise AssertionError("MCP measure no output")
