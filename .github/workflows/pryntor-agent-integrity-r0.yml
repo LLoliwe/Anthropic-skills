@@ -1,0 +1,31 @@
+name: Pryntor agent-integrity R0
+on:
+  pull_request:
+    paths:
+      - 'skills/pryntor-evidence-harness/**'
+      - '.github/workflows/pryntor-agent-integrity-r0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  synthetic-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: skills/pryntor-evidence-harness
+    steps:
+      - name: Checkout at the tested ref
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Run fail-closed unit tests (no keys or network)
+        run: python3 -B -m unittest discover -s tests -v
+      - name: Verify deliberately broken fixture holds
+        shell: bash
+        run: |
+          set +e
+          python3 -B harness.py run --project fixture --contract contract.json --evidence "$RUNNER_TEMP/pryntor-r0-synthetic.json" --claim "Worker said done"
+          result=$?
+          set -e
+          test "$result" -eq 2
