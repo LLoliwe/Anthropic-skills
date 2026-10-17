@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
+import os
 import subprocess
 from pathlib import Path
 from datetime import datetime, timezone
@@ -41,13 +43,18 @@ def get_video_metadata(path):
             'video_codec':video.get('codec_name'),'audio_present':any(s.get('codec_type')=='audio' for s in payload.get('streams',[]))}
 
 def sample_seconds(duration, interval, max_frames):
-    if interval<=0 or max_frames<1:raise ValueError('interval/max_frames invalid')
-    times=[0.0]; t=interval
-    while t<duration and len(times)<max_frames:
-        times.append(round(t,3)); t+=interval
-    if duration>0.5 and len(times)<max_frames and times[-1]<duration-0.2:
-        times.append(round(max(0,duration-0.1),3))
-    return times
+    if not all(math.isfinite(x) for x in (duration,interval)) or duration<=0 or interval<=0 or max_frames<1:
+        raise ValueError('duration/interval/max_frames invalid')
+    if max_frames==1: return [0.0]
+    last=round(max(0.0,duration-0.1),3)
+    # Cover the complete clip even when the requested interval exceeds the frame budget.
+    wanted=[0.0]
+    t=interval
+    while t<last and len(wanted)<max_frames:
+        wanted.append(round(t,3));t+=interval
+    if last>wanted[-1]:wanted.append(last)
+    if len(wanted)<=max_frames:return wanted
+    return [round(i*last/(max_frames-1),3) for i in range(max_frames)]
 
 def sample_frames(path,out,times):
     # Sampled frames alone cannot establish motion or causal facts.
@@ -66,30 +73,40 @@ def sample_frames(path,out,times):
     finally:cap.release()
     return written
 
-def intake(path,output_dir,owner,rights,privacy,allow_third_party_upload=False,frames=False,interval=1,max_frames=24):
+def intake(path,output_dir,owner,rights,privacy,frames=False,interval=1,max_frames=24):
     if not owner.strip():raise ValueError('source owner must be set')
     if rights not in RIGHTS or privacy not in TIERS:raise ValueError('unsupported rights/privacy setting')
     p=Path(path).resolve(); out=Path(output_dir).resolve()
     if not p.is_file():raise ValueError('video not found')
-    meta=get_video_metadata(p); out.mkdir(parents=True,exist_ok=True)
+    meta=get_video_metadata(p)
+    if not out.exists():out.mkdir(parents=True,mode=0o700)
+    if not out.is_dir():raise ValueError('output must be a directory')
+    # Private by default. Tighten the directory permissions before writing evidence.
+    out.chmod(out.stat().st_mode & 0o700)
     times=sample_seconds(meta['duration_seconds'],interval,max_frames)
     generated=sample_frames(p,out,times) if frames else []
     manifest={'schema':SCHEMA,'created_utc':datetime.now(timezone.utc).isoformat(),
          'source':{'filename':p.name,'sha256':sha256(p),'owner':owner,'rights':rights,
-                   'privacy_tier':privacy,'third_party_upload_allowed':bool(allow_third_party_upload)},
+                   'privacy_tier':privacy,'third_party_upload_allowed':False},
          'technical_metadata':meta,
          'sampling':{'mode':'local_frame_sampling' if frames else 'timestamps_only','requested_times_seconds':times,'frames':generated},
          'observations':[],'hypotheses':[],'human_review':{'status':'not_reviewed'},
          'limits':['This is technical intake, NOT a model interpretation or independent review.',
                    'Frame samples can miss transitions, actions, visual details and audio events.',
                    'No external upload has occurred.']}
-    (out/'evidence.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+    fd=os.open(out/'evidence.json',os.O_WRONLY | os.O_CREAT | os.O_TRUNC,0o600)
+    with os.fdopen(fd,'w',encoding='utf-8') as stream:
+        stream.write(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n')
     return manifest
 
 def validate(evidence):
     if evidence.get('schema')!=SCHEMA:raise ValueError('invalid evidence schema')
     src=evidence.get('source',{}); meta=evidence.get('technical_metadata',{})
-    if len(src.get('sha256',''))!=64:raise ValueError('source hash absent')
+    digest=src.get('sha256','')
+    if not isinstance(digest,str) or len(digest)!=64 or any(c not in '0123456789abcdef' for c in digest):
+        raise ValueError('invalid source SHA256')
+    if src.get('third_party_upload_allowed') is not False:
+        raise ValueError('third-party permission cannot be self-certified')
     if meta.get('duration_seconds',0)<=0:raise ValueError('duration absent')
     for o in evidence.get('observations',[]):
         if o.get('kind')!='observed' or not o.get('claim'):raise ValueError('observation must be marked observed with claim')
@@ -111,13 +128,13 @@ def main():
     i=sub.add_parser('intake');i.add_argument('video');i.add_argument('--out',required=True)
     i.add_argument('--owner',required=True);i.add_argument('--rights',choices=RIGHTS,default='unknown')
     i.add_argument('--privacy',choices=TIERS,default='restricted')
-    i.add_argument('--allow-third-party-upload',action='store_true');i.add_argument('--frames',action='store_true')
+    i.add_argument('--frames',action='store_true')
     i.add_argument('--interval',type=float,default=1);i.add_argument('--max-frames',type=int,default=24)
     v=sub.add_parser('validate');v.add_argument('json_file')
     a=p.parse_args()
     try:
         if a.cmd=='intake':
-            result=intake(a.video,a.out,a.owner,a.rights,a.privacy,a.allow_third_party_upload,a.frames,a.interval,a.max_frames)
+            result=intake(a.video,a.out,a.owner,a.rights,a.privacy,a.frames,a.interval,a.max_frames)
             print(json.dumps({'result':'LOCAL_INTAKE_ONLY','sha256':result['source']['sha256'],'duration_seconds':result['technical_metadata']['duration_seconds'],'frames':len(result['sampling']['frames']),'evidence':str(Path(a.out)/'evidence.json')}))
         else:
             validate(json.loads(Path(a.json_file).read_text(encoding='utf8')))
