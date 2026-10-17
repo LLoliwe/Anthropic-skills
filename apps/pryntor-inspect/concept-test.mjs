@@ -27,17 +27,19 @@ test('Coded reference layout is live semantic HTML, not a whole screenshot',asyn
  }
  assert.match(html,/class="concept-sidebar"/);
  assert.match(html,/data-concept-sample="web"/);
- assert.match(html,/src="\.\/concept-hero\.webp"/);
- assert.match(html,/src="\.\/concept-portrait\.webp"/);
+ assert.match(html,/class="ari-illustration"/);
+ assert.match(html,/class="ari-illustration ari-card-illustration"/);
  assert.match(html,/no customer files leave this browser|no source upload|no upload/i);
  assert.match(html,/connect-src 'none'/);
  assert.doesNotMatch(html,/id="fakeChat"/);
 });
-test('Visual assets are separately cropped reference artwork, not fake screenshots of code',async()=>{
- for(const name of ['concept-hero.webp','concept-portrait.webp']){
-  const item=await stat(new URL('./'+name,import.meta.url));
-  assert.ok(item.size>1000&&item.size<200000);
- }
+test('No raster cutouts in hero or the interactive guide card',async()=>{
+ const html=await readFile(new URL('./index.html',import.meta.url),'utf8');
+ assert.doesNotMatch(html,/concept-(?:hero|portrait)\.webp/);
+ assert.equal((html.match(/<svg class="ari-illustration/g)||[]).length,2);
+ assert.match(html,/class="v5-graph-wires"/);
+ assert.match(html,/id="v5GraphNodes"/);
+ assert.match(html,/id="v5DemoStage"/);
 });
 test('Demo navigation and image responsiveness are original and privacy-safe',async()=>{
  const script=await readFile(new URL('./concept-ui.mjs',import.meta.url),'utf8');

@@ -30,7 +30,7 @@ function closeGuide(){if(dialog.open)dialog.close();}
 function sample(){$('sampleButton').click();portrait.dataset.mood='proud';}
 $('askoUpload').addEventListener('click',()=>$('filePicker').click());
 $('askoSample').addEventListener('click',sample);
-$('askoDemoCard').addEventListener('click',sample);
+$('askoDemoCard').addEventListener('click',()=>document.dispatchEvent(new CustomEvent('asko:load-concept-sample',{detail:'web'})));
 $('featureAnalyze').addEventListener('click',()=>{if(!$('resultsView').hidden)$('workspace').scrollIntoView({behavior:'smooth'});else sample();});
 $('featureGraph').addEventListener('click',()=>{if(!$('resultsView').hidden)$('architecturePanel').scrollIntoView({block:'center',behavior:'smooth'});else sample();});
 $('featureShortcuts').addEventListener('click',()=>$('headerCommandButton').click());
