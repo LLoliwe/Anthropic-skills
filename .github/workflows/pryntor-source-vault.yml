@@ -4,12 +4,16 @@ on:
     paths:
       - 'tools/pryntor-source-vault/**'
       - 'skills/pryntor-source-vault/**'
+      - '.agents/skills/pryntor-source-vault/**'
+      - '.claude/skills/pryntor-source-vault/**'
       - '.github/workflows/pryntor-source-vault.yml'
   push:
     branches: [main]
     paths:
       - 'tools/pryntor-source-vault/**'
       - 'skills/pryntor-source-vault/**'
+      - '.agents/skills/pryntor-source-vault/**'
+      - '.claude/skills/pryntor-source-vault/**'
       - '.github/workflows/pryntor-source-vault.yml'
   workflow_dispatch:
 permissions:
@@ -34,3 +38,27 @@ jobs:
           python3 tools/pryntor-source-vault/vault.py --db "$tmp/vault.sqlite3" search 'capsule' | grep -F 'example.org/source'
           python3 tools/pryntor-source-vault/vault.py --db "$tmp/vault.sqlite3" export --out "$tmp/public.jsonl"
           test "$(wc -l < "$tmp/public.jsonl")" -eq 1
+      - name: Validate company agent routers and no auto-fetch setup
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          for path in [
+              Path(".agents/skills/pryntor-source-vault/SKILL.md"),
+              Path(".claude/skills/pryntor-source-vault/SKILL.md"),
+              Path("skills/pryntor-source-vault/COMPANY_ADOPTION.md"),
+              Path("AGENTS.md")
+          ]:
+              body = path.read_text(encoding="utf-8")
+              assert "Source Vault" in body, path
+          for path in [
+              Path(".agents/skills/pryntor-source-vault/SKILL.md"),
+              Path(".claude/skills/pryntor-source-vault/SKILL.md")
+          ]:
+              body = path.read_text(encoding="utf-8")
+              assert "not" in body.lower()
+              assert "COMPANY_ADOPTION.md" in body
+              assert "No Pond branding" in body
+          print("Company-wide agent-routing manifest PASS")
+          PY
