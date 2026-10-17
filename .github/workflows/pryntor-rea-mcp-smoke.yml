@@ -1,0 +1,35 @@
+name: Pryntor REA — isolated MCP contract probe
+
+on:
+  pull_request:
+    paths:
+      - "skills/pryntor-rea-company/**"
+      - "scripts/rea_mcp_probe.py"
+      - ".github/workflows/pryntor-rea-mcp-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mcp-stdio:
+    name: Real REA MCP initialize + tools/list (not production approval)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Check Node and local preflight without external code
+        run: |
+          node --version
+          python3 -m py_compile scripts/rea_mcp_probe.py
+          python3 scripts/rea_mcp_probe.py --self-test
+      - name: Exact-version real REA MCP handshake and tool enumeration
+        run: |
+          python3 scripts/rea_mcp_probe.py -- npx -y rea-agents@6.5.0 mcp
+      - name: Mark limited scope
+        if: always()
+        run: |
+          echo "MCP tool enumeration alone does not establish binary analysis, device control or production readiness."
