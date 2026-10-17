@@ -10,11 +10,13 @@
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./concept.css">
   <link rel="stylesheet" href="./live-scene.css">
+  <link rel="stylesheet" href="./expressive-v6.css">
   <script defer type="module" src="./app.mjs"></script>
   <script defer type="module" src="./asko-guide.mjs"></script>
   <script defer type="module" src="./v3-ui.mjs"></script>
   <script defer type="module" src="./concept-ui.mjs"></script>
   <script defer type="module" src="./live-scene.mjs"></script>
+  <script defer type="module" src="./expressive-v6.mjs"></script>
 </head>
 <body>
   <div class="site">
@@ -55,47 +57,111 @@
   <div class="v5-orb v5-orb-peach" aria-hidden="true"></div>
   <div class="v5-orb v5-orb-purple" aria-hidden="true"></div>
   <div class="v5-orb v5-orb-mint" aria-hidden="true"></div>
-  <span class="v5-scribble" aria-hidden="true">Let’s look<br>inside ♡</span>
+  <span class="v5-scribble" aria-hidden="true">let’s find<br>the story ♡</span>
   <span class="v5-decor decor-a" aria-hidden="true">✳</span><span class="v5-decor decor-b" aria-hidden="true">✦</span>
-  <button type="button" id="askoMascot" class="v5-ari-button" aria-label="Meet Ari. Open the interactive, on-device guide" title="Talk with Ari"><svg class="ari-illustration" viewBox="0 0 650 520" role="img" aria-label="Original vector illustration of Ari, a smiling person wearing a cap, with a black cat">
-              <defs>
-                <linearGradient id="shirt" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ffebe1"/><stop offset="1" stop-color="#ef98aa"/></linearGradient>
-                <linearGradient id="shoe" x1="0" x2="1"><stop stop-color="#f2f6ed"/><stop offset="1" stop-color="#adcfc4"/></linearGradient>
-              </defs>
-              <path d="M45 486C14 443 51 374 116 370C155 317 255 328 287 352C366 326 489 369 539 374C608 380 650 437 629 497H45Z" fill="#c7b3eb"/>
-              <ellipse cx="325" cy="492" rx="266" ry="17" fill="#44346d" opacity=".12"/>
-              <path d="M154 315C111 273 122 183 187 153C216 94 307 81 361 125C415 107 464 138 473 190C527 202 542 275 503 315C534 358 505 407 475 407H163C112 387 116 350 154 315Z" fill="#1b1c29"/>
-              <g fill="#252334"><circle cx="162" cy="213" r="49"/><circle cx="196" cy="161" r="47"/><circle cx="260" cy="133" r="54"/><circle cx="344" cy="131" r="56"/><circle cx="417" cy="174" r="49"/><circle cx="475" cy="238" r="50"/><circle cx="455" cy="314" r="47"/><circle cx="174" cy="303" r="49"/></g>
-              <path d="M212 238C190 199 199 159 238 146C280 129 352 145 371 189C383 229 355 284 312 305C261 310 234 278 212 238Z" fill="#bf754e"/>
-              <path d="M222 259Q264 312 329 279L325 346H242Z" fill="#a85f42"/>
-              <path d="M222 213Q238 204 250 208M298 205Q312 197 326 202" fill="none" stroke="#342525" stroke-width="7" stroke-linecap="round"/>
-              <ellipse class="ari-pupil" cx="241" cy="223" rx="5" ry="6.2" fill="#25202b"/><ellipse class="ari-pupil" cx="312" cy="218" rx="5" ry="6.2" fill="#25202b"/>
-              <path d="M280 217L273 248Q276 252 284 249" fill="none" stroke="#965337" stroke-width="4" stroke-linecap="round"/>
-              <path class="ari-smile" d="M250 261Q276 279 300 256" fill="none" stroke="#432525" stroke-width="5" stroke-linecap="round"/>
-              <path d="M173 168C200 121 237 109 292 111C335 109 369 127 377 163L185 181Z" fill="#edddcd" stroke="#33333d" stroke-width="5"/>
-              <path d="M183 171C254 151 334 151 392 174C412 182 413 193 392 200C335 188 268 185 189 192Z" fill="#416e63" stroke="#30343a" stroke-width="4"/>
-              <path d="M203 125C245 100 316 96 354 127" fill="none" stroke="#fff1d8" stroke-width="8" stroke-linecap="round"/>
-              <path d="M208 331C239 298 295 301 318 320C360 296 410 316 431 356L484 453L370 484L278 426L172 458L99 415C129 377 163 355 208 331Z" fill="url(#shirt)" stroke="#302a37" stroke-width="5"/>
-              <path d="M235 315Q269 340 308 318" fill="none" stroke="#fffcf5" stroke-width="10"/>
-              <path d="M416 364Q442 389 451 427" fill="none" stroke="#e9869d" stroke-width="10" stroke-linecap="round"/>
-              <path d="M120 411C148 388 181 398 217 420L292 460L228 504L123 486C69 480 64 448 120 411Z" fill="#172b2d" stroke="#263035" stroke-width="5"/>
-              <path d="M270 412C315 381 376 399 410 440L477 496H311L238 464Z" fill="#1a3230" stroke="#263035" stroke-width="5"/>
-              <path d="M122 467C167 455 198 469 229 488L205 517H70Q51 489 79 475Z" fill="url(#shoe)" stroke="#34403d" stroke-width="5"/>
-              <path d="M330 481C388 467 429 474 477 502L462 519H302C288 504 304 486 330 481Z" fill="url(#shoe)" stroke="#34403d" stroke-width="5"/>
-              <path d="M79 496L194 496M314 505L459 505" stroke="#4c8378" stroke-width="6"/>
-              <path d="M125 421C157 415 170 441 186 459" fill="none" stroke="#c4745b" stroke-width="20" stroke-linecap="round"/>
-              
-              <path d="M104 298l-16 -27m43 23l12 -31M477 115l19 -20m-3 33l24 -4" fill="none" stroke="#ffb828" stroke-width="10" stroke-linecap="round"/>
-              <circle cx="499" cy="102" r="6" fill="#fa688e"/><circle cx="76" cy="329" r="8" fill="#55cfa7"/>
-            </svg><span class="v5-ari-hint">Say hi to Ari ↗</span></button>
-<svg class="v5-foreground-cat" viewBox="441 306 210 190" aria-hidden="true" focusable="false"><g class="asko-cat">
+  <button type="button" id="askoMascot" class="v5-ari-button" aria-label="Meet Ari. Open the interactive, on-device guide" title="Talk with Ari"><svg class="ari-illustration ari-v6" viewBox="0 0 760 740" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Original high-detail vector illustration of Ari relaxing in a striped sweatshirt, a cream cap and green trainers">
+  <defs>
+    <linearGradient id="v6Hair" x1="0" x2="1" y1="0" y2=".9"><stop stop-color="#191a2c"/><stop offset=".62" stop-color="#303049"/><stop offset="1" stop-color="#55344c"/></linearGradient>
+    <linearGradient id="v6Skin" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e6a477"/><stop offset=".55" stop-color="#cf855b"/><stop offset="1" stop-color="#ac5d4b"/></linearGradient>
+    <linearGradient id="v6Jumper" x1="0" x2="0.9" y1="0" y2="1"><stop stop-color="#fff9ec"/><stop offset=".48" stop-color="#fff0ea"/><stop offset="1" stop-color="#f8c3ca"/></linearGradient>
+    <linearGradient id="v6Pants" x1="0" x2=".9" y1="0" y2="1"><stop stop-color="#1b3540"/><stop offset="1" stop-color="#081a2b"/></linearGradient>
+    <linearGradient id="v6Shoe" x1="0" x2="1" y1="0" y2=".8"><stop stop-color="#fffef5"/><stop offset=".6" stop-color="#dfebe4"/><stop offset="1" stop-color="#96c5af"/></linearGradient>
+    <radialGradient id="v6Cheek"><stop stop-color="#e89b92" stop-opacity=".7"/><stop offset="1" stop-color="#ebaa9c" stop-opacity="0"/></radialGradient>
+    <clipPath id="v6SweatClip"><path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492 Q530 534 495 574 Q386 607 252 596 Q182 570 162 499 Q158 431 215 388Z"/></clipPath>
+  </defs>
+  <ellipse cx="365" cy="704" rx="328" ry="26" fill="#423962" opacity=".12"/>
+  <path d="M48 663 Q79 622 130 628 Q174 572 265 588 Q331 556 407 582 Q513 550 596 600 Q701 613 733 680 L732 709 L44 709Z" fill="#b19cde"/>
+  <path d="M76 670 Q197 620 320 659 Q424 605 586 654 Q663 654 714 678 L712 707 L66 707Z" fill="#cfb7f5" opacity=".75"/>
+  <!-- textured hair silhouette, with loose curls and an independent reactive tuft -->
+  <g class="v6-hair-back">
+    <path d="M241 306 Q190 286 185 242 Q167 211 195 169 Q190 115 240 100 Q278 52 347 67 Q402 37 459 66 Q541 72 570 144 Q607 185 576 242 Q615 298 578 345 Q625 401 601 455 Q634 508 585 540 Q582 600 519 610 Q454 643 403 588 Q344 616 314 566 Q232 599 193 534 Q151 508 177 461 Q138 405 188 370 Q166 334 241 306Z" fill="url(#v6Hair)" stroke="#252235" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M218 221 C193 268 224 311 187 347 M561 210 C589 276 540 313 575 369 M204 429 C182 471 199 518 244 534 M560 410 C589 481 545 543 509 553" stroke="#695273" stroke-width="10" stroke-linecap="round" opacity=".52" fill="none"/>
+    <path d="M254 106 Q288 67 350 70 M500 101 Q557 144 549 189 M218 338 Q172 386 204 427" fill="none" stroke="#87708b" stroke-width="6" stroke-linecap="round" opacity=".33"/>
+    <g fill="none" stroke="#343148" stroke-width="19" stroke-linecap="round">
+      <path d="M167 360 Q122 391 162 431"/><path d="M176 449 Q135 480 191 516"/><path d="M568 306 Q623 341 570 394"/><path d="M576 440 Q615 487 570 524"/>
+    </g>
+  </g>
+  <!-- back leg, socks, rear shoe -->
+  <path d="M285 517 Q338 478 405 499 Q448 513 465 564 Q480 589 451 617 L395 657 Q338 676 280 651 Q242 630 260 586Z" fill="url(#v6Pants)" stroke="#243041" stroke-width="8"/>
+  <path d="M310 558 Q325 589 300 617 M406 540 Q430 556 433 580" fill="none" stroke="#4a6470" stroke-width="7" opacity=".55" stroke-linecap="round"/>
+  <path d="M270 616 Q230 629 219 669 L179 676 Q140 684 149 707 Q179 731 276 711 L345 693 Q345 652 313 629Z" fill="url(#v6Shoe)" stroke="#38534e" stroke-width="7"/>
+  <path d="M158 695 Q230 704 324 675 M221 661 L261 665 M213 675 L256 678" stroke="#5f9685" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M163 711 Q234 720 329 693" stroke="#f9f7ea" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <!-- near folded leg and knee -->
+  <path d="M345 514 Q383 476 468 471 Q548 457 605 501 Q646 540 626 590 L583 642 Q536 680 474 659 Q415 657 384 611 Q357 590 345 514Z" fill="url(#v6Pants)" stroke="#202c40" stroke-width="9"/>
+  <path d="M391 548 Q433 526 474 534 M516 610 Q572 615 608 571" fill="none" stroke="#516878" stroke-width="7" opacity=".58" stroke-linecap="round"/>
+  <!-- near high quality chunky sneaker, toe points right -->
+  <g class="v6-front-shoe">
+    <path d="M518 614 Q552 599 577 610 Q603 603 632 622 L695 646 Q730 658 720 689 Q702 709 660 711 L553 705 Q515 703 491 687 Q488 652 518 614Z" fill="url(#v6Shoe)" stroke="#355a55" stroke-width="8"/>
+    <path d="M588 615 Q621 636 643 653 Q660 660 699 659" fill="none" stroke="#f6f5e9" stroke-width="12"/>
+    <path d="M534 633 L603 672 M548 623 L616 657" fill="none" stroke="#50a78f" stroke-width="7" stroke-linecap="round"/>
+    <path d="M510 678 Q620 710 713 675" fill="none" stroke="#457c70" stroke-width="8" stroke-linecap="round"/>
+    <path d="M510 688 Q622 719 717 687" fill="none" stroke="#f9f9ef" stroke-width="14" stroke-linecap="round"/>
+    <path d="M678 651 Q713 660 710 681" fill="none" stroke="#ffb39c" stroke-width="11" stroke-linecap="round"/>
+    <path d="M540 645 L577 664 M547 655 L584 675" stroke="#ebdcca" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <!-- sweater back volume and sleeves -->
+  <path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492 Q530 534 495 574 Q386 607 252 596 Q182 570 162 499 Q158 431 215 388Z" fill="url(#v6Jumper)" stroke="#332b3f" stroke-width="9"/>
+  <g clip-path="url(#v6SweatClip)" opacity=".91" stroke="#ecb1be" stroke-width="48" fill="none">
+    <path d="M141 446 Q293 520 509 435"/><path d="M151 555 Q291 482 547 593"/><path d="M268 334 Q312 417 303 627"/>
+  </g>
+  <path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492" fill="none" stroke="#fff9f0" stroke-width="8" opacity=".75" stroke-linecap="round"/>
+  <path d="M250 562 Q310 584 396 567" fill="none" stroke="#ffffff" stroke-width="6" opacity=".62"/>
+  <!-- neck and face, three-quarter profile -->
+  <path d="M345 342 Q363 367 370 394 L406 422 Q446 405 466 386 L445 334Z" fill="url(#v6Skin)" stroke="#975c50" stroke-width="5"/>
+  <path d="M330 363 Q365 404 425 400" fill="none" stroke="#f1b392" stroke-width="11" opacity=".65"/>
+  <g class="v6-face" stroke-linejoin="round">
+    <path d="M312 194 Q349 155 425 170 Q483 178 513 224 Q536 249 516 287 Q525 307 504 326 Q489 360 454 380 Q407 398 371 377 Q334 358 320 322 Q294 291 304 247Z" fill="url(#v6Skin)" stroke="#432f37" stroke-width="7"/>
+    <ellipse cx="473" cy="303" rx="37" ry="27" fill="url(#v6Cheek)"/>
+    <path d="M355 276 Q370 263 389 270 M441 263 Q458 255 472 260" fill="none" stroke="#40313b" stroke-width="6" stroke-linecap="round"/>
+    <g class="v6-eyes" fill="#251f2f">
+      <ellipse cx="377" cy="293" rx="7" ry="9"/><ellipse cx="456" cy="283" rx="7" ry="9"/>
+    </g>
+    <path d="M374 289 L369 284 M379 287 L380 281 M455 277 L453 270" stroke="#2c2939" stroke-width="3" stroke-linecap="round"/>
+    <path d="M425 286 Q428 305 439 311 Q448 313 452 308" fill="none" stroke="#965641" stroke-width="4" stroke-linecap="round"/>
+    <path class="ari-smile" d="M416 339 Q436 354 456 332" fill="none" stroke="#5b3038" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M392 345 Q425 363 458 350" fill="none" stroke="#ffc0a6" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+    <path d="M312 279 Q292 260 296 301 Q302 316 319 314" fill="#cc805d" stroke="#663f3d" stroke-width="4"/>
+    <path d="M303 294 Q309 284 317 294" fill="none" stroke="#e9a47f" stroke-width="3"/>
+  </g>
+  <!-- cap: curved head dome, stitched seams and brim -->
+  <g class="v6-cap">
+    <path d="M278 225 Q272 145 334 123 Q409 94 477 149 Q506 172 500 215 Q398 232 302 242Z" fill="#fff1db" stroke="#373343" stroke-width="8"/>
+    <path d="M304 152 Q371 119 452 148" fill="none" stroke="#ffffff" stroke-width="12" opacity=".73"/>
+    <path d="M378 136 Q389 180 380 220" fill="none" stroke="#ddc5b9" stroke-width="4"/>
+    <path d="M294 216 Q382 199 495 209 Q534 215 558 232 Q572 243 549 252 Q422 246 319 262 Q289 264 279 247Z" fill="#4d7c6f" stroke="#36323b" stroke-width="7"/>
+    <path d="M321 242 Q416 220 531 232" fill="none" stroke="#b9cfc0" stroke-width="5"/>
+    <path d="M421 159 q10 -13 21 0 q-9 4 -13 14 q-10 -4 -8 -14Z" fill="#333044"/>
+    <circle cx="447" cy="159" r="4" fill="#333044"/>
+    <path d="M439 175 q16 3 21 -7" fill="none" stroke="#333044" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- swinging side curl above the shoulder -->
+  <g class="v6-loose-hair">
+    <path d="M266 223 Q221 297 265 349 Q216 392 235 439" fill="none" stroke="#272239" stroke-width="45" stroke-linecap="round"/>
+    <path d="M272 230 Q248 299 280 337 Q249 398 265 417" fill="none" stroke="#68506b" stroke-width="8" opacity=".59" stroke-linecap="round"/>
+    <path d="M504 205 Q533 268 510 331 Q544 358 509 404" fill="none" stroke="#332b41" stroke-width="38" stroke-linecap="round"/>
+    <path d="M505 225 Q531 292 508 318" fill="none" stroke="#76576e" stroke-width="7" opacity=".59" stroke-linecap="round"/>
+  </g>
+  <!-- arm resting over folded knee, shape is not a straight stick -->
+  <path d="M449 410 Q477 404 504 428 Q533 454 554 480 L575 521 Q567 552 531 554 L509 531 Q495 496 476 487 Q452 474 444 454Z" fill="url(#v6Jumper)" stroke="#433b47" stroke-width="8"/>
+  <path d="M459 431 Q490 457 507 486" fill="none" stroke="#e4a6b4" stroke-width="27" stroke-linecap="round"/>
+  <path d="M526 501 Q548 493 565 514 L592 554 Q599 572 587 587 Q575 594 570 576 Q566 596 555 598 Q543 590 546 577 Q530 595 520 581 Q510 567 512 547Z" fill="url(#v6Skin)" stroke="#805247" stroke-width="6"/>
+  <path d="M559 547 l10 29 M546 554 l9 29 M532 557 l3 20" fill="none" stroke="#995c4c" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M495 505 L528 496" stroke="#fff6ee" stroke-width="21" stroke-linecap="round"/>
+  <!-- freehand finishing strokes and tiny embroidered sweater heart -->
+  <path d="M283 421 q7 -11 17 0 q6 -11 17 -1 q0 14 -17 22Z" fill="none" stroke="#b86783" stroke-width="3"/>
+  <path d="M194 535 Q219 564 249 571" stroke="#fcf8f0" stroke-width="6" opacity=".65" fill="none"/>
+  <path d="M175 626 L162 604 M158 631 L130 622 M566 149 L593 138 M573 171 L605 168" fill="none" stroke="#ffd382" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="603" cy="273" r="7" fill="#d2a9f3"/><circle cx="139" cy="376" r="7" fill="#5cc0a9"/>
+</svg><span class="v5-ari-hint">Say hi to Ari ↗</span></button>
+<button class="v6-cat-button" id="v6CatButton" type="button" aria-label="Ask the cat for a local project tip"><svg class="v5-foreground-cat" viewBox="441 306 210 190" aria-hidden="true" focusable="false"><g class="asko-cat">
                 <path class="cat-tail" d="M529 449Q615 430 600 357Q591 329 567 349" fill="none" stroke="#1e1d2b" stroke-width="31" stroke-linecap="round"/>
                 <path d="M466 453Q447 403 486 378L489 329L523 344L549 324L568 369Q604 396 580 445Q568 475 527 481Q481 486 466 453Z" fill="#22212b" stroke="#16161b" stroke-width="4"/>
                 <path d="M489 332L510 343L494 351Z M548 338L557 352L543 346Z" fill="#b88093"/>
                 <path d="M491 408Q504 420 516 408M542 408Q554 420 566 406" stroke="#f5d9ce" stroke-width="5" stroke-linecap="round" fill="none"/>
                 <path d="M525 425l-5 5h10z" fill="#e4a2b6"/><path d="M520 432Q526 440 532 432" stroke="#f2d7cf" fill="none" stroke-width="2"/>
                 <path d="M510 431l-29 -5M508 437l-32 5M543 432l30 -4M545 438l31 5" stroke="#f5d9ce" stroke-width="2" stroke-linecap="round"/>
-              </g></svg>
+              </g></svg><span class="v6-cat-label" id="v6CatBubble" role="status" aria-live="polite">tap for a tip ♡</span></button>
     <div class="v5-live-graph" id="v5LiveGraph" aria-label="Clickable graph of detected file relationships">
     <div class="v5-graph-header"><span class="v5-led" aria-hidden="true"></span><strong id="v5GraphTitle">web-app / src</strong><span id="v5GraphMode">SAMPLE</span></div>
     <div class="v5-graph-canvas" id="v5GraphCanvas">
@@ -145,44 +211,101 @@
         </div>
         <div class="concept-dashboard-card concept-assistant-panel">
           <div class="concept-assistant-copy"><p>YOUR LOCAL GUIDE</p><h2>Questions?<br>I've got you.</h2><span>Ask, explore, debug or<br>dive deeper — together.</span><button type="button" id="askoHelpCard" class="concept-assistant-chat">Chat with Ari <span aria-hidden="true">→</span></button></div>
-          <div class="v5-ari-mini" aria-hidden="true"><svg class="ari-illustration ari-card-illustration" viewBox="0 0 650 520" role="presentation" aria-label="Original vector illustration of Ari, a smiling person wearing a cap, with a black cat">
-              <defs>
-                <linearGradient id="shirt" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ffebe1"/><stop offset="1" stop-color="#ef98aa"/></linearGradient>
-                <linearGradient id="shoe" x1="0" x2="1"><stop stop-color="#f2f6ed"/><stop offset="1" stop-color="#adcfc4"/></linearGradient>
-              </defs>
-              <path d="M45 486C14 443 51 374 116 370C155 317 255 328 287 352C366 326 489 369 539 374C608 380 650 437 629 497H45Z" fill="#c7b3eb"/>
-              <ellipse cx="325" cy="492" rx="266" ry="17" fill="#44346d" opacity=".12"/>
-              <path d="M154 315C111 273 122 183 187 153C216 94 307 81 361 125C415 107 464 138 473 190C527 202 542 275 503 315C534 358 505 407 475 407H163C112 387 116 350 154 315Z" fill="#1b1c29"/>
-              <g fill="#252334"><circle cx="162" cy="213" r="49"/><circle cx="196" cy="161" r="47"/><circle cx="260" cy="133" r="54"/><circle cx="344" cy="131" r="56"/><circle cx="417" cy="174" r="49"/><circle cx="475" cy="238" r="50"/><circle cx="455" cy="314" r="47"/><circle cx="174" cy="303" r="49"/></g>
-              <path d="M212 238C190 199 199 159 238 146C280 129 352 145 371 189C383 229 355 284 312 305C261 310 234 278 212 238Z" fill="#bf754e"/>
-              <path d="M222 259Q264 312 329 279L325 346H242Z" fill="#a85f42"/>
-              <path d="M222 213Q238 204 250 208M298 205Q312 197 326 202" fill="none" stroke="#342525" stroke-width="7" stroke-linecap="round"/>
-              <ellipse class="ari-pupil" cx="241" cy="223" rx="5" ry="6.2" fill="#25202b"/><ellipse class="ari-pupil" cx="312" cy="218" rx="5" ry="6.2" fill="#25202b"/>
-              <path d="M280 217L273 248Q276 252 284 249" fill="none" stroke="#965337" stroke-width="4" stroke-linecap="round"/>
-              <path class="ari-smile" d="M250 261Q276 279 300 256" fill="none" stroke="#432525" stroke-width="5" stroke-linecap="round"/>
-              <path d="M173 168C200 121 237 109 292 111C335 109 369 127 377 163L185 181Z" fill="#edddcd" stroke="#33333d" stroke-width="5"/>
-              <path d="M183 171C254 151 334 151 392 174C412 182 413 193 392 200C335 188 268 185 189 192Z" fill="#416e63" stroke="#30343a" stroke-width="4"/>
-              <path d="M203 125C245 100 316 96 354 127" fill="none" stroke="#fff1d8" stroke-width="8" stroke-linecap="round"/>
-              <path d="M208 331C239 298 295 301 318 320C360 296 410 316 431 356L484 453L370 484L278 426L172 458L99 415C129 377 163 355 208 331Z" fill="url(#shirt)" stroke="#302a37" stroke-width="5"/>
-              <path d="M235 315Q269 340 308 318" fill="none" stroke="#fffcf5" stroke-width="10"/>
-              <path d="M416 364Q442 389 451 427" fill="none" stroke="#e9869d" stroke-width="10" stroke-linecap="round"/>
-              <path d="M120 411C148 388 181 398 217 420L292 460L228 504L123 486C69 480 64 448 120 411Z" fill="#172b2d" stroke="#263035" stroke-width="5"/>
-              <path d="M270 412C315 381 376 399 410 440L477 496H311L238 464Z" fill="#1a3230" stroke="#263035" stroke-width="5"/>
-              <path d="M122 467C167 455 198 469 229 488L205 517H70Q51 489 79 475Z" fill="url(#shoe)" stroke="#34403d" stroke-width="5"/>
-              <path d="M330 481C388 467 429 474 477 502L462 519H302C288 504 304 486 330 481Z" fill="url(#shoe)" stroke="#34403d" stroke-width="5"/>
-              <path d="M79 496L194 496M314 505L459 505" stroke="#4c8378" stroke-width="6"/>
-              <path d="M125 421C157 415 170 441 186 459" fill="none" stroke="#c4745b" stroke-width="20" stroke-linecap="round"/>
-              <g class="asko-cat">
-                <path class="cat-tail" d="M529 449Q615 430 600 357Q591 329 567 349" fill="none" stroke="#1e1d2b" stroke-width="31" stroke-linecap="round"/>
-                <path d="M466 453Q447 403 486 378L489 329L523 344L549 324L568 369Q604 396 580 445Q568 475 527 481Q481 486 466 453Z" fill="#22212b" stroke="#16161b" stroke-width="4"/>
-                <path d="M489 332L510 343L494 351Z M548 338L557 352L543 346Z" fill="#b88093"/>
-                <path d="M491 408Q504 420 516 408M542 408Q554 420 566 406" stroke="#f5d9ce" stroke-width="5" stroke-linecap="round" fill="none"/>
-                <path d="M525 425l-5 5h10z" fill="#e4a2b6"/><path d="M520 432Q526 440 532 432" stroke="#f2d7cf" fill="none" stroke-width="2"/>
-                <path d="M510 431l-29 -5M508 437l-32 5M543 432l30 -4M545 438l31 5" stroke="#f5d9ce" stroke-width="2" stroke-linecap="round"/>
-              </g>
-              <path d="M104 298l-16 -27m43 23l12 -31M477 115l19 -20m-3 33l24 -4" fill="none" stroke="#ffb828" stroke-width="10" stroke-linecap="round"/>
-              <circle cx="499" cy="102" r="6" fill="#fa688e"/><circle cx="76" cy="329" r="8" fill="#55cfa7"/>
-            </svg></div>
+          <div class="v5-ari-mini" aria-hidden="true"><svg class="ari-illustration ari-card-illustration ari-v6" viewBox="0 0 760 740" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-label="Original high-detail vector illustration of Ari relaxing in a striped sweatshirt, a cream cap and green trainers">
+  <defs>
+    <linearGradient id="miniv6Hair" x1="0" x2="1" y1="0" y2=".9"><stop stop-color="#191a2c"/><stop offset=".62" stop-color="#303049"/><stop offset="1" stop-color="#55344c"/></linearGradient>
+    <linearGradient id="miniv6Skin" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e6a477"/><stop offset=".55" stop-color="#cf855b"/><stop offset="1" stop-color="#ac5d4b"/></linearGradient>
+    <linearGradient id="miniv6Jumper" x1="0" x2="0.9" y1="0" y2="1"><stop stop-color="#fff9ec"/><stop offset=".48" stop-color="#fff0ea"/><stop offset="1" stop-color="#f8c3ca"/></linearGradient>
+    <linearGradient id="miniv6Pants" x1="0" x2=".9" y1="0" y2="1"><stop stop-color="#1b3540"/><stop offset="1" stop-color="#081a2b"/></linearGradient>
+    <linearGradient id="miniv6Shoe" x1="0" x2="1" y1="0" y2=".8"><stop stop-color="#fffef5"/><stop offset=".6" stop-color="#dfebe4"/><stop offset="1" stop-color="#96c5af"/></linearGradient>
+    <radialGradient id="miniv6Cheek"><stop stop-color="#e89b92" stop-opacity=".7"/><stop offset="1" stop-color="#ebaa9c" stop-opacity="0"/></radialGradient>
+    <clipPath id="miniv6SweatClip"><path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492 Q530 534 495 574 Q386 607 252 596 Q182 570 162 499 Q158 431 215 388Z"/></clipPath>
+  </defs>
+  <ellipse cx="365" cy="704" rx="328" ry="26" fill="#423962" opacity=".12"/>
+  <path d="M48 663 Q79 622 130 628 Q174 572 265 588 Q331 556 407 582 Q513 550 596 600 Q701 613 733 680 L732 709 L44 709Z" fill="#b19cde"/>
+  <path d="M76 670 Q197 620 320 659 Q424 605 586 654 Q663 654 714 678 L712 707 L66 707Z" fill="#cfb7f5" opacity=".75"/>
+  <!-- textured hair silhouette, with loose curls and an independent reactive tuft -->
+  <g class="v6-hair-back">
+    <path d="M241 306 Q190 286 185 242 Q167 211 195 169 Q190 115 240 100 Q278 52 347 67 Q402 37 459 66 Q541 72 570 144 Q607 185 576 242 Q615 298 578 345 Q625 401 601 455 Q634 508 585 540 Q582 600 519 610 Q454 643 403 588 Q344 616 314 566 Q232 599 193 534 Q151 508 177 461 Q138 405 188 370 Q166 334 241 306Z" fill="url(#miniv6Hair)" stroke="#252235" stroke-width="9" stroke-linejoin="round"/>
+    <path d="M218 221 C193 268 224 311 187 347 M561 210 C589 276 540 313 575 369 M204 429 C182 471 199 518 244 534 M560 410 C589 481 545 543 509 553" stroke="#695273" stroke-width="10" stroke-linecap="round" opacity=".52" fill="none"/>
+    <path d="M254 106 Q288 67 350 70 M500 101 Q557 144 549 189 M218 338 Q172 386 204 427" fill="none" stroke="#87708b" stroke-width="6" stroke-linecap="round" opacity=".33"/>
+    <g fill="none" stroke="#343148" stroke-width="19" stroke-linecap="round">
+      <path d="M167 360 Q122 391 162 431"/><path d="M176 449 Q135 480 191 516"/><path d="M568 306 Q623 341 570 394"/><path d="M576 440 Q615 487 570 524"/>
+    </g>
+  </g>
+  <!-- back leg, socks, rear shoe -->
+  <path d="M285 517 Q338 478 405 499 Q448 513 465 564 Q480 589 451 617 L395 657 Q338 676 280 651 Q242 630 260 586Z" fill="url(#miniv6Pants)" stroke="#243041" stroke-width="8"/>
+  <path d="M310 558 Q325 589 300 617 M406 540 Q430 556 433 580" fill="none" stroke="#4a6470" stroke-width="7" opacity=".55" stroke-linecap="round"/>
+  <path d="M270 616 Q230 629 219 669 L179 676 Q140 684 149 707 Q179 731 276 711 L345 693 Q345 652 313 629Z" fill="url(#miniv6Shoe)" stroke="#38534e" stroke-width="7"/>
+  <path d="M158 695 Q230 704 324 675 M221 661 L261 665 M213 675 L256 678" stroke="#5f9685" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M163 711 Q234 720 329 693" stroke="#f9f7ea" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <!-- near folded leg and knee -->
+  <path d="M345 514 Q383 476 468 471 Q548 457 605 501 Q646 540 626 590 L583 642 Q536 680 474 659 Q415 657 384 611 Q357 590 345 514Z" fill="url(#miniv6Pants)" stroke="#202c40" stroke-width="9"/>
+  <path d="M391 548 Q433 526 474 534 M516 610 Q572 615 608 571" fill="none" stroke="#516878" stroke-width="7" opacity=".58" stroke-linecap="round"/>
+  <!-- near high quality chunky sneaker, toe points right -->
+  <g class="v6-front-shoe">
+    <path d="M518 614 Q552 599 577 610 Q603 603 632 622 L695 646 Q730 658 720 689 Q702 709 660 711 L553 705 Q515 703 491 687 Q488 652 518 614Z" fill="url(#miniv6Shoe)" stroke="#355a55" stroke-width="8"/>
+    <path d="M588 615 Q621 636 643 653 Q660 660 699 659" fill="none" stroke="#f6f5e9" stroke-width="12"/>
+    <path d="M534 633 L603 672 M548 623 L616 657" fill="none" stroke="#50a78f" stroke-width="7" stroke-linecap="round"/>
+    <path d="M510 678 Q620 710 713 675" fill="none" stroke="#457c70" stroke-width="8" stroke-linecap="round"/>
+    <path d="M510 688 Q622 719 717 687" fill="none" stroke="#f9f9ef" stroke-width="14" stroke-linecap="round"/>
+    <path d="M678 651 Q713 660 710 681" fill="none" stroke="#ffb39c" stroke-width="11" stroke-linecap="round"/>
+    <path d="M540 645 L577 664 M547 655 L584 675" stroke="#ebdcca" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <!-- sweater back volume and sleeves -->
+  <path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492 Q530 534 495 574 Q386 607 252 596 Q182 570 162 499 Q158 431 215 388Z" fill="url(#miniv6Jumper)" stroke="#332b3f" stroke-width="9"/>
+  <g clip-path="url(#miniv6SweatClip)" opacity=".91" stroke="#ecb1be" stroke-width="48" fill="none">
+    <path d="M141 446 Q293 520 509 435"/><path d="M151 555 Q291 482 547 593"/><path d="M268 334 Q312 417 303 627"/>
+  </g>
+  <path d="M215 388 Q261 353 331 368 Q406 357 480 404 Q520 433 537 492" fill="none" stroke="#fff9f0" stroke-width="8" opacity=".75" stroke-linecap="round"/>
+  <path d="M250 562 Q310 584 396 567" fill="none" stroke="#ffffff" stroke-width="6" opacity=".62"/>
+  <!-- neck and face, three-quarter profile -->
+  <path d="M345 342 Q363 367 370 394 L406 422 Q446 405 466 386 L445 334Z" fill="url(#miniv6Skin)" stroke="#975c50" stroke-width="5"/>
+  <path d="M330 363 Q365 404 425 400" fill="none" stroke="#f1b392" stroke-width="11" opacity=".65"/>
+  <g class="v6-face" stroke-linejoin="round">
+    <path d="M312 194 Q349 155 425 170 Q483 178 513 224 Q536 249 516 287 Q525 307 504 326 Q489 360 454 380 Q407 398 371 377 Q334 358 320 322 Q294 291 304 247Z" fill="url(#miniv6Skin)" stroke="#432f37" stroke-width="7"/>
+    <ellipse cx="473" cy="303" rx="37" ry="27" fill="url(#miniv6Cheek)"/>
+    <path d="M355 276 Q370 263 389 270 M441 263 Q458 255 472 260" fill="none" stroke="#40313b" stroke-width="6" stroke-linecap="round"/>
+    <g class="v6-eyes" fill="#251f2f">
+      <ellipse cx="377" cy="293" rx="7" ry="9"/><ellipse cx="456" cy="283" rx="7" ry="9"/>
+    </g>
+    <path d="M374 289 L369 284 M379 287 L380 281 M455 277 L453 270" stroke="#2c2939" stroke-width="3" stroke-linecap="round"/>
+    <path d="M425 286 Q428 305 439 311 Q448 313 452 308" fill="none" stroke="#965641" stroke-width="4" stroke-linecap="round"/>
+    <path class="ari-smile" d="M416 339 Q436 354 456 332" fill="none" stroke="#5b3038" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M392 345 Q425 363 458 350" fill="none" stroke="#ffc0a6" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+    <path d="M312 279 Q292 260 296 301 Q302 316 319 314" fill="#cc805d" stroke="#663f3d" stroke-width="4"/>
+    <path d="M303 294 Q309 284 317 294" fill="none" stroke="#e9a47f" stroke-width="3"/>
+  </g>
+  <!-- cap: curved head dome, stitched seams and brim -->
+  <g class="v6-cap">
+    <path d="M278 225 Q272 145 334 123 Q409 94 477 149 Q506 172 500 215 Q398 232 302 242Z" fill="#fff1db" stroke="#373343" stroke-width="8"/>
+    <path d="M304 152 Q371 119 452 148" fill="none" stroke="#ffffff" stroke-width="12" opacity=".73"/>
+    <path d="M378 136 Q389 180 380 220" fill="none" stroke="#ddc5b9" stroke-width="4"/>
+    <path d="M294 216 Q382 199 495 209 Q534 215 558 232 Q572 243 549 252 Q422 246 319 262 Q289 264 279 247Z" fill="#4d7c6f" stroke="#36323b" stroke-width="7"/>
+    <path d="M321 242 Q416 220 531 232" fill="none" stroke="#b9cfc0" stroke-width="5"/>
+    <path d="M421 159 q10 -13 21 0 q-9 4 -13 14 q-10 -4 -8 -14Z" fill="#333044"/>
+    <circle cx="447" cy="159" r="4" fill="#333044"/>
+    <path d="M439 175 q16 3 21 -7" fill="none" stroke="#333044" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- swinging side curl above the shoulder -->
+  <g class="v6-loose-hair">
+    <path d="M266 223 Q221 297 265 349 Q216 392 235 439" fill="none" stroke="#272239" stroke-width="45" stroke-linecap="round"/>
+    <path d="M272 230 Q248 299 280 337 Q249 398 265 417" fill="none" stroke="#68506b" stroke-width="8" opacity=".59" stroke-linecap="round"/>
+    <path d="M504 205 Q533 268 510 331 Q544 358 509 404" fill="none" stroke="#332b41" stroke-width="38" stroke-linecap="round"/>
+    <path d="M505 225 Q531 292 508 318" fill="none" stroke="#76576e" stroke-width="7" opacity=".59" stroke-linecap="round"/>
+  </g>
+  <!-- arm resting over folded knee, shape is not a straight stick -->
+  <path d="M449 410 Q477 404 504 428 Q533 454 554 480 L575 521 Q567 552 531 554 L509 531 Q495 496 476 487 Q452 474 444 454Z" fill="url(#miniv6Jumper)" stroke="#433b47" stroke-width="8"/>
+  <path d="M459 431 Q490 457 507 486" fill="none" stroke="#e4a6b4" stroke-width="27" stroke-linecap="round"/>
+  <path d="M526 501 Q548 493 565 514 L592 554 Q599 572 587 587 Q575 594 570 576 Q566 596 555 598 Q543 590 546 577 Q530 595 520 581 Q510 567 512 547Z" fill="url(#miniv6Skin)" stroke="#805247" stroke-width="6"/>
+  <path d="M559 547 l10 29 M546 554 l9 29 M532 557 l3 20" fill="none" stroke="#995c4c" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M495 505 L528 496" stroke="#fff6ee" stroke-width="21" stroke-linecap="round"/>
+  <!-- freehand finishing strokes and tiny embroidered sweater heart -->
+  <path d="M283 421 q7 -11 17 0 q6 -11 17 -1 q0 14 -17 22Z" fill="none" stroke="#b86783" stroke-width="3"/>
+  <path d="M194 535 Q219 564 249 571" stroke="#fcf8f0" stroke-width="6" opacity=".65" fill="none"/>
+  <path d="M175 626 L162 604 M158 631 L130 622 M566 149 L593 138 M573 171 L605 168" fill="none" stroke="#ffd382" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="603" cy="273" r="7" fill="#d2a9f3"/><circle cx="139" cy="376" r="7" fill="#5cc0a9"/>
+</svg></div>
           <button type="button" id="askoGuideCard" class="concept-assistant-tag">Meet Ari ↗</button>
         </div>
       </section>

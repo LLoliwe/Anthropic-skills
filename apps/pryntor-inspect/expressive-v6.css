@@ -1,0 +1,165 @@
+/* ASKO V6 — responsive character theatre. No bitmap cutouts, no neon.
+   All geometry is original editable vector code. */
+.concept-stage{background:radial-gradient(ellipse at 78% 74%,#ffd7c3 0%,transparent 46%),radial-gradient(ellipse at 46% 30%,#b7d2ffb5 0%,transparent 46%),linear-gradient(112deg,#dfe7ff 3%,#dcd8ff 54%,#f7d5ed 100%)}
+.v5-stage{background:radial-gradient(circle at 37% 63%,#ffcc9d44,transparent 39%)}
+.v5-orb-peach{left:1%;top:4%;width:470px;height:415px;background:linear-gradient(120deg,#ffdc7d,#ffb17e 78%,#eea8ac);border-radius:43% 57% 56% 44%}
+.v5-orb-purple{width:330px;height:230px;bottom:-114px;left:-6%;background:#bfa5ed}
+.v5-orb-mint{left:4%;bottom:50px;width:149px;height:175px;background:#77c8aa}
+.v5-scribble{top:16px;left:18%;font-family:Georgia,serif;font-size:19px;z-index:8;color:#26334b;text-shadow:0 2px 0 #fff6;transform:rotate(-12deg)}
+.v5-ari-button{bottom:-8%;left:-21%;width:96%;height:116%;z-index:6;transform:translate(var(--v5-parallax-x),var(--v5-parallax-y))}
+.v5-ari-button:hover{transform:translate(var(--v5-parallax-x),calc(var(--v5-parallax-y) - 5px))}
+.v5-ari-button .ari-illustration{overflow:visible;max-height:none;filter:drop-shadow(0 13px 12px #2b2f4025)}
+.v6-hair-back{transform-origin:395px 220px;animation:v6-breathe-hair 7.6s ease-in-out infinite}
+.v6-loose-hair{transform-origin:335px 330px;animation:v6-curl 5.2s ease-in-out infinite alternate}
+.v6-cap{transform-origin:403px 221px;transition:transform .32s ease}
+.v5-ari-button:hover .v6-cap{transform:rotate(-2deg) translateY(-3px)}
+.v6-eyes ellipse{transform-origin:center;transform-box:fill-box;animation:v6-blink 7.1s ease-in-out infinite}
+.v6-eyes ellipse:nth-child(2){animation-delay:.07s}
+.v6-face{transition:transform .22s;transform-origin:440px 298px}
+.v5-ari-button:hover .v6-face{transform:translateY(-1px) rotate(-.4deg)}
+.v6-front-shoe{transform-origin:561px 656px;transition:transform .42s cubic-bezier(.3,1,.2,1)}
+.v5-ari-button:hover .v6-front-shoe{transform:rotate(-3deg) translateY(-5px)}
+.v5-ari-hint{bottom:14%;left:42%;z-index:8;color:#1d4351;font-size:11px;box-shadow:0 10px 20px #19293b1b}
+.v6-cat-button{position:absolute;z-index:9;left:34%;bottom:0;width:35%;height:32%;display:block;border:0;background:transparent;cursor:pointer;padding:0;transition:transform .25s cubic-bezier(.2,1,.2,1)}
+.v6-cat-button svg.v5-foreground-cat{position:relative;left:auto;bottom:auto;width:100%;height:100%;filter:drop-shadow(0 9px 11px #1e193027);pointer-events:none}
+.v6-cat-button:hover,.v6-cat-button.is-happy{transform:rotate(-4deg) translateY(-6px)}
+.v6-cat-button:focus-visible{outline:3px solid #345b75;outline-offset:0;border-radius:30px}
+.v6-cat-button:hover .cat-tail,.v6-cat-button.is-happy .cat-tail{transform-origin:529px 451px;animation:v5-cat-tail .62s ease-in-out infinite alternate}
+.v6-cat-label{position:absolute;bottom:93%;left:5%;background:#fffdf3;color:#2b454c;border:1px solid #fff;box-shadow:0 8px 23px #283c5b1c;border-radius:20px;padding:7px 12px;font-size:10px;white-space:nowrap;opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s}
+.v6-cat-button:hover .v6-cat-label,.v6-cat-button:focus-visible .v6-cat-label,.v6-cat-button.is-happy .v6-cat-label{opacity:1;transform:translateY(0)}
+.v5-live-graph{top:38px;right:2.8%;height:320px;width:53%;border-radius:23px;transform:perspective(1200px) rotateY(-5deg) rotateX(1deg);transform-origin:center right;box-shadow:0 24px 40px #17334843,0 6px 1px #ffffff39 inset;transition:transform .55s cubic-bezier(.2,1,.3,1),box-shadow .3s}
+.v5-live-graph:hover,.v5-live-graph:focus-within{transform:perspective(1200px) rotateY(-1deg) rotateX(0deg) translateY(-4px);box-shadow:0 27px 45px #17334847}
+.v5-graph-header{height:45px}.v5-graph-canvas{height:237px}
+.v5-graph-header #v5GraphTitle{letter-spacing:.01em;font-size:12px}
+.v5-graph-canvas::before{opacity:.45}
+.v5-graph-footer{height:36px;background:#152c3b}
+.v5-node{border-radius:12px;border:1px solid #8c9ba8b5;box-shadow:0 10px 20px #09161f46;animation:v6-node-float 5s ease-in-out infinite}
+.v5-node:nth-child(2){animation-delay:-1.7s}.v5-node:nth-child(3){animation-delay:-3.3s}
+.v5-node:focus-visible{outline:3px solid #f7f7e3;outline-offset:1px}
+.v5-node[data-selected=true]{background:#fff1c9;box-shadow:0 8px 23px #f0c77428;border:2px solid #f8d789}
+.v5-wire{stroke-width:2.25;stroke-dasharray:6 5}
+.v5-wire-dot{fill:#c2ead8;filter:drop-shadow(0 0 2px #b4efd1)}
+.v6-traveller{fill:#fee5a6;stroke:#fff7db;stroke-width:1.2}
+.v6-focused-edge{stroke:#c7fff2!important;stroke-width:3.2!important;opacity:1!important}
+.v6-dimmed-edge{opacity:.22!important}
+.v5-graph-footer{font-size:11px}
+.concept-assistant-panel{background:linear-gradient(125deg,#e7f6c5 0%,#d4f0d1 56%,#c4dbff 100%)}
+.v5-ari-mini{width:74%;height:126%;bottom:-23%;right:-20%;z-index:1;transform:rotate(-4deg)}
+.v5-ari-mini .ari-illustration{filter:drop-shadow(0 14px 10px #293b441b)}
+.v5-ari-mini .v6-hair-back,.v5-ari-mini .v6-loose-hair,.v5-ari-mini .v6-eyes ellipse{animation-duration:10s}
+.concept-assistant-copy{z-index:3}
+.concept-assistant-chat{z-index:4;box-shadow:0 6px 13px #243f3b1f}
+.concept-assistant-tag{z-index:5}
+.concept-features .concept-feature{transition:transform .34s cubic-bezier(.2,.8,.3,1),box-shadow .28s,background .2s}
+.concept-feature:active{transform:scale(.983)}
+.concept-feature-arrow{transition:transform .25s}
+.concept-feature:hover .concept-feature-arrow{transform:translateX(3px) rotate(-15deg)}
+.v5-demo-stage{isolation:isolate}
+.v5-demo-editor{transform:perspective(470px) rotateY(-11deg) rotateX(4deg);transition:transform .45s,box-shadow .45s}
+.v5-demo-panel:hover .v5-demo-editor{transform:perspective(470px) rotateY(-6deg) rotateX(1deg) translateY(-3px);box-shadow:0 19px 35px #020d1966}
+.v5-demo-target{transition:transform .28s,background .28s}
+.v5-demo-panel:hover .v5-demo-target:nth-child(1){transform:translate(3px,-3px)}
+.v5-demo-panel:hover .v5-demo-target:nth-child(2){transform:translate(7px,3px)}
+@keyframes v6-node-float{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 3px))}}
+@keyframes v6-breathe-hair{0%,100%{transform:rotate(0deg)}50%{transform:rotate(.45deg)}}
+@keyframes v6-curl{0%{transform:rotate(-.35deg)}100%{transform:rotate(1.2deg)}}
+@keyframes v6-blink{0%,91%,95%,100%{transform:scaleY(1)}93%{transform:scaleY(.13)}}
+@media(max-width:1370px){
+ .v5-ari-button{width:100%;left:-22%;bottom:-9%;height:115%}
+ .v5-orb-peach{width:380px;height:352px}
+ .v5-live-graph{top:49px;height:298px;width:54%}.v5-graph-canvas{height:214px}
+ .v6-cat-button{left:35%;bottom:2%;width:34%;height:31%}
+}
+@media(max-width:1100px){
+ .v5-ari-button{width:112%;left:-24%;bottom:-7%;height:116%}
+ .v5-orb-peach{width:320px;height:305px;left:-2%}
+ .v5-live-graph{width:56%;top:52px;height:286px}
+ .v5-graph-header{height:43px}.v5-graph-canvas{height:207px}
+ .v6-cat-button{left:39%;bottom:0;width:34%}
+ .v5-scribble{left:12%;top:9px;font-size:16px}
+}
+@media(max-width:860px){
+ .v5-ari-button{left:-24%;width:104%;bottom:-8%}
+ .v6-cat-button{left:33%;width:32%;bottom:0}
+ .v5-live-graph{right:2%;width:55%}
+}
+@media(max-width:670px){
+ .concept-stage{min-height:738px;grid-template-rows:auto 390px}
+ .concept-copy{padding:28px 17px 5px}
+ .concept-copy h1{font-size:clamp(42px,10.25vw,62px);line-height:1.015}
+ .concept-art{height:390px;align-self:end}
+ .v5-stage{min-height:390px}
+ .v5-orb-peach{width:290px;height:318px;left:3%;top:16px;border-radius:46% 54% 57% 43%}
+ .v5-orb-purple{width:270px;height:145px;left:-5%;bottom:-58px}
+ .v5-orb-mint{left:4%;bottom:22px;width:128px;height:147px}
+ .v5-scribble{top:14px;left:12%;font-size:17px}
+ .v5-ari-button{left:-23%;bottom:-9%;width:112%;height:120%}
+ .v6-cat-button{left:36%;bottom:0%;width:39%;height:29%}
+ .v5-live-graph{top:48px;right:1.8%;width:53.5%;height:287px;transform:perspective(1200px) rotateY(-4deg)}
+ .v5-graph-header{height:43px}.v5-graph-canvas{height:209px}.v5-graph-footer{height:35px}
+ .v5-node{width:88px;min-height:39px;animation-duration:5.7s}
+ .v5-node-icon{display:grid;width:21px;height:21px}
+ .v5-node-copy strong{font-size:9px}.v5-node-copy small{font-size:7px}
+ .v5-ari-hint{bottom:13%;left:39%}
+ .v5-ari-mini{width:75%;height:133%;right:-27%;bottom:-30%}
+ .concept-assistant-copy h2{font-size:27px}
+ .concept-assistant-copy>span{font-size:11px}
+}
+@media(max-width:390px){
+ .concept-stage{min-height:704px;grid-template-rows:auto 367px}
+ .concept-art{height:367px}.v5-stage{min-height:367px}
+ .v5-ari-button{width:112%;left:-25%;bottom:-8%;height:118%}
+ .v5-live-graph{top:39px;width:54%;right:1.4%;height:271px}
+ .v5-graph-header{height:41px}.v5-graph-canvas{height:197px}.v5-graph-footer{height:33px}
+ .v5-node{width:82px;padding:5px 6px}
+ .v5-node-icon{width:18px;height:18px;font-size:8px}
+ .v5-orb-peach{width:265px;height:295px}
+ .v6-cat-button{left:35%;width:39%;bottom:0%}
+}
+@media(prefers-reduced-motion:reduce){
+ .v6-hair-back,.v6-loose-hair,.v6-eyes ellipse,.v5-node{animation:none!important}
+ .v5-live-graph,.v5-live-graph:hover,.v5-live-graph:focus-within{transform:none!important;transition:none!important}
+ .v5-ari-button,.v5-ari-button:hover{transform:none!important}
+ .v5-ari-mini,.v6-cat-button{animation:none!important}
+}
+
+.v6-eyes{transform:translate(var(--look-x,0px),var(--look-y,0px));transition:transform .14s ease}
+@media(prefers-reduced-motion:reduce){.v6-eyes{transform:none!important;transition:none!important}.v6-traveller{display:none!important}}
+/* Keep graph readable in front of the character, with motion on actual import paths. */
+.v5-live-graph{z-index:7}
+.v6-traveller{animation:v6-motion-along-path 4.8s linear infinite;offset-distance:0%;offset-rotate:0deg}
+@keyframes v6-motion-along-path{from{offset-distance:0%}to{offset-distance:100%}}
+@media(prefers-reduced-motion:reduce){.v6-traveller{animation:none!important;display:none!important}}
+/* Grid intrinsic SVG sizing fix: never let illustration enlarge/squash the hero row. */
+@media(min-width:671px){
+ .concept-stage{grid-template-rows:minmax(0,1fr)}
+ .concept-art{height:100%;max-height:100%;min-height:0;align-self:stretch}
+ .v5-ari-button{height:100%;bottom:0%;width:100%;left:-20%}
+ .v6-cat-button{bottom:1%;height:31%}
+}
+@media(max-width:670px){
+ .concept-stage{min-height:730px;grid-template-rows:auto 390px}
+ .concept-art{height:390px;max-height:390px;min-height:0}
+ .v5-stage{min-height:390px}
+ .v5-ari-button{height:105%;bottom:-2%;left:-20%;width:112%}
+ .v6-cat-button{height:28%;bottom:1%}
+}
+@media(max-width:390px){
+ .concept-stage{min-height:712px;grid-template-rows:auto 380px}
+ .concept-art{height:380px;max-height:380px}
+ .v5-stage{min-height:380px}
+ .v5-ari-button{height:105%;bottom:-2%;left:-22%;width:112%}
+}
+/* Mobile art direction: preserve facial expression without covering interactive graph. */
+@media(min-width:671px){.v5-ari-button{left:-24%}}
+@media(max-width:670px){.v5-ari-button{left:-33%}.v6-cat-button{left:31%}}
+@media(max-width:390px){.v5-ari-button{left:-33%}.v6-cat-button{left:31%}}
+/* Gentle editorial motion, not flashing effects. */
+.v5-orb-peach{animation:v6-shape-drift 9s ease-in-out infinite alternate}
+.v5-orb-purple{animation:v6-shape-drift 11s ease-in-out infinite alternate-reverse}
+.v5-led{animation:v6-status-breathe 3s ease-in-out infinite}
+.v5-node[aria-pressed="true"]{border-color:#fff5c8;box-shadow:0 0 0 2px #fdf2c74a,0 10px 20px #09161f46}
+@keyframes v6-shape-drift{from{transform:rotate(-3deg) translateY(0)}to{transform:rotate(3deg) translateY(-7px)}}
+@keyframes v6-status-breathe{0%,100%{opacity:1}50%{opacity:.59}}
+@media(max-width:670px){.v5-node{min-height:44px!important}.v5-node-copy strong{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.v5-orb-peach,.v5-orb-purple,.v5-led{animation:none!important}}
