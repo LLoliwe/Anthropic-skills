@@ -1,0 +1,83 @@
+name: RED HOUR original Blender gallery / source + independent render QA
+
+on:
+  pull_request:
+    paths:
+      - "skills/spatial-film-lab/**"
+      - ".github/workflows/spatial-film-qa.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spatial-film-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preflight / syntax / no network inference
+        run: |
+          python -m unittest discover -s skills/spatial-film-lab -p 'test_preflight.py' -v
+          python -m py_compile skills/spatial-film-lab/red_hour_gallery.py skills/spatial-film-lab/verify_gallery.py
+
+  render:
+    needs: static
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install verified official Blender 5.0.1 binary
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 'https://download.blender.org/release/Blender5.0/blender-5.0.1-linux-x64.tar.xz' -o blender.tar.xz
+          echo '8019580ee1b7262e505f4196a00237ccf743c88d205b38d34201510676e60b09  blender.tar.xz' | sha256sum -c -
+          tar -xf blender.tar.xz
+          ./blender-5.0.1-linux-x64/blender --version | tee blender-version.txt
+      - name: Render three distinct genuine 3D camera frames with native Cycles CPU
+        run: |
+          set -euo pipefail
+          mkdir -p output
+          ./blender-5.0.1-linux-x64/blender -b -t 2 --python skills/spatial-film-lab/red_hour_gallery.py -- --outdir output --mode still --width 800 --samples 16 > output/render.log 2>&1 || { tail -100 output/render.log; exit 1; }
+          grep 'PRYNTOR_NATIVE_CGI_COMPLETE' output/render.log
+          cp blender-version.txt output/
+      - name: Decode stills and validate source and camera motion
+        run: |
+          python -m pip install --disable-pip-version-check 'Pillow>=10,<13'
+          python skills/spatial-film-lab/verify_gallery.py --output output --width 800 | tee output/qa_console.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: red-hour-r1-native-art-direction-dailies
+          path: output/
+          retention-days: 14
+          if-no-files-found: warn
+
+  independent:
+    needs: render
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: red-hour-r1-native-art-direction-dailies
+          path: artifact/
+      - name: Verify untouched artifact hashes and full decode independently
+        run: |
+          python -m pip install --disable-pip-version-check 'Pillow>=10,<13'
+          python - <<'PY'
+          import pathlib, json, hashlib
+          root=pathlib.Path('artifact')
+          e=json.loads((root/'QA.json').read_text())
+          for r in e['frames']+[e['render_source']]:
+              h=hashlib.sha256((root/r['file']).read_bytes()).hexdigest()
+              assert r['sha256']==h, r['file']
+          assert len(e['frames'])==3
+          print('INDEPENDENT_SHA256_PASS',len(e['frames'])+1)
+          PY
+          python skills/spatial-film-lab/verify_gallery.py --output artifact --width 800 > /dev/null
+          echo 'INDEPENDENT_FRAME_DECODE_SOURCE_AND_MOTION_PASS'
