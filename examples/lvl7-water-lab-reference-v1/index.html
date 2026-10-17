@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="theme-color" content="#080e16"><meta name="color-scheme" content="dark">
+ <meta name="description" content="Pryntor LVL7 water and heat: original interactive science simulation connected to a learning graph and reasoning check.">
+ <title>LVL7 — The Water Lab | Pryntor</title>
+ <style>
+:root{color-scheme:dark;--bg:#080e16;--side:#0a121c;--panel:#111c28;--panel2:#132130;--stroke:#253444;--text:#ecf5f6;--muted:#91a5b3;--muted2:#63798a;--mint:#b1f2cf;--mint2:#8be5dd;--blue:#9fc6ff;--lilac:#c6b4ff;--gold:#f0c894;--font:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:var(--font);font-size:14px;color:var(--text);-webkit-font-smoothing:antialiased}button,a,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--mint);outline-offset:4px}a{text-decoration:none;color:inherit}body::before{content:"";position:fixed;z-index:-1;inset:0;background:radial-gradient(circle at 54% -25%,#244d5c55,transparent 47%),radial-gradient(circle at 95% 40%,#1e345422,transparent 35%)}.shell{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}.sidebar{border-right:1px solid #26313c;background:#0a141d;display:flex;flex-direction:column;padding:28px 20px 24px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:11px;margin:2px 7px 58px}.brandmark{font-size:22px;font-weight:900;color:#061a1c;background:var(--mint);width:41px;height:41px;line-height:41px;border-radius:12px;text-align:center;letter-spacing:-2px;box-shadow:0 0 32px #83eed042}.brandmark span{font-size:15px;vertical-align:3px}.brand-name{font-size:21px;letter-spacing:-1px;font-weight:850;line-height:1}.brand-name>span{color:var(--mint)}.brand-name small{font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1.8px;display:block;margin-top:7px}.side-section-title{color:#8093a1;font-size:10px;font-weight:850;letter-spacing:1.45px;display:flex;justify-content:space-between;margin:0 8px 15px;gap:6px}.side-section-title>span{font-size:9px;color:#617889;font-weight:700;letter-spacing:0}.side-nav{display:flex;flex-direction:column;gap:6px}.side-link{display:flex;align-items:center;gap:13px;color:#849aa7;font-size:13px;font-weight:650;padding:13px;border-radius:11px;min-height:47px}.side-link.selected{background:#243c41;color:#ddfcf1}.nav-icon{font-size:19px;width:21px;text-align:center;color:#acc6d3}.on-dot{margin-left:auto;width:6px;height:6px;background:var(--mint);border-radius:50%}.separator{height:1px;background:#253440;margin:29px 8px 29px}.path-sidebar{display:flex;flex-direction:column;gap:0;position:relative;margin:0 2px 0 9px}.path-sidebar::before{content:"";position:absolute;width:1px;height:calc(100% - 31px);left:14px;top:15px;background:#364c5b}.side-topic{display:flex;position:relative;z-index:1;gap:11px;align-items:flex-start;border:0;background:none;color:#8ea1af;text-align:left;padding:0 3px 20px 0;width:100%}.side-topic>span:first-child{flex:0 0 29px;height:29px;border-radius:50%;background:#1c2c3a;border:1px solid #3d5261;display:grid;place-items:center;font-size:10px;color:#a0b2bf}.side-topic.active>span:first-child{background:#c1f2dc;color:#14342d;border-color:#c1f2dc}.side-topic>span:last-child{font-size:12px;padding-top:7px;font-weight:600}.side-topic.active>span:last-child{color:#e2f7ed}.side-foot{margin-top:auto;border:1px solid #29404b;background:#152830;border-radius:14px;padding:15px 12px;display:flex;gap:11px;align-items:flex-start}.side-foot strong{font-size:12px;display:block;color:#d5f6e7;line-height:1.3}.side-foot span{font-size:10px;color:#86a5ac;margin-top:4px;display:block;line-height:1.5}.tiny-orb{flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#e5ffbe,#78d9b8 35%,#2e6380 70%,#162e37);box-shadow:0 0 16px #75ccaa33}.main{padding:0 42px 26px;max-width:1740px;min-width:0}.topbar{display:flex;justify-content:space-between;align-items:center;min-height:82px;border-bottom:1px solid #273646;gap:16px}.crumb{font-size:12px;color:var(--muted);display:flex;gap:13px;align-items:center;white-space:nowrap}.cr-strong{font-size:10px;color:#bbd1d5;font-weight:800;letter-spacing:1.4px}.slash{color:#607888}.top-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.tag{font-size:9px;letter-spacing:1px;font-weight:850;padding:8px 12px;border:1px solid #374b54;border-radius:7px;color:#bed1d9;white-space:nowrap}.tag.dot-tag{background:#18382e;color:#bbf6cf;border-color:#2e5949}.tag i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#86e2a2;margin-right:5px;box-shadow:0 0 10px #b5ffb0}.test-tag{color:#8ca4b8;background:#162431;border-color:#293c4b}.hero{padding:46px 0 38px}.hero-top{display:flex;justify-content:space-between;gap:20px;align-items:center}.chapter{font-size:11px;font-weight:850;letter-spacing:2px;color:#adedd1}.hero-index{font-size:9px;letter-spacing:1px;font-weight:750;color:#638090;text-align:right}.div-dot{color:var(--mint);margin:0 6px}.hero h1{font-size:clamp(43px,5.2vw,77px);line-height:1.07;letter-spacing:-.065em;font-weight:750;margin:24px 0 18px;max-width:960px}em{font-style:normal;color:var(--mint)}.lede{color:#aec0c9;font-size:15px;line-height:1.8;max-width:680px;margin:0 0 24px}.partners{display:flex;flex-wrap:wrap;align-items:center;gap:14px;color:#9fb2be;font-size:10px;font-weight:850;letter-spacing:.7px}.partners>span{display:flex;align-items:center;gap:8px}.partners>i{color:#5c7284;font-size:17px;font-style:normal}.cap-symbol{font-size:17px}.mint{color:var(--mint)}.blue{color:var(--blue)}.lilac{color:var(--lilac)}.gold{color:var(--gold)}.section-kicker{margin:8px 0 13px;display:flex;gap:11px;align-items:center;color:#a9bec8;font-size:10px;font-weight:850;letter-spacing:1.3px}.section-num{display:grid;place-items:center;border:1px solid #354e59;border-radius:50%;font-size:9px;color:var(--mint);width:26px;height:26px}.push{margin-left:auto;font-size:9px;color:#678090;letter-spacing:.8px;text-align:right}.panel{border:1px solid var(--stroke);border-radius:16px;background:linear-gradient(160deg,#152432,#0f1a26 70%);overflow:hidden}.lab-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(290px,.9fr);gap:16px;scroll-margin-top:18px}.lab-visual{min-width:0}.panel-header{padding:23px 26px 18px;display:flex;justify-content:space-between;gap:12px;align-items:start}.eyebrow{font-size:10px;font-weight:850;letter-spacing:1.65px;color:#8fb0c0}.panel-header h2{font-size:19px;font-weight:700;letter-spacing:-.6px;margin:9px 0 0}.indicator{font-size:9px;letter-spacing:1px;color:#a8e6bb;border:1px solid #3d6954;padding:7px 9px;border-radius:7px;white-space:nowrap}.indicator span{display:inline-block;width:6px;height:6px;background:#a0ecaf;border-radius:50%;vertical-align:2px;margin-right:4px}.scene{height:405px;min-height:360px;position:relative;background:radial-gradient(ellipse at 51% 77%,#224758 0%,#162e3d 38%,#0e1c2a 75%);border-top:1px solid #1c3442;border-bottom:1px solid #263d4c;overflow:hidden}.scene::before{content:"";position:absolute;inset:0;opacity:.2;background-image:linear-gradient(#a9d6e705 1px,transparent 1px),linear-gradient(90deg,#a9d6e705 1px,transparent 1px);background-size:28px 28px}.scene-narrator{position:absolute;left:26px;top:23px;z-index:2;display:flex;flex-direction:column;gap:7px}.scene-narrator .smalltext{color:#93b0c0;font-size:9px;font-weight:850;letter-spacing:1.5px}.scene-narrator strong{font-size:15px;font-weight:750;color:#ecf8f4}.scene-narrator span:last-child{font-size:11px;color:#8fa9b9}.scene-temp{position:absolute;right:26px;top:24px;z-index:2;text-align:right;color:#eafff3}.temp-number{font-weight:750;font-size:49px;letter-spacing:-3px;font-variant-numeric:tabular-nums}.temp-unit{font-size:20px;color:#c2e3e5;margin-left:3px}.scene-temp small{display:block;font-size:9px;color:#96acb7;letter-spacing:1.7px;font-weight:850;margin-top:3px}.vessel{position:absolute;width:min(96%,700px);height:calc(100% - 20px);left:50%;top:24px;transform:translateX(-50%)}.water-body{transform-origin:50% 100%;transform-box:fill-box;transform:scaleY(var(--water-level));transition:transform .26s ease,opacity .26s ease}.water-wave{transform:translateY(calc((1 - var(--water-level))*300px));opacity:clamp(0,var(--water-level),1);transition:transform .26s ease}.ice-blocks{opacity:var(--ice-opacity);transition:opacity .25s}.bubbles{opacity:var(--bubble-opacity);transition:opacity .25s}.bubbles circle:nth-child(2n){animation:float 2s infinite ease-in-out}.bubbles circle:nth-child(3n){animation:float 3s infinite ease-in-out .5s}.steam-cloud{opacity:var(--steam-opacity);transition:opacity .2s;animation:steam 5s infinite ease-in-out}.burner-aura{opacity:.36;transition:opacity .3s}.heater-strip{opacity:.55;transition:opacity .3s}.scene[data-heating="true"] .burner-aura{opacity:1}.scene[data-heating="true"] .heater-strip{opacity:1}.scene-foot{position:absolute;left:26px;right:26px;bottom:15px;display:flex;justify-content:space-between;gap:12px;color:#819dad;font-size:9px;letter-spacing:1px;font-weight:750}.mini-square{display:inline-block;width:7px;height:7px;border:1px solid #9be4d7;margin-right:5px}.control-pad{padding:25px 26px 27px;background:#14232e}.control-title{display:flex;justify-content:space-between;gap:8px;align-items:end}.control-title>div{display:flex;flex-direction:column;gap:7px}.control-title strong{font-size:30px;font-weight:750;letter-spacing:-1.1px;font-variant-numeric:tabular-nums}.control-title strong small{font-size:13px;color:#8fa9b7;letter-spacing:0}.control-hint{font-size:10px;color:#9fdbd1;font-weight:750;letter-spacing:.7px;padding-bottom:4px;text-align:right}input[type=range]{width:100%;height:6px;margin:28px 0 6px;appearance:none;border-radius:20px;background:linear-gradient(90deg,#9be1df var(--progress,14%),#314859 var(--progress,14%));cursor:pointer}input[type=range]::-webkit-slider-thumb{appearance:none;background:#e5fff1;border:4px solid #55bcac;width:25px;height:25px;box-shadow:0 0 0 5px #7de9d41e;border-radius:50%}input[type=range]::-moz-range-thumb{background:#e5fff1;border:4px solid #55bcac;width:19px;height:19px;border-radius:50%}.range-ends{display:flex;justify-content:space-between;gap:5px;color:#88a2ae;font-size:10px;font-weight:750;letter-spacing:.4px}.range-ends span:nth-child(2){color:#a0e1d8}.action-row{margin-top:27px;display:flex;flex-wrap:wrap;gap:9px}.action-row button{border-radius:10px;padding:14px 16px;font-size:12px;font-weight:800;border:1px solid #314b57;min-height:44px}.primary-control{background:var(--mint);color:#163531;border-color:var(--mint)!important;flex:1;min-width:155px}.primary-control span:first-child{margin-right:5px}.secondary-control{background:#1b2e3c;color:#d1e2e7}.secondary-control:hover,.reason-step:hover,.topic:hover{background:#263d4c}.analysis-column{display:flex;flex-direction:column;gap:16px;min-width:0}.metric-card{padding:25px 24px 23px}.metric-card h2{font-weight:730;font-size:22px;letter-spacing:-.7px;line-height:1.25;margin:13px 0}.metric-card p{font-size:13px;line-height:1.7;min-height:48px;color:#9fb3bf;margin:0 0 22px}.state-pills{display:flex;gap:8px;flex-wrap:wrap}.state-pills>span{background:#1c2e3d;border:1px solid #314656;border-radius:7px;font-size:10px;color:#98adba;padding:8px;display:flex;align-items:center;gap:6px}.state-pills b{color:#dcecf0}.legend-point{width:7px;height:7px;border-radius:50%;display:inline-block}.ice-color{background:#d7e7ff}.water-color{background:#61d9de}.vapor-color{background:#c7aafc}.curve-card{padding:23px 24px 19px;flex:1}.panel-head-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.curve-tag{font-size:9px;color:#889dac;border:1px solid #35516a;border-radius:6px;padding:6px}.curve-headline{font-size:21px;font-weight:730;letter-spacing:-.7px;margin-top:12px}.curve-headline span{color:var(--mint)}.curve-card p{color:#8ca6b4;font-size:12px;margin:7px 0 4px;line-height:1.5}.curve{display:block;width:100%;margin:0 auto;max-height:216px;overflow:visible}.curve-note{display:flex;gap:10px;padding:12px;border-top:1px solid #304252;color:#91a9b6;font-size:10px;line-height:1.55}.info-icon{flex:0 0 18px;width:18px;height:18px;border-radius:50%;border:1px solid #577d8d;color:#9ec9cf;text-align:center;line-height:17px;font-style:italic}.milestone-card{padding:19px;display:flex;gap:14px;background:linear-gradient(130deg,#23423b,#17352f 80%);border-color:#3c6b57}.milestone-icon{background:#b8f0d0;color:#193d31;flex:0 0 38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:19px}.milestone-card strong{display:block;font-size:13px;line-height:1.45;font-weight:730;margin:6px 0}.milestone-card span:last-child{font-size:11px;color:#accfc1;line-height:1.4}.path-panel{display:grid;grid-template-columns:minmax(200px,.72fr) minmax(0,1.4fr);padding:26px;gap:23px;scroll-margin-top:20px;margin-bottom:30px}.path-text h2{font-size:24px;letter-spacing:-.8px;line-height:1.22;margin:11px 0}.path-text p{font-size:12px;line-height:1.75;color:#93a9b8;max-width:260px}.topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.topic{min-width:0;display:flex;flex-direction:column;gap:7px;background:#172a37;border:1px solid #324758;border-radius:10px;text-align:left;padding:14px 12px;color:#d5e6e9;min-height:90px}.topic small{font-size:9px;color:#819ba8;font-weight:800;letter-spacing:1px}.topic strong{font-size:12px;font-weight:750;line-height:1.3}.topic.active{border-color:#9be5cf;background:#1f423b;box-shadow:inset 0 0 0 1px #97e9d022}.topic.active small{color:#a1e1cd}.path-summary{grid-column:2;background:#203b3f;border-radius:8px;padding:13px 15px;color:#c7f4e7;font-size:11px;line-height:1.6}.reason-panel{display:grid;grid-template-columns:.8fr 1.1fr;gap:25px;padding:29px;margin-bottom:24px;scroll-margin-top:22px}.reason-intro h2{font-size:32px;line-height:1.18;letter-spacing:-1.35px;max-width:360px;margin:15px 0}.reason-intro em{color:#c5b8ff}.reason-intro p{font-size:13px;color:#9cafba;line-height:1.75;max-width:360px}.formula{display:inline-flex;border:1px solid #566b76;background:#1c3443;padding:12px 17px;border-radius:10px;margin:18px 0 9px;color:#d8f4ff;font-size:17px;font-weight:800;letter-spacing:1px}.reason-meta{display:block;font-size:10px;color:#8da6b4;margin:4px 0}.reason-steps{display:flex;flex-direction:column;gap:9px;min-width:0}.reason-step{background:#192b3b;border:1px solid #304859;border-radius:10px;display:flex;gap:14px;text-align:left;padding:13px 15px;color:#e3eff3;align-items:center;min-width:0}.reason-step>span{color:#94b4c0;font-size:13px;font-weight:800;flex:0 0 26px}.reason-step>div{flex:1;min-width:0}.reason-step small{font-size:9px;font-weight:850;letter-spacing:1px;color:#8da9b8;display:block;margin-bottom:6px}.reason-step strong{font-size:12px;font-weight:680;overflow-wrap:anywhere}.reason-step>i{font-style:normal;color:#8baeb7}.reason-step.correct{background:#203e36;border-color:#7ecda7}.reason-step.incorrect{background:#462d36;border-color:#b76f85}.reason-feedback{color:#acbac4;font-size:12px;line-height:1.65;background:#1a2936;padding:13px 15px;border-radius:9px;min-height:48px}.reason-feedback.correct{background:#234338;color:#c2f2d4}.reason-feedback.incorrect{background:#3b2a32;color:#f3c3d0}.footer{border-top:1px solid #2a3a49;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:22px 0 8px;color:#6b8292;font-size:9px;font-weight:850;letter-spacing:1px}.footer>span:first-child{color:#d7f7e7;font-size:16px;letter-spacing:-.5px}.footer .seven{color:#adf4c8}.footer i{font-style:normal;color:#7a9eaa}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-36px)}}@keyframes steam{0%,100%{transform:translateY(0);opacity:var(--steam-opacity)}50%{transform:translateY(-22px);opacity:calc(var(--steam-opacity)*.75)}}
+@media(max-width:1280px){.main{padding:0 26px 20px}.shell{grid-template-columns:230px minmax(0,1fr)}.sidebar{padding-left:14px;padding-right:14px}.panel-header{padding:20px}.control-pad{padding:19px}.lab-grid{grid-template-columns:minmax(0,1.3fr) minmax(280px,.85fr)}.metric-card,.curve-card{padding:18px}.scene{height:368px}.path-panel{grid-template-columns:1fr}.path-summary{grid-column:1}.reason-panel{gap:15px}}
+@media(max-width:1050px){.shell{grid-template-columns:1fr}.sidebar{height:auto;position:relative;display:block;border-right:0;border-bottom:1px solid #293c49;padding:12px 20px}.brand{margin:0;display:inline-flex}.brandmark{height:34px;width:34px;line-height:34px;font-size:19px;border-radius:9px}.brand-name{font-size:17px}.brand-name small{font-size:7px}.sidebar .side-section-title,.sidebar .path-sidebar,.sidebar .separator,.sidebar .side-foot{display:none}.side-nav{display:inline-flex;vertical-align:top;flex-direction:row;gap:3px;margin-left:24px}.side-link{min-height:36px;font-size:11px;padding:8px 11px}.side-link .nav-icon{font-size:13px;width:16px}.on-dot{display:none}.main{padding:0 25px 22px}}
+@media(max-width:760px){.topbar{min-height:65px}.top-actions .test-tag{display:none}.tag{padding:7px}.hero{padding:33px 0}.hero-top{display:block}.hero-index{display:block;text-align:left;margin-top:12px;font-size:8px}.hero h1{font-size:clamp(38px,8vw,53px);letter-spacing:-.055em;margin:19px 0}.lede{font-size:13px;line-height:1.75}.partners{gap:8px;font-size:9px}.partners>i{font-size:12px}.lab-grid{grid-template-columns:1fr}.analysis-column{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.milestone-card{grid-column:1 / -1}.scene{height:380px}.main{padding:0 19px 20px}.section-kicker{font-size:9px}.section-kicker .push{display:none}.reason-panel{grid-template-columns:1fr;gap:20px}.reason-intro h2{max-width:none}}
+@media(max-width:490px){.sidebar{padding:10px 12px}.side-nav{margin-left:4px;float:right}.side-link{font-size:0;gap:0;padding:8px 12px}.side-link .nav-icon{font-size:17px}.brand-name{font-size:14px}.brandmark{height:31px;width:31px;line-height:31px}.main{padding:0 11px 18px}.topbar{padding:0 5px}.crumb{font-size:10px;gap:7px}.cr-strong{font-size:9px}.tag{font-size:7.5px}.hero{padding:27px 5px}.hero h1{font-size:40px}.hero-index{line-height:1.6}.lede{font-size:13px}.partners{gap:7px}.partners>span{font-size:8px;letter-spacing:0}.cap-symbol{font-size:14px}.section-kicker{margin:5px 0 10px}.scene{height:370px}.scene-narrator{top:19px;left:13px}.scene-temp{right:14px;top:14px}.scene-temp .temp-number{font-size:37px}.temp-unit{font-size:16px}.vessel{height:calc(100% - 5px);top:30px;width:115%;max-width:none}.scene-foot{left:13px;right:13px;bottom:13px;font-size:8px}.panel-header{padding:17px 14px}.panel-header h2{font-size:17px}.indicator{font-size:8px;padding:6px}.control-pad{padding:19px 14px}.control-hint{font-size:9px}.range-ends{font-size:8px}.action-row{gap:6px}.action-row button{flex:1 0 auto;padding:12px 9px;font-size:10px}.primary-control{flex:1 1 100%;min-width:0}.analysis-column{display:flex}.metric-card,.curve-card{padding:20px}.metric-card h2{font-size:21px}.path-panel{padding:18px;gap:15px}.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topic{min-height:88px}.reason-panel{padding:19px}.reason-intro h2{font-size:29px}.reason-step{padding:12px 10px;gap:8px}.reason-step strong{font-size:11px}.footer{font-size:8px}.scene-narrator strong{max-width:160px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+
+
+/* Original LVL7 editorial guide: Asko-derived interaction mechanism, not reused character or palette. */
+.ripple-guide{position:relative;display:grid;grid-template-columns:185px minmax(0,1fr);gap:24px;align-items:center;background:radial-gradient(circle at 6% 45%,#173f5e 0,#102536 34%,#0d202d 100%);border:1px solid #335667;border-radius:21px;margin:-1px 0 29px;padding:23px 30px 23px 12px;overflow:hidden;box-shadow:0 14px 60px #0003}
+.ripple-guide:before{content:"";pointer-events:none;position:absolute;inset:0;background:linear-gradient(120deg,transparent 38%,#fff1 39%,transparent 41%,transparent 55%,#fff1 56%,transparent 57%);opacity:.16}
+.ripple-art{text-align:center;align-self:stretch;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:1}.ripple-portrait{width:100%;max-width:165px;max-height:155px;filter:drop-shadow(0 17px 17px #0004)}.ripple-caption{font-size:9px;letter-spacing:.3px;color:#abd4df;max-width:150px;line-height:1.5}.ripple-copy{z-index:1;min-width:0}.ripple-kicker{font-size:9px;color:#fbd39d;letter-spacing:1.6px;font-weight:850;margin:0 0 9px}.ripple-copy h2{font-size:clamp(19px,2vw,28px);letter-spacing:-.04em;line-height:1.2;margin:0}.ripple-copy h2 em{color:#f9d59e}.ripple-copy>p:not(.ripple-kicker){font-size:12px;color:#c0d6db;line-height:1.65;max-width:590px;margin:10px 0 15px}.ripple-actions{display:flex;flex-wrap:wrap;gap:8px}.ripple-action{color:#e0f4f3;background:#203e4d;border:1px solid #577282;border-radius:11px;font-size:11px;font-weight:750;min-height:41px;padding:10px 14px}.ripple-action:hover{background:#285567}.ripple-action.ripple-main{color:#193c47;background:#f8d49a;border-color:#f8d49a}.ripple-action.ripple-main:hover{background:#ffe4b7}.ripple-action:focus-visible{outline:3px solid #f9d59e;outline-offset:3px}.ripple-answer{margin-top:12px;color:#c9e6e3;font-size:11px;line-height:1.55;max-width:750px;min-height:18px}.ripple-small-proof{grid-column:2;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;color:#8fb6bb;font-size:9px;z-index:1;border-top:1px solid #35505c;padding-top:11px}.ripple-small-proof strong{letter-spacing:1px;color:#a9eddb;font-size:9px}
+@media(max-width:760px){.ripple-guide{grid-template-columns:128px minmax(0,1fr);gap:10px;padding:18px 15px;margin-bottom:23px}.ripple-portrait{max-width:128px}.ripple-caption{font-size:8px}.ripple-small-proof{grid-column:1 / -1}.ripple-copy h2{font-size:21px}.ripple-action{padding:10px}}
+@media(max-width:490px){.ripple-guide{grid-template-columns:90px minmax(0,1fr);align-items:start;gap:9px;padding:14px 11px;border-radius:14px}.ripple-art{justify-content:start;margin-top:18px}.ripple-portrait{max-width:90px}.ripple-caption{font-size:7px}.ripple-copy h2{font-size:17px}.ripple-copy>p:not(.ripple-kicker){font-size:10px;margin:8px 0 10px}.ripple-actions{gap:6px}.ripple-action{font-size:10px;padding:9px 8px;min-height:38px}.ripple-main{width:100%}.ripple-answer{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.ripple-portrait{transition:none;animation:none}}
+</style>
+</head>
+<body>
+ <div class="shell">
+  <aside class="sidebar" aria-label="Lab navigation">
+   <a class="brand" href="#top" aria-label="LVL7 home"><span class="brandmark">L<span>7</span></span><span class="brand-name">LVL<span>7</span><small>by PRYNTOR</small></span></a>
+   <div class="side-section-title">YOUR EXPERIENCE <span>01 / 03</span></div>
+   <nav class="side-nav" aria-label="Experience sections">
+    <a class="side-link selected" href="#experiment"><span class="nav-icon">✦</span> Discovery Lab <span class="on-dot"></span></a>
+    <a class="side-link" href="#path"><span class="nav-icon">⌘</span> Learning path</a>
+    <a class="side-link" href="#reason"><span class="nav-icon">↗</span> Reasoning check</a>
+   </nav>
+   <div class="separator"></div>
+   <div class="side-section-title">YOUR LEARNING PATH <span>06 TOPICS</span></div>
+   <div class="path-sidebar" id="side-path" aria-label="Six prerequisite concepts"></div>
+   <div class="side-foot"><div class="tiny-orb"></div><div><strong>Curiosity is a skill.</strong><span>No account. No learner tracking.</span></div></div>
+  </aside>
+  <main id="top" class="main">
+   <header class="topbar"><div class="crumb"><span class="cr-strong">SCIENCE STUDIO</span><span class="slash">/</span><span>Water & heat</span></div><div class="top-actions"><span class="tag dot-tag"><i></i> LIVE SIMULATION</span><span class="tag test-tag">ORIGINAL R0 DEMO</span></div></header>
+   <section class="hero" aria-labelledby="headline">
+    <div class="hero-top"><span class="chapter">THE SCIENCE OF EVERYDAY THINGS</span><span class="hero-index">LAB 001 <span class="div-dot">•</span> AGE-APPROPRIATE GUIDANCE REQUIRED</span></div>
+    <h1 id="headline">What happens when<br>water <em>gets energy?</em></h1>
+    <p class="lede">Don't just memorise the answer. See it, change it, and figure out why. One tiny experiment. A whole chain of understanding.</p>
+    <div class="partners" aria-label="Capabilities used in this experiment"><span><b class="cap-symbol mint">⌘</b> KNOWLEDGE GRAPH</span><i>→</i><span><b class="cap-symbol blue">◈</b> INTERACTIVE SCIENCE</span><i>→</i><span><b class="cap-symbol lilac">✳</b> REASONING CHECK</span><i>→</i><span><b class="cap-symbol gold">✓</b> VERIFIED MATH</span></div>
+   </section>
+
+   <section class="ripple-guide" aria-labelledby="ripple-heading">
+     <div class="ripple-art" aria-hidden="true">
+       <svg viewBox="0 0 188 160" class="ripple-portrait" xmlns="http://www.w3.org/2000/svg">
+         <defs><linearGradient id="ripple-fill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b6f8f7"/><stop offset="1" stop-color="#3f9fe9"/></linearGradient><radialGradient id="ripple-light"><stop stop-color="#f7ebc6" stop-opacity=".95"/><stop offset="1" stop-color="#f7ebc6" stop-opacity="0"/></radialGradient></defs>
+         <circle cx="91" cy="78" r="70" fill="url(#ripple-light)" opacity=".37"/>
+         <path d="M94 13 C81 40 38 62 38 104 C38 143 62 155 95 155 C128 155 151 135 151 103 C151 64 110 42 94 13Z" fill="url(#ripple-fill)" stroke="#143d65" stroke-width="4" stroke-linejoin="round"/>
+         <path d="M61 97 C59 78 69 61 83 46" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="9" opacity=".62"/>
+         <path d="M110 87 q10 -9 19 -2" stroke="#1b435c" stroke-width="4" fill="none" stroke-linecap="round"/>
+         <circle cx="75" cy="97" r="4.5" fill="#153e56"/><circle cx="112" cy="99" r="4.5" fill="#153e56"/>
+         <path d="M81 120 q14 13 27 -1" stroke="#153e56" stroke-width="4" fill="none" stroke-linecap="round"/>
+         <path d="M40 105 L19 87 M149 105 L171 91" stroke="#b3eee5" stroke-width="8" fill="none" stroke-linecap="round"/>
+         <path d="M72 156 q20 -4 40 0" stroke="#143d65" stroke-width="4" fill="none" opacity=".4"/>
+         <circle cx="158" cy="37" r="5" fill="#ffd58b"/><circle cx="24" cy="47" r="4" fill="#9cefe9"/><path d="M153 61 l13 -13m-7 22 16 -3" stroke="#ffd58b" stroke-width="4" stroke-linecap="round"/>
+       </svg>
+       <span class="ripple-caption">Meet Pip · our original little water guide</span>
+     </div>
+     <div class="ripple-copy">
+       <p class="ripple-kicker">✦ TRY IT BEFORE YOU READ IT</p>
+       <h2 id="ripple-heading">The fun part? <em>You control the discovery.</em></h2>
+       <p>I'm Pip. Let’s test what heat really does to water. Make a change, watch the beaker, then ask why.</p>
+       <div class="ripple-actions">
+         <button type="button" id="pip-boil" class="ripple-action ripple-main">Take me to boiling ↗</button>
+         <button type="button" id="pip-ask" class="ripple-action">Why is this happening?</button>
+         <button type="button" id="pip-path" class="ripple-action">Show my learning path</button>
+       </div>
+       <div class="ripple-answer" id="pip-answer" role="status" aria-live="polite">Start at 20°C, then jump to boiling. Watch the energy change before you move on.</div>
+     </div>
+     <div class="ripple-small-proof" aria-label="Teaching context"><strong id="pip-phase">LIQUID WATER</strong><span>100 g pure water · idealised model · no learner data</span></div>
+   </section>
+   <div class="section-kicker"><span class="section-num">01</span><span>EXPLORE THE EXPERIMENT</span><span class="push">REAL MATH · ORIGINAL VISUALS</span></div>
+   <section class="lab-grid" id="experiment" aria-label="Interactive water and heat experiment">
+    <article class="lab-visual panel">
+     <div class="panel-header"><div><span class="eyebrow">LIVE EXPERIMENT</span><h2>Energy changes everything.</h2></div><div class="indicator"><span></span> MODEL ACTIVE</div></div>
+     <div class="scene" id="scene" data-phase="liquid" data-heating="false" style="--water-level:0.73;--steam-opacity:0;--ice-opacity:0;--bubble-opacity:0.15">
+      <div class="scene-narrator" aria-live="polite"><span class="smalltext">INSIDE THE BEAKER</span><strong id="phase-label">Liquid water</strong><span id="narrator-note">100 g · 1 atmosphere</span></div>
+      <div class="scene-temp"><span id="temp" class="temp-number">20.0</span><span class="temp-unit">°C</span><small>TEMPERATURE</small></div>
+      <svg class="vessel" viewBox="0 0 700 510" role="img" aria-labelledby="visual-title visual-desc"><title id="visual-title">Illustrated beaker holding a simplified water sample</title><desc id="visual-desc">The amount of ice, liquid and water vapour changes as heat energy changes; readouts provide numeric alternatives.</desc>
+       <defs><linearGradient id="glass" x1="0" x2="1"><stop offset="0%" stop-color="#c8e1f0" stop-opacity="0.03"/><stop offset="47%" stop-color="#c0dbe3" stop-opacity="0.10"/><stop offset="100%" stop-color="#79adbb" stop-opacity="0.025"/></linearGradient><linearGradient id="water-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#77e7ed" stop-opacity="0.57"/><stop offset="0.60" stop-color="#48b8d4" stop-opacity="0.34"/><stop offset="1" stop-color="#2f7fba" stop-opacity="0.55"/></linearGradient><linearGradient id="steam-grad" x1="0" x2="1" y1="1" y2="0"><stop offset="0%" stop-color="#a3d8fe" stop-opacity="0.0"/><stop offset="55%" stop-color="#c0bafa" stop-opacity=".31"/><stop offset="100%" stop-color="#e5cffa" stop-opacity="0"/></linearGradient><radialGradient id="heat-glow"><stop offset="0%" stop-color="#ff9b6b" stop-opacity="0.6"/><stop offset="100%" stop-color="#ff9b6b" stop-opacity="0"/></radialGradient><filter id="blur"><feGaussianBlur stdDeviation="13"/></filter><clipPath id="beaker-clip"><path d="M248 116V400Q248 440 286 440H428Q466 440 466 400V116Z"/></clipPath></defs>
+       <g class="ruler-lines"><path d="M520 132v308 M517 150h12M517 209h12M517 269h12M517 329h12M517 388h12M517 438h12" stroke="#476177" stroke-width="1.5"/><g fill="#849aad" font-size="12" font-family="sans-serif"><text x="538" y="154">100</text><text x="538" y="213">80</text><text x="538" y="273">60</text><text x="538" y="333">40</text><text x="538" y="392">20</text><text x="538" y="442">0</text></g></g>
+       <ellipse cx="357" cy="452" rx="175" ry="17" fill="#000" opacity=".32"/>
+       <ellipse class="burner-aura" cx="357" cy="440" rx="170" ry="65" fill="url(#heat-glow)" filter="url(#blur)"/>
+       <path d="M239 112Q239 106 248 106H466Q476 106 476 112V399Q476 448 428 448H286Q239 448 239 399Z" stroke="#b1d0dc" stroke-opacity=".52" stroke-width="2.2" fill="url(#glass)"/>
+       <path d="M248 116V400Q248 440 286 440H428Q466 440 466 400V116Z" stroke="#c7ebf6" stroke-opacity=".15" fill="none"/>
+       <g clip-path="url(#beaker-clip)">
+        <rect class="water-body" x="248" y="122" width="218" height="318" fill="url(#water-grad)"/>
+        <path class="water-wave" d="M236 0 C272 -7 312 9 348 0 S425 -7 479 0" stroke="#c0fbfc" stroke-opacity=".65" stroke-width="2" fill="none"/>
+        <g class="ice-blocks"><rect x="265" y="321" width="82" height="72" rx="12" fill="#c9eff9" opacity=".74" transform="rotate(12 305 357)"/><rect x="363" y="339" width="73" height="59" rx="13" fill="#c9eff9" opacity=".77" transform="rotate(-11 400 367)"/><path d="M267 326l53 19M364 347l47 5" stroke="#fff" opacity=".46" stroke-width="4"/></g>
+        <g class="bubbles" fill="#d3fdff" opacity=".65"><circle cx="303" cy="390" r="4"/><circle cx="364" cy="415" r="5"/><circle cx="421" cy="385" r="3"/><circle cx="333" cy="355" r="3"/><circle cx="407" cy="313" r="5"/><circle cx="293" cy="305" r="3.5"/><circle cx="371" cy="260" r="3"/><circle cx="412" cy="242" r="2"/><circle cx="318" cy="215" r="4"/><circle cx="373" cy="181" r="3"/><circle cx="416" cy="188" r="3"/><circle cx="289" cy="185" r="2.5"/></g>
+       </g>
+       <g class="steam-cloud" fill="url(#steam-grad)"><ellipse cx="310" cy="88" rx="43" ry="74"/><ellipse cx="399" cy="80" rx="49" ry="77"/><ellipse cx="355" cy="42" rx="70" ry="57"/></g>
+       <path d="M224 112h266" stroke="#bddde9" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+       <path d="M260 128V395" stroke="#fff" stroke-opacity=".13" stroke-width="7" stroke-linecap="round"/>
+       <path d="M454 131v278" stroke="#fff" stroke-opacity=".095" stroke-width="6" stroke-linecap="round"/>
+       <rect x="193" y="456" width="328" height="14" rx="7" fill="#263748"/><rect x="215" y="469" width="284" height="18" rx="8" fill="#334758"/><rect class="heater-strip" x="268" y="465" width="178" height="7" rx="3.5" fill="#ff956c"/>
+      </svg>
+      <div class="scene-foot"><span><i class="mini-square"></i> BEAKER · 100 G H₂O</span><span>NOT A PHYSICAL DEVICE</span></div>
+     </div>
+     <div class="control-pad">
+      <div class="control-title"><div><span class="eyebrow">ENERGY ADDED / REMOVED</span><strong><span id="energy-readout">0.00</span> <small>kJ</small></strong></div><span class="control-hint">DRAG TO EXPLORE ↗</span></div>
+      <input id="energy" aria-label="Energy added or removed from water, in kilojoules" type="range" min="-41.76" max="259.04" step="0.1" value="0"><div class="range-ends"><span>ICE · −42 kJ</span><span>ROOM · 0</span><span>ALL STEAM · 259 kJ</span></div>
+      <div class="action-row"><button id="play" class="primary-control" type="button" aria-pressed="false"><span id="play-symbol">▶</span> <span id="play-label">Run experiment</span></button><button id="reset" class="secondary-control" type="button">↺ Reset</button><button id="boil" class="secondary-control" type="button">↗ Jump to boiling</button></div>
+     </div>
+    </article>
+    <aside class="analysis-column" aria-label="Scientific explanations and evidence">
+     <div class="metric-card panel"><span class="eyebrow">WHAT'S HAPPENING NOW</span><h2 id="status-title">The water is warming up.</h2><p id="status-detail">Heat energy increases the temperature of the water, as long as it remains liquid.</p><div class="state-pills"><span><i class="legend-point ice-color"></i> Ice <b id="ice-pc">0%</b></span><span><i class="legend-point water-color"></i> Liquid <b id="water-pc">100%</b></span><span><i class="legend-point vapor-color"></i> Vapour <b id="steam-pc">0%</b></span></div></div>
+     <div class="curve-card panel"><div class="panel-head-row"><span class="eyebrow">THE SCIENCE, VISUALISED</span><span class="curve-tag">IDEALISED</span></div><div class="curve-headline">Heating curve <span>↗</span></div><p>Watch the line flatten as water changes state.</p><svg id="curve" class="curve" viewBox="0 0 430 244" role="img" aria-label="Heating curve showing 0 degrees while ice melts, 20 to 100 degrees as liquid warms, and 100 degrees while water boils"><g class="grid-lines" stroke="#304356" stroke-width="1"><path d="M42 23H410M42 75H410M42 127H410M42 179H410" opacity=".6"/><path d="M42 23V198H410" stroke="#536273" stroke-width="1.6" fill="none"/></g><g class="axis" fill="#a0b0bd" font-size="12" font-family="sans-serif"><text x="3" y="27">100°</text><text x="12" y="130">40°</text><text x="17" y="183">0°</text><text x="43" y="224">−42</text><text x="138" y="224">0</text><text x="220" y="224">33</text><text x="383" y="224">259</text><text x="344" y="241">Energy (kJ)</text></g><path id="curve-path" d="M42 179H111L130 159L213 23H410" fill="none" stroke="#90e9d9" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle id="curve-point-halo" cx="130" cy="159" r="15" fill="#9cefe3" opacity=".16"/><circle id="curve-point" cx="130" cy="159" r="6" fill="#c7fff0" stroke="#183e42" stroke-width="2"/></svg><div class="curve-note"><span class="info-icon">i</span><span>Pure water · 1 atm · no heat loss · fixed 100 g. A teaching model, not a real laboratory measurement.</span></div></div>
+     <div class="milestone-card panel"><div class="milestone-icon">✦</div><div><span class="eyebrow">THE DISCOVERY</span><strong>Boiling is a change of state, not simply getting hotter.</strong><span>Use the slider beyond 33.44 kJ to see why.</span></div></div>
+    </aside>
+   </section>
+   <div id="path" class="section-kicker"><span class="section-num">02</span><span>FOLLOW THE IDEAS</span><span class="push">ORIGINAL MINI GRAPH · GRAPH ENGINE VERIFIED AGAINST MARBLE V1</span></div>
+   <section class="path-panel panel"><div class="path-text"><span class="eyebrow">CONCEPT MAP</span><h2>Six ideas. One big discovery.</h2><p id="topic-description">Select a concept below to reveal the building blocks that come before it.</p></div><div class="topic-grid" id="topic-grid" aria-label="Interactive prerequisite learning map"></div><div class="path-summary" id="path-summary" aria-live="polite">The selected concept builds on earlier ideas.</div></section>
+   <div id="reason" class="section-kicker"><span class="section-num">03</span><span>SHOW YOUR REASONING</span><span class="push">INSPIRED BY PRYNTOR'S TEACHER-IN-LOOP APPROACH</span></div>
+   <section class="reason-panel panel"><div class="reason-intro"><span class="eyebrow">THE REASONING CHALLENGE</span><h2>Find the <em>first wrong step.</em></h2><p>Someone calculated the heat needed to warm 100 g of water from 20°C to 100°C. Tap the first incorrect step. No grades, just understanding.</p><div class="formula">Q = m × c × ΔT</div><span class="reason-meta">c = 4.18 kJ/(kg·°C)</span></div><div class="reason-steps"><button class="reason-step" type="button" data-step="1" aria-pressed="false"><span>01</span><div><small>MASS CONVERSION</small><strong>100 g = 0.1 kg</strong></div><i>↗</i></button><button class="reason-step" type="button" data-step="2" aria-pressed="false"><span>02</span><div><small>TEMPERATURE CHANGE</small><strong>ΔT = 100 + 20 = 120°C</strong></div><i>↗</i></button><button class="reason-step" type="button" data-step="3" aria-pressed="false"><span>03</span><div><small>CALCULATING ENERGY</small><strong>Q = 0.1 × 4.18 × 120 = 50.16 kJ</strong></div><i>↗</i></button><div class="reason-feedback" id="reason-feedback" role="status" aria-live="polite">Choose a step to reveal what happened.</div></div></section>
+   <footer class="footer"><span>LVL<span class="seven">7</span> <i>×</i> PRYNTOR</span><div>BUILT WITH AN ORIGINAL GRAPH ADAPTER · INTERACTIVE MODEL · REASONING CHECK · VERIFIED NUMBERS</div><span>INTERNAL EDUCATION PILOT · R0</span></footer>
+  </main>
+ </div>
+ <script>
+/* graph.mjs */
+/** Original Pryntor graph utilities. No Marble data is bundled with this code. */
+function buildGraph(topicsInput, dependenciesInput) {
+  const topics = topicsInput?.topics;
+  const edges = dependenciesInput?.dependencies;
+  if (!Array.isArray(topics) || !Array.isArray(edges)) throw new Error('Expected {topics:[]} and {dependencies:[]} JSON');
+  const byId = new Map();
+  for (const t of topics) {
+    if (!t || typeof t.id !== 'string' || !t.id || byId.has(t.id)) throw new Error(`Invalid/duplicate topic id: ${t?.id}`);
+    if (typeof t.name !== 'string' || !t.name.trim()) throw new Error(`Missing topic name: ${t.id}`);
+    byId.set(t.id, t);
+  }
+  const prereqs = new Map([...byId.keys()].map(id => [id, []]));
+  const seenEdges = new Set();
+  for (const edge of edges) {
+    if (!edge || !byId.has(edge.topicId) || !byId.has(edge.prerequisiteId)) throw new Error('Dangling dependency');
+    if (edge.topicId === edge.prerequisiteId) throw new Error(`Self-dependency: ${edge.topicId}`);
+    if (!['hard', 'soft'].includes(edge.strength)) throw new Error(`Invalid strength: ${edge.strength}`);
+    const key = `${edge.topicId}\0${edge.prerequisiteId}`;
+    if (seenEdges.has(key)) throw new Error(`Duplicate dependency: ${edge.topicId}`);
+    seenEdges.add(key);
+    prereqs.get(edge.topicId).push({id: edge.prerequisiteId, strength: edge.strength, reason: edge.reason ?? ''});
+  }
+  // Prove acyclicity for ALL nodes, not just the currently viewed pathway.
+  const state = new Map();
+  function visit(id) {
+    if (state.get(id) === 1) throw new Error(`Dependency cycle at ${id}`);
+    if (state.get(id) === 2) return;
+    state.set(id, 1);
+    for (const p of prereqs.get(id)) visit(p.id);
+    state.set(id, 2);
+  }
+  for (const id of byId.keys()) visit(id);
+  return {byId, prereqs, edgeCount: edges.length};
+}
+
+/** Returns a teaching SEQUENCE, not evidence of mastery or permission to advance. */
+function pathway(graph, targetId, {includeSoft = true} = {}) {
+  if (!graph.byId.has(targetId)) throw new Error(`Unknown topic: ${targetId}`);
+  const seen = new Set(), order = [];
+  function visit(id) {
+    if (seen.has(id)) return;
+    seen.add(id);
+    const links = graph.prereqs.get(id).filter(p => includeSoft || p.strength === 'hard');
+    for (const link of links) visit(link.id);
+    order.push({id, name: graph.byId.get(id).name, subject: graph.byId.get(id).subject ?? '', prerequisiteCount: links.length});
+  }
+  visit(targetId);
+  return order;
+}
+
+function searchTopics(graph, phrase, limit = 15) {
+  if (typeof phrase !== 'string' || !phrase.trim()) return [];
+  const q = phrase.trim().toLocaleLowerCase();
+  return [...graph.byId.values()].filter(t => t.name.toLocaleLowerCase().includes(q)).slice(0, Math.max(0, Math.min(50, limit))).map(t => ({id: t.id, name: t.name, subject: t.subject}));
+}
+
+/* fixture.mjs */
+/** Original, intentionally curated demo mini-graph; NOT represented as a Marble data export.
+ * Compatible with the same Pryntor DAG library that was validated on Marble v1.
+ */
+const topics = {topics:[
+ {id:'energy',name:'Energy',subject:'Science',description:'Energy can move between things and change what they do.'},
+ {id:'particles',name:'Tiny particles',subject:'Science',description:'Water is made of tiny moving particles.'},
+ {id:'temperature',name:'Temperature',subject:'Science',description:'Temperature describes how hot or cold something is.'},
+ {id:'states',name:'States of water',subject:'Science',description:'Water can be solid ice, liquid or vapour.'},
+ {id:'transfer',name:'Heating & cooling',subject:'Science',description:'Energy can move into or out of water.'},
+ {id:'boiling',name:'Why water boils',subject:'Science',description:'At boiling, added energy helps liquid change to gas.'}
+]};
+const dependencies = {dependencies:[
+ {topicId:'particles',prerequisiteId:'energy',strength:'soft'},
+ {topicId:'temperature',prerequisiteId:'energy',strength:'hard'},
+ {topicId:'states',prerequisiteId:'particles',strength:'hard'},
+ {topicId:'transfer',prerequisiteId:'temperature',strength:'hard'},
+ {topicId:'boiling',prerequisiteId:'states',strength:'hard'},
+ {topicId:'boiling',prerequisiteId:'transfer',strength:'hard'}
+]};
+
+/* thermo.mjs */
+/** Pryntor original educational model, idealised 100 g water at 1 atm, no heat loss.
+ * Zero kJ = 100 g liquid water at 20 C. Heat energies kJ, mass kg.
+ */
+const SPEC = Object.freeze({massKg:0.1, specificHeatWater:4.18, specificHeatIce:2.1, latentFusion:334, latentVapor:2256, roomC:20, pressureAtm:1});
+const POINTS = Object.freeze({ice:-41.76, melting:-8.36, room:0, boiling:33.44, vapor:259.04});
+function waterState(energyInput) {
+  if (typeof energyInput !== 'number' || !Number.isFinite(energyInput)) throw new TypeError('Energy must be a finite number');
+  const energy = Math.max(POINTS.ice, Math.min(POINTS.vapor,energyInput));
+  const e = energy;
+  let temperatureC, phase, iceFraction=0, vaporFraction=0, detail;
+  if (e < POINTS.melting - 1e-8) {
+    temperatureC = 0; phase='melting'; iceFraction = (POINTS.melting-e) / (POINTS.melting-POINTS.ice);
+    detail='Energy changes ice into liquid water while temperature stays at 0°C.';
+  } else if (e < POINTS.boiling - 1e-8) {
+    temperatureC = 20 + e / (SPEC.massKg*SPEC.specificHeatWater); phase='liquid';
+    detail='Added energy raises the temperature of liquid water.';
+  } else if (e < POINTS.vapor - 1e-8) {
+    temperatureC = 100; phase='boiling'; vaporFraction = (e-POINTS.boiling) / (POINTS.vapor-POINTS.boiling);
+    detail='Added energy changes liquid to water vapour. The idealized temperature stays at 100°C.';
+  } else {
+    temperatureC=100; phase='steam'; vaporFraction=1;
+    detail='The sample is all vapour at the end of this simplified model.';
+  }
+  if (Math.abs(e-POINTS.ice)<1e-6) {phase='ice';iceFraction=1;temperatureC=0; detail='The starting point here is entirely ice at 0°C.';}
+  return {energyKJ:e,temperatureC,phase,iceFraction,vaporFraction,liquidFraction:1-iceFraction-vaporFraction,detail};
+}
+function isFirstMistake(step) { return step===2; }
+
+/* app.mjs */
+const graph=buildGraph(topics,dependencies);
+const topicMap=new Map(topics.topics.map((t,i)=>[t.id,{...t,index:i}]));
+const q=id=>document.getElementById(id);
+const round=(n,d=1)=>n.toFixed(d);
+let playing=false, frame=0, lastTime=0, energy=0, selectedTopic='boiling';
+const slider=q('energy');
+function draw(value){
+ const s=waterState(value);energy=s.energyKJ;
+ slider.value=String(energy); slider.style.setProperty('--progress',((energy-POINTS.ice)/(POINTS.vapor-POINTS.ice)*100).toFixed(2)+'%');
+ q('energy-readout').textContent=round(energy,2);q('temp').textContent=round(s.temperatureC);
+ q('ice-pc').textContent=Math.round(s.iceFraction*100)+'%';
+ q('water-pc').textContent=Math.round(s.liquidFraction*100)+'%';
+ q('steam-pc').textContent=Math.round(s.vaporFraction*100)+'%';
+ const scene=q('scene');scene.dataset.phase=s.phase;
+ scene.style.setProperty('--water-level', Math.max(0, .72*s.liquidFraction).toFixed(3));
+ scene.style.setProperty('--steam-opacity',Math.min(1,s.vaporFraction*.95+(s.phase==='boiling'?.12:0)).toFixed(3));
+ scene.style.setProperty('--ice-opacity',Math.min(1,s.iceFraction).toFixed(3));
+ scene.style.setProperty('--bubble-opacity', s.phase==='boiling'?Math.min(.95,.35+s.vaporFraction):s.phase==='steam'?.15:.14);
+ let title,ph;
+ switch(s.phase){
+  case 'ice':title='The water is frozen.';ph='Solid ice';break;
+  case 'melting':title='The ice is melting.';ph='Ice + liquid water';break;
+  case 'liquid':title=s.temperatureC<20?'The water is cooling down.':'The water is warming up.';ph='Liquid water';break;
+  case 'boiling':title='The water is changing state.';ph='Liquid + water vapour';break;
+  default:title='All the water is vapour.';ph='Water vapour';
+ }
+ q('phase-label').textContent=ph;q('status-title').textContent=title;q('status-detail').textContent=s.detail;
+ if(q('pip-phase')) q('pip-phase').textContent=ph.toUpperCase();
+ if(q('pip-answer')?.dataset.follow==='true') pipExplain();
+ const y=179-(s.temperatureC/100)*156;
+ const x=42 + ((s.energyKJ-POINTS.ice)/(POINTS.vapor-POINTS.ice))*368;
+ q('curve-point').setAttribute('cx',String(x));q('curve-point').setAttribute('cy',String(y));
+ q('curve-point-halo').setAttribute('cx',String(x));q('curve-point-halo').setAttribute('cy',String(y));
+ const stepName=s.phase==='boiling'?'at boiling':s.phase==='ice'?'as ice':s.phase==='melting'?'while melting':s.phase==='steam'?'as vapour':'as liquid';
+ q('visual-desc').textContent=`The sample is ${stepName} at ${round(s.temperatureC)} degrees Celsius; ice ${Math.round(s.iceFraction*100)} percent, liquid ${Math.round(s.liquidFraction*100)} percent, vapour ${Math.round(s.vaporFraction*100)} percent.`;
+ return s;
+}
+function stop(){playing=false;cancelAnimationFrame(frame);q('scene').dataset.heating='false';q('play').setAttribute('aria-pressed','false');q('play-label').textContent='Run experiment';q('play-symbol').textContent='▶';}
+function tick(ts){if(!playing)return;if(!lastTime)lastTime=ts;let dt=Math.min(.08,(ts-lastTime)/1000);lastTime=ts;draw(Math.min(POINTS.vapor,energy+dt*30));if(energy>=POINTS.vapor){stop();return;}frame=requestAnimationFrame(tick);}
+q('play').addEventListener('click',()=>{if(playing){stop();return;}if(energy>=POINTS.vapor)draw(POINTS.ice);playing=true;lastTime=0;q('scene').dataset.heating='true';q('play').setAttribute('aria-pressed','true');q('play-label').textContent='Pause experiment';q('play-symbol').textContent='Ⅱ';frame=requestAnimationFrame(tick);});
+q('reset').addEventListener('click',()=>{stop();draw(0)});
+q('boil').addEventListener('click',()=>{stop();draw(POINTS.boiling)});
+slider.addEventListener('input',()=>{stop();draw(Number(slider.value))});
+const teachingOrder=pathway(graph,'boiling').map(t=>t.id);
+function selectTopic(id){if(!topicMap.has(id))return;selectedTopic=id;const t=topicMap.get(id);document.querySelectorAll('[data-topic]').forEach(b=>{const sel=b.dataset.topic===id;b.classList.toggle('active',sel);b.setAttribute('aria-pressed',String(sel));});
+ const names=pathway(graph,id).map(n=>n.name);q('topic-description').textContent=t.description;
+ q('path-summary').textContent=names.length===1?`Start here: ${t.name}. Every discovery starts somewhere.`:`To learn “${t.name}”, follow: ${names.join(' → ')}. This is suggested learning order, not a mastery score.`;
+}
+function makePath(){
+ const grid=q('topic-grid'),side=q('side-path');
+ for(const id of teachingOrder){const topic=topicMap.get(id);const idx=teachingOrder.indexOf(id)+1;
+ const b=document.createElement('button');b.type='button';b.className='topic';b.dataset.topic=id;b.setAttribute('aria-pressed','false');const sm=document.createElement('small');sm.textContent='CONCEPT '+String(idx).padStart(2,'0');const st=document.createElement('strong');st.textContent=topic.name;b.append(sm,st);b.addEventListener('click',()=>selectTopic(id));grid.append(b);
+ const sb=document.createElement('button');sb.type='button';sb.className='side-topic';sb.dataset.topic=id;sb.setAttribute('aria-pressed','false');const n=document.createElement('span');n.textContent=String(idx).padStart(2,'0');const tn=document.createElement('span');tn.textContent=topic.name;sb.append(n,tn);sb.addEventListener('click',()=>{selectTopic(id);q('path').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})});side.append(sb);
+ }selectTopic('boiling');
+}
+function setupReason(){document.querySelectorAll('.reason-step').forEach(button=>{button.addEventListener('click',()=>{
+ const step=Number(button.dataset.step),correct=isFirstMistake(step);
+ document.querySelectorAll('.reason-step').forEach(b=>{b.classList.remove('correct','incorrect');b.setAttribute('aria-pressed','false')});button.setAttribute('aria-pressed','true');button.classList.add(correct?'correct':'incorrect');
+ const feedback=q('reason-feedback');feedback.classList.remove('correct','incorrect');feedback.classList.add(correct?'correct':'incorrect');
+ if(correct){feedback.textContent='Exactly. Step 2 is the first error: the change is 100 − 20 = 80°C, not 120°C. So Q = 0.1 × 4.18 × 80 = 33.44 kJ. Nice reasoning.';}
+ else if(step===1){feedback.textContent='Step 1 is correct: 100 g really is 0.1 kg. Try the temperature-change step next.';}
+ else {feedback.textContent='Step 3 uses the wrong temperature change from an earlier step. Find the first error, not just the last wrong result.';}
+ });});}
+// The curve maps energy linearly horizontally. For the first two points (melting and ice) at 0°C;
+// the next segment rises to 100°C, then remains at 100°C while vaporizing.
+q('curve-path').setAttribute('d',(()=>{const x=e=>42+(e-POINTS.ice)/(POINTS.vapor-POINTS.ice)*368;return`M${x(POINTS.ice)} 179H${x(POINTS.melting)}L${x(POINTS.boiling)} 23H${x(POINTS.vapor)}`;})());
+makePath();setupReason();draw(0);
+// The Pip companion is a deterministic, local teaching aid. No remote AI or student profiling.
+const pipAnswer=q('pip-answer');
+function pipExplain(){
+ const s=waterState(energy);
+ const descriptions={
+  ice:'This sample is entirely frozen. Changing the energy changes the temperature below freezing, not its state yet.',
+  melting:'At 0°C, some ice is becoming liquid. Energy can change the state without increasing the temperature.',
+  liquid:`Right now the water is at ${s.temperatureC.toFixed(1)}°C. Adding energy warms liquid water until it reaches 100°C in this idealised model.`,
+  boiling:`We're at 100°C, but the liquid is still turning into vapour. ${Math.round(s.vaporFraction*100)}% is vapour so far. That flat line is energy changing state, not temperature.`,
+  steam:'All the 100 g sample has become vapour. This simplified model stops at 100°C and does not model superheating.'
+ };
+ pipAnswer.textContent=descriptions[s.phase];
+}
+q('pip-ask').addEventListener('click',pipExplain);
+q('pip-boil').addEventListener('click',()=>{q('boil').click();pipExplain()});
+q('pip-path').addEventListener('click',()=>{
+ selectTopic('boiling');
+ pipAnswer.textContent='Follow the six original learning concepts below. This suggested order is not a mastery score.';
+ q('path').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+});
+slider.addEventListener('input',()=>{
+ q('pip-phase').textContent=q('phase-label').textContent.toUpperCase();
+ if(pipAnswer.dataset.follow==='true')pipExplain();
+});
+q('pip-ask').addEventListener('click',()=>{pipAnswer.dataset.follow='true'});
+q('pip-boil').addEventListener('click',()=>{pipAnswer.dataset.follow='true';q('pip-phase').textContent=q('phase-label').textContent.toUpperCase()});
+
+
+</script>
+</body>
+</html>

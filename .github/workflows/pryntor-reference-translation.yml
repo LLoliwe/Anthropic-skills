@@ -1,0 +1,45 @@
+name: Pryntor reference-to-original and LVL7 R1 actual browser QA
+on:
+  pull_request:
+    paths:
+      - "tools/reference-translation/**"
+      - "skills/pryntor-reference-translation/**"
+      - "examples/lvl7-water-lab-reference-v1/**"
+      - ".github/workflows/pryntor-reference-translation.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  trace-and-real-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Evidence/provenance check and nine negative counterexamples
+        run: |
+          set -euo pipefail
+          node --check tools/reference-translation/validate.mjs
+          node --test tools/reference-translation/tests/validate.test.mjs
+          node tools/reference-translation/validate.mjs examples/lvl7-water-lab-reference-v1/reference-trace.json
+      - name: Isolated Chromium setup
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Real browser actions, four responsive sizes and reduced motion
+        run: python examples/lvl7-water-lab-reference-v1/browser_smoke.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lvl7-original-r1-asko-transfer-real-chromium
+          path: |
+            examples/lvl7-water-lab-reference-v1/*-verified.png
+            examples/lvl7-water-lab-reference-v1/test-results.json
+            examples/lvl7-water-lab-reference-v1/reference-trace.json
+          retention-days: 14
+          if-no-files-found: error

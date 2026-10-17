@@ -1,0 +1,13 @@
+import test from "node:test";import assert from "node:assert/strict";import {validateTrace} from "../validate.mjs";
+const ref=(x)=>({creator:"Original verified studio producer reference",url:"https://example.org/"+x,mechanism:"A working human interface responds truthfully to real state",originalTranslation:"A completely original context-specific learning guide reveals actual physics",doNotCopy:"Never copy character illustrations or visual composition",rights:"Source rights documented and reuse restricted to principles"});
+const base={venture:"LVL7 science learning prototype",userTask:"Change sample energy and understand phase transitions",designDirection:"Original educational visual tied to material experiment",references:[ref("a"),ref("b")],originalAssets:["An original hand authored SVG droplet character"],interaction:"Working buttons change and explain actual water phase",dataTruth:"Only pure model state drives numeric explanations",learnerSafety:"No child data or physical laboratory claim",privacy:"No internet, tracking or stored learner identities",reviewState:"Educator, visual and expert release signoff remains pending",testFiles:["browser_smoke.py"],artifactFiles:["index.html"],releaseStatus:"internal-r1"};
+const e=(d)=>validateTrace(d,()=>true);
+test("valid source-to-original record",()=>assert.deepEqual(e(base),[]));
+test("empty sources rejected",()=>assert(e({...base,references:[]}).length>0));
+test("duplicate reference rejected",()=>assert(e({...base,references:[ref("a"),ref("a")]}).length>0));
+test("uncredited source rejected",()=>assert(e({...base,references:[{...ref("a"),creator:""},ref("b")]}).length>0));
+test("recolouring without translation rejected",()=>assert(e({...base,references:[{...ref("a"),originalTranslation:ref("a").mechanism},ref("b")]}).length>0));
+test("missing rights rejected",()=>assert(e({...base,references:[{...ref("a"),rights:""},ref("b")]}).length>0));
+test("missing original art evidence rejected",()=>assert(e({...base,originalAssets:[]}).length>0));
+test("release without approval rejected",()=>assert(e({...base,releaseStatus:"released"}).length>0));
+test("missing actual test file rejected",()=>assert(validateTrace(base,()=>false).length>0));
