@@ -201,7 +201,7 @@ if __name__ == "__main__":
     if sys.argv[1:] == ["--self-test"]:
         self_test()
     elif len(sys.argv) > 4 and sys.argv[1] == "--call-js-target" and sys.argv[3] == "--":
-        sys.exit(probe(sys.argv[4:], fixture=sys.argv[2:]))
+        sys.exit(probe(sys.argv[4:], fixture=sys.argv[2]))
     elif len(sys.argv) > 2 and sys.argv[1] == "--":
         sys.exit(probe(sys.argv[2:]))
     else:
