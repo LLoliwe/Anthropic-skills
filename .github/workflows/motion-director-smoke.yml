@@ -32,6 +32,15 @@ jobs:
           ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 /tmp/motion-rough-cut.mp4
           python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --shot S02 --output /tmp/motion-S02-microclip.mp4
           test -s /tmp/motion-S02-microclip.mp4
+      - name: Verify decoded MP4 and handoff artifacts
+        run: |
+          python skills/motion-director/scripts/verify_artifacts.py \
+            --rough /tmp/motion-rough-cut.mp4 \
+            --micro /tmp/motion-S02-microclip.mp4 \
+            --handoff /tmp/motion-handoff \
+            --report /tmp/motion-handoff/verification.json
+          ffmpeg -v error -y -ss 12.8 -i /tmp/motion-rough-cut.mp4 -frames:v 1 /tmp/motion-handoff/encoded-S03.png
+          test -s /tmp/motion-handoff/encoded-S03.png
       - name: Upload real preview and QA artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -43,6 +52,9 @@ jobs:
             /tmp/motion-handoff/contact_sheet.png
             /tmp/motion-handoff/qa.json
             /tmp/motion-handoff/frame_qa.json
+            /tmp/motion-handoff/verification.json
+            /tmp/motion-handoff/encoded-S03.png
+            /tmp/motion-handoff/provenance.json
             /tmp/motion-handoff/storyboard.json
             /tmp/motion-handoff/edit_decision_list.csv
             /tmp/motion-handoff/editor_handoff.md
