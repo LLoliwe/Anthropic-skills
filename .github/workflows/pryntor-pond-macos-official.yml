@@ -1,0 +1,42 @@
+name: Pond signed macOS release attestation (no accounts)
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/pryntor-pond-macos-official.yml'
+permissions:
+  contents: read
+jobs:
+  official-mac-release:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Download pinned v1.0.1 x64 DMG and validate exact SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 2 --connect-timeout 20 --max-time 240 \
+            'https://github.com/raphaelsalaja/pond/releases/download/v1.0.1/Pond-1.0.1-x64.dmg' \
+            -o /tmp/pond-official-v1.0.1-x64.dmg
+          printf '%s  %s\n' 'aff6291762b80183330253a0317c1132d930a1c8d8ad86af695746bcbcabe442' '/tmp/pond-official-v1.0.1-x64.dmg' | shasum -a 256 -c -
+      - name: Inspect signature and Gatekeeper on clean macOS runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pond-official-mount
+          hdiutil attach -readonly -nobrowse -quiet -mountpoint /tmp/pond-official-mount /tmp/pond-official-v1.0.1-x64.dmg
+          test -d '/tmp/pond-official-mount/Pond.app'
+          codesign --verify --deep --strict --verbose=2 '/tmp/pond-official-mount/Pond.app'
+          codesign -dv --verbose=4 '/tmp/pond-official-mount/Pond.app' 2>&1 | grep -E '(Authority=|TeamIdentifier=|Identifier=|Runtime Version=)' | head -20
+          spctl --assess --type execute --verbose=4 '/tmp/pond-official-mount/Pond.app'
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' '/tmp/pond-official-mount/Pond.app/Contents/Info.plist'
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' '/tmp/pond-official-mount/Pond.app/Contents/Info.plist'
+      # Pond MCP did not answer initialize on two disposable headless Mac runners.
+      # It requires independent interactive acceptance (PRY-285), not a green
+      # CI claim. Historical negative evidence: 39060743883, 39060988795.
+      - name: Detach temporary dmg
+        if: always()
+        shell: bash
+        run: hdiutil detach /tmp/pond-official-mount -quiet || true
