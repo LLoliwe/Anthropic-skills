@@ -1,9 +1,12 @@
 import { defineHandler } from 'void';
+import { launchDeskHTML } from '../src/launchdesk-page';
 
 export const GET = defineHandler((c) => {
   c.header('Cache-Control', 'no-store');
   c.header('X-Content-Type-Options', 'nosniff');
-  return c.html(`<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pryntor Void Pilot</title></head>
-<body><main><h1>Pryntor Void Pilot</h1><p>Built Node.js runtime serving a real Void route.</p><p><a href="/api/health">View live health response</a></p></main></body></html>`);
+  c.header('X-Frame-Options', 'DENY');
+  c.header('Referrer-Policy', 'no-referrer');
+  c.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  c.header('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'");
+  return c.html(launchDeskHTML);
 });
