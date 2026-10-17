@@ -1,0 +1,84 @@
+name: Earshot upstream live acceptance (R0, no paid APIs)
+
+on:
+  pull_request:
+    paths:
+      - 'skills/motion-director/scripts/earshot_live_acceptance.py'
+      - '.github/workflows/earshot-upstream-acceptance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: earshot-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  upstream-live:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      EARSHOT_PROOF_DIR: /tmp/pryntor-earshot-proof
+      EARSHOT_THREADS: '2'
+      EARSHOT_PRECISION: fp32
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_IMPLICIT_TOKEN: '1'
+      DO_NOT_TRACK: '1'
+      PIP_DISABLE_PIP_VERSION_CHECK: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Provision reproducible CPU media environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+          command -v ffprobe
+          command -v ffmpeg
+          df -h .
+          python -m pip install --upgrade pip
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Fetch exact inspected Earshot source and install optional MCP SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --no-checkout --filter=blob:none https://github.com/Leonxlnx/earshot.git /tmp/earshot-pin
+          git -C /tmp/earshot-pin checkout --detach 972132643583fc0b9a60c6c50983ed7dc1aa55bf
+          test "$(git -C /tmp/earshot-pin rev-parse HEAD)" = "972132643583fc0b9a60c6c50983ed7dc1aa55bf"
+          python -m pip install -e '/tmp/earshot-pin[mcp]'
+          python -m earshot doctor --json --out /tmp/earshot-doctor-before.json
+          python -m earshot mcp --tools --json --out /tmp/earshot-tool-inventory.json
+      - name: Create fully original, licensed-in-place, local audio and video fixtures
+        run: |
+          python skills/motion-director/scripts/earshot_live_acceptance.py fixture
+      - name: Test real upstream recording-to-Python-code and rerender
+        run: |
+          python skills/motion-director/scripts/earshot_live_acceptance.py fit
+      - name: Test real MCP stdio handshake, tool enumeration, and measurement call
+        run: |
+          python skills/motion-director/scripts/earshot_live_acceptance.py mcp
+      - name: Load open-weight models and run real non-fast Earshot video critique
+        run: |
+          python skills/motion-director/scripts/earshot_live_acceptance.py critique
+      - name: Archive actual runtime evidence, not model weights
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pryntor-earshot-upstream-live-acceptance
+          if-no-files-found: warn
+          retention-days: 7
+          path: |
+            /tmp/earshot-doctor-before.json
+            /tmp/earshot-tool-inventory.json
+            /tmp/pryntor-earshot-proof/*.json
+            /tmp/pryntor-earshot-proof/*.log
+            /tmp/pryntor-earshot-proof/*.py
+            /tmp/pryntor-earshot-proof/*.wav
+            /tmp/pryntor-earshot-proof/*.mp4
+          compression-level: 6
