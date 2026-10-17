@@ -1,0 +1,59 @@
+name: Anatomy pinned installation and browser evidence
+
+on:
+  pull_request:
+    paths:
+      - "skills/pryntor-anatomy/**"
+      - ".github/workflows/pryntor-anatomy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install official pinned upstream for both agents
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pryntor-anatomy-smoke
+          bash skills/pryntor-anatomy/install.sh /tmp/pryntor-anatomy-smoke
+          expected="e9488296a44211c42701ff71705b7901470ec78f"
+          test "$(cat /tmp/pryntor-anatomy-smoke/.agents/skills/anatomy/PRYNTOR_UPSTREAM_SHA)" = "$expected"
+          cmp /tmp/pryntor-anatomy-smoke/.agents/skills/anatomy/SKILL.md /tmp/pryntor-anatomy-smoke/.claude/skills/anatomy/SKILL.md
+      - name: Rebuild reproducible upstream SVG in dark and light
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/pryntor-anatomy-smoke/.agents/skills/anatomy
+          node examples/dial-indicator/build.mjs
+          node examples/dial-indicator/build.mjs --light
+          test -s examples/dial-indicator/dial-indicator.html
+          test -s examples/dial-indicator/dial-indicator-light.html
+          grep -qi '<svg' examples/dial-indicator/dial-indicator.html
+          grep -qi 'aria-label' examples/dial-indicator/dial-indicator.html
+      - name: Real Chromium desktop and mobile captures (includes reduced motion)
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd /tmp/pryntor-anatomy-smoke/.agents/skills/anatomy
+          mkdir -p "$GITHUB_WORKSPACE/anatomy-evidence"
+          node scripts/capture.mjs examples/dial-indicator/dial-indicator.html --width 1440 --height 900 --scale 1 --wait 500 --out "$GITHUB_WORKSPACE/anatomy-evidence/desktop.png"
+          node scripts/capture.mjs examples/dial-indicator/dial-indicator-light.html --width 390 --height 844 --scale 1 --wait 500 --reduced --out "$GITHUB_WORKSPACE/anatomy-evidence/mobile-reduced.png"
+          test -s "$GITHUB_WORKSPACE/anatomy-evidence/desktop.png"
+          test -s "$GITHUB_WORKSPACE/anatomy-evidence/mobile-reduced.png"
+          cp examples/dial-indicator/dial-indicator.html "$GITHUB_WORKSPACE/anatomy-evidence/"
+          cp examples/dial-indicator/dial-indicator-light.html "$GITHUB_WORKSPACE/anatomy-evidence/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pryntor-anatomy-smoke-evidence
+          path: anatomy-evidence/
+          retention-days: 14
+          if-no-files-found: error
