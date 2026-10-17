@@ -7,8 +7,8 @@ const root=path.join(__dirname,'..'),html=readFileSync(path.join(root,'index.htm
 const browser=await chromium.launch({headless:true});
 try{
 mkdirSync(path.join(root,'screenshots'),{recursive:true});
-for(const [theme,width,height] of [['gallery',1440,900],['marine',1440,900],['signal',1440,900],['gallery',390,844],['marine',390,844],['signal',390,844],['gallery',768,1024]]){
-const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce'}),errors=[];
+for(const [theme,width,height] of [['gallery',1440,900],['marine',1440,900],['signal',1440,900],['gallery',390,844],['marine',390,844],['signal',390,844],['gallery',768,1024],['gallery',320,568],['gallery',430,932]]){
+const page=await browser.newPage({viewport:{width,height},reducedMotion:'reduce',isMobile:width<=430,hasTouch:width<=430}),errors=[];
 page.on('pageerror',e=>errors.push(String(e)));
 await page.setContent(html,{waitUntil:'load'});
 await page.locator('[data-theme-btn="'+theme+'"]').click();
@@ -16,13 +16,27 @@ assert.equal(await page.locator('html').getAttribute('data-theme'),theme);
 assert.equal(await page.locator('[data-theme-btn][aria-pressed="true"]').count(),1);
 assert.equal(await page.locator('#particles .particle').count(),34);
 assert.equal(await page.locator('#temperature').textContent(),'20.0');
-await page.locator('#to-boil').click();assert.equal(await page.locator('#temperature').textContent(),'100.0');
-await page.locator('#to-steam').click();assert.equal(await page.locator('#phase').textContent(),'Water vapour');
-await page.locator('#to-ice').click();assert.equal(await page.locator('#phase').textContent(),'Ice');
+await page.locator('#to-boil').click();assert.equal(await page.locator('#temperature').textContent(),'100.0');assert.equal(await page.locator('#mobile-temperature').textContent(),'100.0°C');
+await page.locator('#to-steam').click();assert.equal(await page.locator('#phase').textContent(),'Water vapour');assert.equal(await page.locator('#mobile-phase').textContent(),'Water vapour');
+await page.locator('#to-ice').click();assert.equal(await page.locator('#phase').textContent(),'Ice');assert.equal(await page.locator('#mobile-phase').textContent(),'Ice');
 await page.locator('#reset').click();assert.equal(await page.locator('#temperature').textContent(),'20.0');
 await page.locator('#play').click();await page.waitForTimeout(200);
 assert(Number(await page.locator('#energy').inputValue())>0);
 await page.locator('#play').click();assert.equal(await page.locator('#play').getAttribute('aria-pressed'),'false');
+// Regression: replay from full vapour should restart from 20°C, not ice.
+await page.locator('#to-steam').click();await page.locator('#play').click();await page.waitForTimeout(220);
+const replay=Number(await page.locator('#energy').inputValue());
+assert(replay>0&&replay<30,'Replay from vapour reset incorrectly: '+replay);
+assert.equal(await page.locator('#phase').textContent(),'Liquid water');
+await page.locator('#play').click();
+// Mobile controls used to be visually separated from the experiment; keep live readout sticky.
+if(width<=780){await page.locator('#to-boil').scrollIntoViewIfNeeded();
+const bounds=await page.evaluate(()=>{const a=document.querySelector('.mobile-live').getBoundingClientRect(),b=document.querySelector('#to-boil').getBoundingClientRect();return {top:a.top,height:a.height,control:b.top}});
+assert(bounds.top>=-2&&bounds.top<=2,'Mobile readout not visible: '+JSON.stringify(bounds));
+assert(bounds.control>bounds.height,'Preset obscured by sticky readout');
+await page.locator('#to-boil').click();assert.equal(await page.locator('#mobile-temperature').textContent(),'100.0°C');
+await page.screenshot({path:path.join(root,'screenshots',theme+'-'+width+'-sticky.png'),animations:'disabled'});
+}else{assert.equal(await page.locator('.mobile-live').isVisible(),false);}
 await page.locator('[data-concept="boiling"]').click();assert.match(await page.locator('#concept-desc').textContent(),/To get here/);
 await page.locator('[data-step="2"]').click();assert.match(await page.locator('#answer').textContent(),/33.44 kJ/);
 const overflow=await page.evaluate('document.documentElement.scrollWidth-document.documentElement.clientWidth');

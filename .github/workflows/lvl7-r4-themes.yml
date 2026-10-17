@@ -24,7 +24,7 @@ jobs:
         run: |
           npm install --prefix "$RUNNER_TEMP/lvl7-browser" --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
           "$RUNNER_TEMP/lvl7-browser/node_modules/.bin/playwright" install --with-deps chromium
-      - name: Test seven real browser layouts, physics and UI
+      - name: Test nine real browser layouts, replay and sticky readout
         run: NODE_PATH="$RUNNER_TEMP/lvl7-browser/node_modules" node examples/lvl7-r4-themes/tests/browser.cjs
       - uses: actions/upload-artifact@v4
         with:
