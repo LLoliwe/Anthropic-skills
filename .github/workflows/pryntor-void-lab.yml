@@ -39,6 +39,8 @@ jobs:
           npm audit --json > audit-report.json || true
           node -e 'const a=require("./audit-report.json");const v=a.vulnerabilities||{};console.log("AUDIT_COUNTS="+JSON.stringify(a.metadata?.vulnerabilities||{}));console.log("AUDIT_PACKAGES="+JSON.stringify(Object.entries(v).map(([k,x])=>({name:k,severity:x.severity,fixAvailable:x.fixAvailable}))));'
           npm audit --omit=dev --audit-level=high
+      - name: Adobe Fonts and motion safety preflight
+        run: node --test test/motion-policy.test.mjs
       - name: Real SSR production build
         run: npm run build
       - name: Local development HTTP smoke
