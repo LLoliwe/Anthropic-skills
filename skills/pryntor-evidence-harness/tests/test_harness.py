@@ -78,6 +78,23 @@ class PolicyTests(unittest.TestCase):
                     'probabilities': {'D1': .9, 'D2': .9}}
         self.assertEqual(route_diagnostic(response, {'D1', 'D2'})['reason'], 'judge_invalid_distribution')
 
+    def test_replay_with_modified_contract_holds(self):
+        project = ROOT / 'fixture'
+        proof = execute(project, CONTRACT)
+        altered = {**CONTRACT, 'requirements': {'R1_title_search': ['C1_title']}}
+        self.assertEqual(evaluate(altered, proof, snapshot(project))['reason'], 'contract_or_schema_mismatch')
+
+    def test_nonfinite_judge_confidence_holds(self):
+        response = {'type': 'choice', 'choice': 'D1', 'confidence': float('nan'),
+                    'probabilities': {'D1': 1.0}}
+        self.assertEqual(route_diagnostic(response, {'D1'})['reason'], 'judge_invalid_distribution')
+
+    def test_missing_contract_attestation_holds(self):
+        project = ROOT / 'fixture'
+        proof = execute(project, CONTRACT)
+        proof.pop('contract_digest')
+        self.assertEqual(evaluate(CONTRACT, proof, snapshot(project))['decision'], 'hold')
+
     def test_empty_project_fails(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(ValueError):
