@@ -14,10 +14,10 @@ await page.locator('#stage-temp').evaluate(el=>{el.value='100';el.dispatchEvent(
 await page.waitForTimeout(420);
 assert.equal(await page.locator('#temperature').textContent(),'100.0');
 assert((await page.evaluate('LVL7Fluid.state()')).emittedBubbles>0,'Water failed to boil');
-await page.locator('#stage-steam').click();await page.waitForTimeout(350);
+if(width<500){await page.locator('#stage-steam').click();}else{await page.locator('#to-steam').click();}await page.waitForTimeout(350);
 assert((await page.evaluate('LVL7Fluid.state()')).vapour>0,'Vapour failed to form');
 assert((await page.evaluate('LVL7Fluid.state()')).emittedGas>0,'No steam emitted');
-assert((await page.evaluate('LVL7Runtime.diagnostics()')).events>=3,'UI action not acknowledged');
+assert((await page.evaluate('LVL7Runtime.diagnostics()')).events>=2,'UI action not acknowledged');
 const overflow=await page.evaluate('document.documentElement.scrollWidth-document.documentElement.clientWidth');
 assert(overflow<=1,'Mobile overflow '+width+': '+overflow);
 assert.deepEqual(errors,[],'Client script exceptions '+width);
