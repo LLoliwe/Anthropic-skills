@@ -52,6 +52,17 @@ class PartnershipsSkillPilotTests(unittest.TestCase):
         self.assertFalse(result["action_executed"])
         self.assertFalse(result["release_authorized"])
 
+    def test_fictional_approval_is_never_real_terms_verification(self):
+        verdict = r1.review_response("partner-written-approval", r1.mock_response("pilot_review", .99, .99))
+        self.assertTrue(verdict["fixture_policy_checks_passed"])
+        self.assertFalse(verdict["terms_verified"])
+        self.assertFalse(verdict["live_jev_invoked"])
+
+    def test_no_mock_can_claim_live_model_invocation(self):
+        for case in r1.CASES:
+            verdict = r1.review_response(case, r1.mock_response("research", .99, .99))
+            self.assertFalse(verdict["live_jev_invoked"])
+
     def test_payment_or_autobilling_skips_inference(self):
         self.assertFalse(r1.can_model_review("partner-freemium"))
         with self.assertRaises(ValueError):
