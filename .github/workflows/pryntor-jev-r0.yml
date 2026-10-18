@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'experiments/jev-evaluation-r0/**'
+      - '.agents/skills/typesafe-ai/**'
       - '.github/workflows/pryntor-jev-r0.yml'
   workflow_dispatch:
 permissions:
