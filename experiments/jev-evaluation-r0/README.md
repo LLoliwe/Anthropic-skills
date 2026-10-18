@@ -9,9 +9,9 @@ Owned by Pryntor. Canonical engineering ticket: [PRY-307](https://linear.app/pry
 - Original Python 3.10+ stdlib-only program
 - 3 decision-only queues: acceptance diagnostics, partnership triage, creative/technical QA
 - 60 hand-curated synthetic fixtures; 42 development and 18 reserved. These were not independently labeled or blinded.
-- 33 local unit/adversarial tests, and path-scoped hosted GitHub Actions workflow.
+- 40 unit/adversarial tests, and path-scoped hosted GitHub Actions workflow.
 - Model outputs can only select internal queues; no sending, payments, publishing, deleting, secret use, production change, customer data access, or other side effects.
-- Input is a synthetic state map only. Only a few top-level suspicious keys are screened. Do not rely on this as full DLP, secret scanning, sandbox isolation or permission control.
+- Input is a synthetic state map only. State input is restricted to a fixed per-workflow boolean allowlist and known policy flags. This is still not full DLP, secret scanning, sandbox isolation or permission control.
 
 ## Run (no API key or packages needed)
 
@@ -28,7 +28,7 @@ The request-preview prints candidate JSON; it **does not** contact Jev. The answ
 
 - The 100% fixture agreement is manufactured by design, not measured predictive model accuracy.
 - The label 'holdout' simply identifies 18 separately designated fixture cases, not an independently sourced unseen evaluation.
-- The 18/18 policy holds demonstrate only correct routing of the bundled synthetic cases, not complete safety.
+- The 18/18 policy holds and 7 added schema regression cases demonstrate only bundled negative behavior, not complete safety.
 - The GitHub Actions job executes synthetic code in a disposable runner; it does not deploy any Pryntor worker.
 - No production release, payment, automatic communication or independent security approval is conferred.
 - Company-wide rollout must wait for independent technical/security review, a genuinely blind labeled holdout, partner entitlements, privacy and billing checks, and measured vendor decision quality.
