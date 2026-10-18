@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "repository": "LLoliwe/Anthropic-skills",
+  "venture": "Pryntor shared agent and skill engineering",
+  "stage": "intake",
+  "osie_issue": "PRY-350",
+  "public_metadata_only": true,
+  "execute_external_code": false,
+  "allow_model_weights": false,
+  "allow_external_data_transfer": false,
+  "approved_new_spend_zar": 0,
+  "independent_review_required": true,
+  "independent_review_url": null,
+  "release_approved": false,
+  "candidate_adoptions": []
+}
