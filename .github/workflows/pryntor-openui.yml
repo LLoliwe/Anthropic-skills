@@ -1,0 +1,32 @@
+name: OpenUI actual parser and browser pilot
+on:
+  pull_request:
+    paths: ['apps/pryntor-openui/**', '.github/workflows/pryntor-openui.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/pryntor-openui
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/pryntor-openui/package-lock.json
+      - run: npm ci --no-fund
+      - run: npm audit --audit-level=moderate
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: node browser-check.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openui-production-browser-evidence
+          path: apps/pryntor-openui/evidence/
+          if-no-files-found: error
+          retention-days: 14

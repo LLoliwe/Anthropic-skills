@@ -1,0 +1,22 @@
+{
+  "name": "pryntor-openui-pilot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "node --import tsx --test src/library.test.tsx"
+  },
+  "dependencies": {
+    "@openuidev/react-lang": "1.0.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1",
+    "tsx": "4.20.6",
+    "vite": "7.3.7"
+  }
+}
