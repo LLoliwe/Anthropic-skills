@@ -1,0 +1,64 @@
+name: Pryntor Jev R0 - offline synthetic acceptance
+on:
+  pull_request:
+    paths:
+      - 'experiments/jev-evaluation-r0/**'
+      - '.github/workflows/pryntor-jev-r0.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: jev-r0-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  synthetic-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    defaults:
+      run:
+        working-directory: experiments/jev-evaluation-r0
+    steps:
+      - name: Read-only checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Generate 60 hand-curated synthetic cases
+        run: python3 -B make_fixtures.py
+      - name: Run offline unit and adversarial suite
+        run: python3 -B -m unittest discover -s tests -v
+      - name: Verify offline-only output and mandatory HOLDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B decision_pilot.py benchmark > "$RUNNER_TEMP/jev-eval-r0-report.json"
+          python3 -B - <<'PY'
+          import json
+          from pathlib import Path
+          import decision_pilot as p
+          report = json.loads((Path(__import__('os').environ['RUNNER_TEMP']) / 'jev-eval-r0-report.json').read_text())
+          rows = p.cases(Path('fixtures.json'))
+          assert len(rows) == 60
+          assert report['dataset_sha256'] == "f3baf264e10a4746ddf493c133f60239d77188daa8b248bb5f386acc48f42b07"
+          assert report['mode'] == 'offline_rules_only'
+          assert report['external_api_calls'] == 0
+          assert report['paid_jev_calls'] == 0
+          assert report['jev_accuracy_measured'] is False
+          assert report['mandatory_hold_cases'] == 18
+          assert report['mandatory_hold_correct'] == 18
+          assert report['results']['development']['cases'] == 42
+          assert report['results']['holdout']['cases'] == 18
+          assert report['release_authorized'] is False
+          state = {'source_failure': True, 'policy_flags': ['payment']}
+          options = p.ROUTES['diagnostic']
+          answer = {'model':'jev-1.13.0', 'answers':{'route':{
+              'type':'choice','choice':'inspect_source','confidence':1.0,
+              'probabilities':{k:1.0 if k=='inspect_source' else 0.0 for k in options}
+          }}}
+          verdict = p.guarded_route('diagnostic',state,answer)
+          assert verdict['route'] == 'human_review'
+          assert verdict['action_executed'] is False
+          assert verdict['release_authorized'] is False
+          print('OFFLINE_SYNTHETIC_TEST_ONLY')
+          print('cases=60 required_holds=18/18')
+          print('release_authorized=FALSE, vendor_calls=0')
+          PY
