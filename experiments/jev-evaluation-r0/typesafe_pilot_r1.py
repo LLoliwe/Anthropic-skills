@@ -144,6 +144,7 @@ def review_response(case_id: str, response: Any) -> dict[str, Any]:
             "terms_verified": False,
             "action_executed": False,
             "release_authorized": False,
+            "live_jev_invoked": False,
         }
 
     if not can_model_review(case_id):
@@ -175,11 +176,13 @@ def review_response(case_id: str, response: Any) -> dict[str, Any]:
         "status": "INTERNAL_REVIEW_ONLY",
         "reason": "validated_advisory_not_authorization",
         "claims": {"no_card": card, "no_auto_conversion": billing},
-        "terms_verified": bool(
+        "terms_verified": False,  # All case records are fictional, never a real counterparty verification.
+        "fixture_policy_checks_passed": bool(
             state.get("verified_sponsor") is True and state.get("written_r0_terms") is True
         ),
         "action_executed": False,
         "release_authorized": False,
+        "live_jev_invoked": False,
     }
 
 
