@@ -38,6 +38,20 @@ JSON specification:
 
 A real agent adapter may replace `candidate.py` only after checking provenance, external access, sandbox isolation, token caps and entitlements. A stringified shell pipeline is rejected. The verifier should be an independently maintained deterministic test, not the agent's own opinion. Include human review of requirement completeness and independent held-out checks before adoption.
 
+## Founder probation: finish the user journey, not merely the task (18 Oct 2026)
+
+Before a builder agent starts, the accountable owner must pin one **outcome contract** to the existing GitHub/Linear item: exact source commit and failing build; the founder's intended user experience in plain words; current observed failure; the smallest reproducible start-to-finish journey; independent acceptance tests and negative cases; original creative/brand assets and rights; device/browser matrix; R0 spend ceiling; and stop/rollback conditions. No duplicate issue or fresh prototype if a canonical version exists.
+
+Only delegate bounded slices when they reduce measured time-to-working-output. A lead builder integrates the product, a domain reviewer checks art/gameplay or specialist safety, and a separate verifier checks tests and user-visible behavior. No worker may grade its own completion, silently alter benchmark fixtures, bypass failed CI, self-approve a release or claim that another agent ran without an execution receipt.
+
+For games, **Play must enter active gameplay** in the exact requested version. Exercise movement, threat/chase or challenge where specified, meaningful interactions, scoring/goal, end state, restart, rotation, no overlay interception, real animation/frame change, touch and keyboard controls. Check responsive browser tests and physical target hardware separately. For ZOWIBO, source-faithful original 3D character continuity and a human art lead's editorial judgement are mandatory; generic 2D or screenshots do not satisfy that brief.
+
+For films, validate actual audiovisual footage and motion, not static slides. For enterprise software, exercise the real permitted end-to-end business workflow instead of counting mock dashboards. Preserve protected tests, held-out cases and named human verification. A working browser simulation is not real Safari, a procedural model is not a Unity/Blender native production build, and a drafted email is not an outbound conversion.
+
+**Handoff must include** exact SHA, runnable preview/build location, what the user can now do, explicit PASS/FAIL/NOT RUN per device and acceptance test, real bug evidence, source rights/creative review, independent reviewer, cost, and decision `REVIEW_REQUIRED` / `BLOCKED` / `RELEASE_CANDIDATE`. A file existing or passing synthetic tests alone may never be called shipped. Keep fixed requirements; if the founder says it looks wrong or the button does nothing, treat that as a failing acceptance case and iterate on the same canonical version.
+
+The R0 controller now verifies on disposable copies and requires a real source change before issuing a review-only patch. Its new negative-case suite needs exact-head execution and independent security review. It does not itself supply a live model, a complete artistic evaluator, actual device access, or secure network sandbox.
+
 ## Record and decide
 Preserve `events.jsonl`, `receipt.json`, optional `candidate.patch`, exact base commit, dependency lockfiles, test logs under controlled private storage, runtime cost evidence and reviewer identity. Unredacted outputs are not persisted by this example controller, only hashes. Absence of a `candidate.patch` is not a passing run. A verified candidate means **review required**, not production-ready. Record failures, no-progress stopping, timeouts and verifier tampering. Never claim a model/provider was invoked unless receipts prove it.
 
