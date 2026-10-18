@@ -55,16 +55,30 @@ def sha(value: Any) -> str:
 
 
 def safe_state(workflow: str, state: dict[str, Any]) -> dict[str, Any]:
-    """Fail closed on unexpected state types and ban credential-like fields."""
+    """Strict synthetic-only schema, with explicit per-workflow boolean inputs."""
     if workflow not in ROUTES or not isinstance(state, dict):
         raise ValueError("unknown workflow or invalid state")
+    allowed_by_workflow = {
+        "diagnostic": {"contract_mismatch", "missing_requirement", "runner_error",
+                       "timeout", "source_failure", "regression"},
+        "partnership": {"card_required", "auto_bill", "rights_conflict",
+                        "verified_sponsor", "written_r0_terms", "public_source"},
+        "quality": {"child_safety_flag", "security_flag", "rights_missing",
+                    "asset_unlicensed", "wcag_failure", "keyboard_trap"},
+    }
+    permitted = allowed_by_workflow[workflow] | {"policy_flags", "approval_required", "unknown_identity"}
+    if not all(isinstance(k, str) and k in permitted for k in state):
+        raise ValueError("unknown or non-string state key")
+    for key, value in state.items():
+        if key == "policy_flags":
+            if not isinstance(value, list) or any(type(flag) is not str or flag not in BLOCK_FLAGS for flag in value):
+                raise ValueError("unknown or invalid policy flag")
+            if len(set(value)) != len(value):
+                raise ValueError("duplicate policy flag")
+        elif type(value) is not bool:
+            raise ValueError("state flag must be a boolean")
     if len(canon(state)) > 8192:
         raise ValueError("oversized state")
-    forbidden = {"token", "api_key", "password", "secret", "email_body", "customer_record", "private_source"}
-    if any(str(key).lower() in forbidden for key in state):
-        raise ValueError("sensitive field rejected")
-    if any(not isinstance(v, (bool, str, int, float, type(None), list)) for v in state.values()):
-        raise ValueError("unexpected nested state")
     return state
 
 
@@ -72,6 +86,8 @@ def mandatory_hold(state: dict[str, Any]) -> str | None:
     flags = state.get("policy_flags", [])
     if not isinstance(flags, list) or any(not isinstance(x, str) for x in flags):
         return "invalid_policy_flags"
+    if any(flag not in BLOCK_FLAGS for flag in flags):
+        return "unregistered_policy_flag"
     present = BLOCK_FLAGS.intersection(flags)
     if present:
         return "restricted_action:" + ",".join(sorted(present))
@@ -150,7 +166,11 @@ def validate_choice(workflow: str, answer: dict[str, Any]) -> tuple[str | None, 
 
 def guarded_route(workflow: str, state: dict[str, Any], raw_response: dict[str, Any]) -> dict[str, Any]:
     """No external side effect. A model cannot override hard review gates."""
-    safe_state(workflow, state)
+    try:
+        safe_state(workflow, state)
+    except (ValueError, TypeError):
+        return {"route": "human_review", "source": "deterministic_policy",
+                "reason": "invalid_state", "release_authorized": False, "action_executed": False}
     blocked = mandatory_hold(state)
     if blocked:
         return {"route": "human_review", "source": "deterministic_policy", "reason": blocked,
