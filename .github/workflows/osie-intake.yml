@@ -1,0 +1,24 @@
+name: OSIE | R0 external technology intake
+on:
+  pull_request:
+    paths:
+      - "docs/osie/adoption.json"
+      - ".github/workflows/osie-intake.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adoption-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check out only this repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Validate R0 OSIE policy without installing external code
+        uses: LLoliwe/pryntor-forge/.github/actions/osie-review@daf62423b42ab8cb353d15b22b576a59e359361b
+        with:
+          manifest: docs/osie/adoption.json
