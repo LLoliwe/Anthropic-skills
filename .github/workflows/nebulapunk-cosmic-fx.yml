@@ -1,0 +1,66 @@
+name: Pryntor Studios | original cosmic FX native Blender pilot
+on:
+  pull_request:
+    paths:
+      - "skills/scenario-blender-mcp/examples/cosmic_fx_pilot.py"
+      - "skills/scenario-blender-mcp/examples/nebulapunk_intake.py"
+      - "skills/scenario-blender-mcp/examples/test_nebulapunk_intake.py"
+      - "skills/scenario-blender-mcp/examples/verify_cosmic.py"
+      - "skills/scenario-blender-mcp/examples/COSMIC_FX_README.md"
+      - ".github/workflows/nebulapunk-cosmic-fx.yml"
+permissions:
+  contents: read
+jobs:
+  static:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Offline Python syntax and fail-closed security/cost tests
+        run: |
+          python -m py_compile skills/scenario-blender-mcp/examples/cosmic_fx_pilot.py skills/scenario-blender-mcp/examples/nebulapunk_intake.py skills/scenario-blender-mcp/examples/verify_cosmic.py
+          python -m unittest discover -s skills/scenario-blender-mcp/examples -p test_nebulapunk_intake.py -v
+  native-render:
+    needs: static
+    runs-on: ubuntu-24.04
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install official Blender 5.0.1 verified binary
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 'https://download.blender.org/release/Blender5.0/blender-5.0.1-linux-x64.tar.xz' -o blender.tar.xz
+          echo '8019580ee1b7262e505f4196a00237ccf743c88d205b38d34201510676e60b09  blender.tar.xz' | sha256sum -c -
+          tar -xf blender.tar.xz
+      - name: Render original native procedural sky, no external vendor assets
+        run: |
+          set -euo pipefail
+          mkdir -p output
+          ./blender-5.0.1-linux-x64/blender -b --disable-autoexec -t 2 --python skills/scenario-blender-mcp/examples/cosmic_fx_pilot.py -- --outdir output --size 384 --samples 8 > output/blender.log 2>&1 || { tail -100 output/blender.log; exit 1; }
+          grep 'PRYNTOR_COSMIC_FX_RENDER_COMPLETE' output/blender.log
+      - name: Decode, source hash and pixel variability
+        run: |
+          python -m pip install --disable-pip-version-check 'Pillow>=10,<13'
+          python skills/scenario-blender-mcp/examples/verify_cosmic.py --root output --size 384 | tee output/verification.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pryntor-cosmic-fx-original-no-vendor-assets
+          path: output/
+          retention-days: 7
+          if-no-files-found: warn
+  independent:
+    needs: native-render
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: pryntor-cosmic-fx-original-no-vendor-assets
+          path: artifact/
+      - name: Independently verify detached rendering evidence
+        run: |
+          python -m pip install --disable-pip-version-check 'Pillow>=10,<13'
+          python skills/scenario-blender-mcp/examples/verify_cosmic.py --root artifact --size 384
+          echo 'INDEPENDENT_ORIGINAL_COSMIC_FX_TECH_QA_PASS'
