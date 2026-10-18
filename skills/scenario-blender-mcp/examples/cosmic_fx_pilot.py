@@ -12,6 +12,9 @@ import sys
 
 import bpy
 from mathutils import Vector
+
+# Blender --python does not necessarily put the script's folder on sys.path.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from nebulapunk_intake import validate_vendor_asset, sha256_file
 
 
