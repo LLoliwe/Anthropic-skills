@@ -9,7 +9,7 @@ Owned by Pryntor. Canonical engineering ticket: [PRY-307](https://linear.app/pry
 - Original Python 3.10+ stdlib-only program
 - 3 decision-only queues: acceptance diagnostics, partnership triage, creative/technical QA
 - 60 hand-curated synthetic fixtures; 42 development and 18 reserved. These were not independently labeled or blinded.
-- 40 unit/adversarial tests, and path-scoped hosted GitHub Actions workflow.
+- 47 unit/adversarial and official-envelope tests, and path-scoped hosted GitHub Actions workflow.
 - Model outputs can only select internal queues; no sending, payments, publishing, deleting, secret use, production change, customer data access, or other side effects.
 - Input is a synthetic state map only. State input is restricted to a fixed per-workflow boolean allowlist and known policy flags. This is still not full DLP, secret scanning, sandbox isolation or permission control.
 
@@ -36,3 +36,9 @@ The request-preview prints candidate JSON; it **does not** contact Jev. The answ
 **Source and negotiation background:** https://typesafe.ai/ ; https://docs.typesafe.ai/introduction/quickstart ; https://typesafe.ai/legal/mca .
 
 No credentials, personal email, client/employer data or customer source files belong in this repository. No new spending or Jev calls are authorized by this PR.
+
+## Partner handoff and official SDK contract
+
+Public evidence-backed contact dossier: [PARTNER_ONE_PAGER.md](PARTNER_ONE_PAGER.md).
+
+New `tests/test_official_shape.py` documents the authoritative TypeSafe raw JSON envelope (`model`, `answers`, `type`, `choice`, `confidence`, `probabilities`), based on the official [TypeSafe quickstart](https://docs.typesafe.ai/introduction/quickstart). All test values are synthetic. The adapter is not a real API client, and authorization, response provenance, billability, commercial entitlements and model calibration are not demonstrated. The bundled samples are only contract-shaped fixtures.
