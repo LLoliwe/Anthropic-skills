@@ -78,5 +78,44 @@ class TestLoop(unittest.TestCase):
         self.assertNotEqual(r.returncode, 0)
 
 
+    def test_verifier_side_effect_cannot_fake_success(self):
+        # Baseline verifier intentionally rewrites data. Its changes must never reach candidate.
+        (self.root / 'verify.py').write_text(
+            "from pathlib import Path\\nimport sys\\n"
+            "value = Path('value.txt')\\n"
+            "if value.read_text() != 'good':\\n"
+            "    value.write_text('good')\\n"
+            "    sys.exit(1)\\n"
+            "sys.exit(0)\\n"
+        )
+        r = self.call('pass')
+        self.assertEqual(r.returncode, 2, r.stderr)
+        self.assertEqual(json.loads(r.stdout)['status'], 'STOPPED_NO_PROGRESS')
+        self.assertEqual((self.root / 'value.txt').read_text(), 'bad')
+        self.assertFalse((self.base / 'result' / 'candidate.patch').exists())
+
+    def test_verifier_tampering_on_passing_attempt_blocks(self):
+        (self.root / 'verify.py').write_text(
+            "from pathlib import Path\\nimport sys\\n"
+            "if Path('value.txt').read_text() == 'good':\\n"
+            "    Path('verify.py').write_text('pass')\\n"
+            "    sys.exit(0)\\n"
+            "sys.exit(1)\\n"
+        )
+        r = self.call("from pathlib import Path; Path('value.txt').write_text('good')")
+        self.assertEqual(r.returncode, 2, r.stderr)
+        self.assertEqual(json.loads(r.stdout)['status'], 'BLOCKED_VERIFIER_MODIFIED')
+        self.assertFalse((self.base / 'result' / 'candidate.patch').exists())
+
+    def test_unavailable_baseline_does_not_run_candidate(self):
+        (self.root / 'verify.py').write_text("import time\\ntime.sleep(10)\\n")
+        r = self.call("from pathlib import Path; Path('value.txt').write_text('good')")
+        self.assertEqual(r.returncode, 2, r.stderr)
+        self.assertEqual(json.loads(r.stdout)['status'], 'BLOCKED_BASELINE_UNAVAILABLE')
+        self.assertEqual((self.root / 'value.txt').read_text(), 'bad')
+        self.assertFalse((self.base / 'result' / 'candidate.patch').exists())
+
+
+
 if __name__ == '__main__':
     unittest.main()
