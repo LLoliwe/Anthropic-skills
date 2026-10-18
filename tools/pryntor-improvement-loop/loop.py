@@ -43,6 +43,19 @@ def run(argv, cwd, seconds, env):
         return {'exit_code': None, 'error': type(exc).__name__, 'timeout': False}
 
 
+def verify_in_copy(argv, work, seconds, env, protected):
+    """Execute a verifier on a disposable copy so it cannot heal the candidate tree."""
+    with tempfile.TemporaryDirectory(prefix='pryntor-verify-') as temp:
+        stage = Path(temp) / 'workspace'
+        shutil.copytree(work, stage)
+        before = snapshot(stage)
+        verify_env = {k: v for k, v in env.items() if k != 'PRYNTOR_LOOP_FEEDBACK_FILE'}
+        result = run(argv, stage, seconds, verify_env)
+        after = snapshot(stage)
+        intact = all(after.get(p) == before.get(p) for p in protected)
+        return result, intact
+
+
 def ensure_argv(argv):
     if not isinstance(argv, list) or not argv or any(not isinstance(x, str) or not x for x in argv):
         raise ValueError('Commands must be nonempty argument arrays, never shell strings')
@@ -119,11 +132,13 @@ def main():
         feedback.mkdir()
         approved_env['PRYNTOR_LOOP_FEEDBACK_FILE'] = str(feedback / 'feedback.json')
         initial = snapshot(work)
-        baseline = run(spec['verify_argv'], work, timeout, approved_env)
+        baseline, baseline_integrity = verify_in_copy(spec['verify_argv'], work, timeout, approved_env, protected)
         with events.open('a', encoding='utf-8') as f:
             f.write(json.dumps({'event': 'baseline', 'verification': baseline}) + '\n')
-        if any(snapshot(work).get(p) != initial.get(p) for p in protected):
+        if not baseline_integrity:
             status = 'BLOCKED_BASELINE_VERIFIER_MODIFIED'
+        elif baseline['exit_code'] is None:
+            status = 'BLOCKED_BASELINE_UNAVAILABLE'
         elif baseline['exit_code'] == 0:
             status = 'ALREADY_PASSING'
         else:
@@ -133,19 +148,28 @@ def main():
                 candidate = run(spec['candidate_argv'], work, timeout, approved_env)
                 current = snapshot(work)
                 integrity_ok = all(current.get(p) == initial.get(p) for p in protected)
-                verify = run(spec['verify_argv'], work, timeout, approved_env) if integrity_ok and candidate['exit_code'] == 0 else None
-                passed = bool(integrity_ok and verify is not None and verify['exit_code'] == 0)
+                changed_source = current != initial
+                verify, verify_integrity = (
+                    verify_in_copy(spec['verify_argv'], work, timeout, approved_env, protected)
+                    if integrity_ok and changed_source and candidate['exit_code'] == 0 else (None, True)
+                )
+                passed = bool(integrity_ok and changed_source and verify_integrity
+                              and verify is not None and verify['exit_code'] == 0)
                 state = digest(b''.join(k.encode() + digest(v).encode() for k, v in sorted(current.items())))
                 event = {'event': 'attempt', 'n': attempt, 'candidate': candidate, 'verify': verify,
-                         'protected_integrity': integrity_ok, 'passed': passed,
+                         'protected_integrity': integrity_ok, 'verifier_integrity': verify_integrity,
+                         'candidate_changed_source': changed_source, 'passed': passed,
                          'workspace_sha256': state, 'elapsed_seconds': round(time.monotonic() - started, 3)}
                 with events.open('a', encoding='utf-8') as f:
                     f.write(json.dumps(event, sort_keys=True) + '\n')
-                if not integrity_ok:
+                if not integrity_ok or not verify_integrity:
                     status = 'BLOCKED_VERIFIER_MODIFIED'
                     break
                 if passed:
                     patch = patch_for(initial, current)
+                    if not patch.strip():
+                        status = 'BLOCKED_NO_EXPORTABLE_CHANGE'
+                        break
                     (args.out / 'candidate.patch').write_text(patch, encoding='utf-8')
                     status = 'CANDIDATE_VERIFIED_REVIEW_REQUIRED'
                     break
