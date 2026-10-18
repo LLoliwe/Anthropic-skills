@@ -40,8 +40,8 @@ def cloud_material(name, color, seed):
     links = mat.node_tree.links
     tex = nodes.new("ShaderNodeTexCoord")
     noise = nodes.new("ShaderNodeTexNoise")
-    noise.inputs["Scale"].default_value = 3.0 + seed * 1.7
-    noise.inputs["Detail"].default_value = 4.0
+    noise.inputs["Scale"].default_value = 5.0 + seed * 2.1
+    noise.inputs["Detail"].default_value = 6.0
     distance = nodes.new("ShaderNodeVectorMath")
     distance.operation = "DISTANCE"
     distance.inputs[1].default_value = (0.5, 0.5, 0.5)
@@ -53,8 +53,8 @@ def cloud_material(name, color, seed):
     mask = nodes.new("ShaderNodeMath")
     mask.operation = "MULTIPLY"
     ramp = nodes.new("ShaderNodeValToRGB")
-    ramp.color_ramp.elements[0].position = 0.08
-    ramp.color_ramp.elements[1].position = 0.32
+    ramp.color_ramp.elements[0].position = 0.18
+    ramp.color_ramp.elements[1].position = 0.43
     clear = nodes.new("ShaderNodeBsdfTransparent")
     light = nodes.new("ShaderNodeEmission")
     light.inputs["Color"].default_value = (*color, 1)
@@ -173,7 +173,7 @@ def main():
     scene.cycles.samples = args.samples
     scene.render.image_settings.file_format = "PNG"
     scene.render.filepath = str(out / "cosmic_fx_study.png")
-    bpy.ops.wm.save_as_mainfile(filepath=str(out / "cosmic_fx_study.blend"))
+    bpy.ops.wm.save_as_mainfile(filepath=str(out / "cosmic_fx_study.blend"), compress=False)
     bpy.ops.render.render(write_still=True)
     evidence = {
         "status": "render-created-not-artist-approved",
