@@ -153,6 +153,35 @@ class AdversarialDecisionTests(unittest.TestCase):
             verdict = p.guarded_route(wf, {}, r)
             self.assertFalse(verdict["release_authorized"])
 
+    def test_unknown_policy_flag_holds(self):
+        state = {"public_source": True, "policy_flags": ["unsupported_privileged_action"]}
+        result = p.guarded_route("partnership", state, self.response())
+        self.assertEqual(result["route"], "human_review")
+        self.assertFalse(result["action_executed"])
+
+    def test_unknown_state_key_holds(self):
+        state = {"public_source": True, "unrecognized_control": True}
+        self.assertEqual(p.guarded_route("partnership", state, self.response())["route"], "human_review")
+
+    def test_nonboolean_approval_holds(self):
+        state = {"source_failure": True, "approval_required": "yes"}
+        self.assertEqual(p.guarded_route("diagnostic", state, self.response())["route"], "human_review")
+
+    def test_nonboolean_card_requirement_holds(self):
+        state = {"public_source": True, "card_required": "false"}
+        self.assertEqual(p.guarded_route("partnership", state, self.response())["route"], "human_review")
+
+    def test_nested_policy_flag_holds(self):
+        state = {"source_failure": True, "policy_flags": [["payment"]]}
+        self.assertEqual(p.guarded_route("diagnostic", state, self.response())["route"], "human_review")
+
+    def test_unknown_flag_cannot_leave_in_request(self):
+        with self.assertRaises(ValueError):
+            p.build_request("partnership", {"policy_flags": ["future_action"]})
+
+    def test_boolean_fields_remain_supported(self):
+        self.assertEqual(p.baseline("partnership", {"card_required": False, "public_source": True})["route"], "research")
+
     def test_dataset_duplicate_rejected(self):
         rows = p.cases(Path(__file__).resolve().parents[1] / "fixtures.json")
         with tempfile.TemporaryDirectory() as d:
