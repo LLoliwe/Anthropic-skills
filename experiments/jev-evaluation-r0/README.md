@@ -9,7 +9,7 @@ Owned by Pryntor. Canonical engineering ticket: [PRY-307](https://linear.app/pry
 - Original Python 3.10+ stdlib-only program
 - 3 decision-only queues: acceptance diagnostics, partnership triage, creative/technical QA
 - 60 hand-curated synthetic fixtures; 42 development and 18 reserved. These were not independently labeled or blinded.
-- 47 unit/adversarial and official-envelope tests, and path-scoped hosted GitHub Actions workflow.
+- Automated unit/adversarial, official-envelope and skill-guided pilot tests, with a path-scoped hosted GitHub Actions workflow. Verify the exact count from the latest head's CI.
 - Model outputs can only select internal queues; no sending, payments, publishing, deleting, secret use, production change, customer data access, or other side effects.
 - Input is a synthetic state map only. State input is restricted to a fixed per-workflow boolean allowlist and known policy flags. This is still not full DLP, secret scanning, sandbox isolation or permission control.
 
@@ -42,3 +42,21 @@ No credentials, personal email, client/employer data or customer source files be
 Public evidence-backed contact dossier: [PARTNER_ONE_PAGER.md](PARTNER_ONE_PAGER.md).
 
 New `tests/test_official_shape.py` documents the authoritative TypeSafe raw JSON envelope (`model`, `answers`, `type`, `choice`, `confidence`, `probabilities`), based on the official [TypeSafe quickstart](https://docs.typesafe.ai/introduction/quickstart). All test values are synthetic. The adapter is not a real API client, and authorization, response provenance, billability, commercial entitlements and model calibration are not demonstrated. The bundled samples are only contract-shaped fixtures.
+
+## R1: apply the installed TypeSafe skill to Partnerships triage
+
+The official project-local skill is available under .agents/skills/typesafe-ai/SKILL.md. The new R1 file typesafe_pilot_r1.py is a concrete first implementation for internal partnership opportunities.
+
+Live TypeSafe docs consulted on 18 October 2026: https://docs.typesafe.ai/llms.txt ; https://docs.typesafe.ai/api ; https://docs.typesafe.ai/primitives/choice ; https://docs.typesafe.ai/primitives/noul ; https://docs.typesafe.ai/confidence ; https://docs.typesafe.ai/sdk/python
+
+R1 reads *fictional* supplier excerpts only. Deterministic rules handle known payment, auto-billing, private data, and identity restrictions before any planned model inference. It builds an UNSENT official-structure request using one Choice for internal queues and two independent Nouls for no-card and no-auto-conversion claims. Noul probabilities are unverified claims, not accepted supplier terms.
+
+All R1 response tests use mock values, never live Jev. Any output is internal-review-only or HOLD. The script has no provider connection, credentials, network code, email sender, payments, publishing, deployment, or autonomous release. A fictitious case with written terms still cannot be marked as externally verified.
+
+Run locally from experiments/jev-evaluation-r0:
+
+    python3 -B typesafe_pilot_r1.py preview --case partner-free-claims
+    python3 -B typesafe_pilot_r1.py replay --case partner-free-claims
+    python3 -B -m unittest discover -s tests -v
+
+No live model performance, cost, latency or accuracy is measured by these sample runs. Before a separate authorized live adapter: verify sponsored no-card credits and zero auto-conversion, establish approved secret management, independently label an unseen evaluation set, assess privacy and commission an independent engineering/security review. Do not allow any model output to authorize external effects.
