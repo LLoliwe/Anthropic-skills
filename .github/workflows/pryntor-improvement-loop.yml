@@ -1,0 +1,30 @@
+name: Pryntor Improvement Loop R0 tests
+
+on:
+  pull_request:
+    paths:
+      - "tools/pryntor-improvement-loop/**"
+      - "skills/pryntor-improvement-loop/**"
+      - ".github/workflows/pryntor-improvement-loop.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-controller-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read-only source checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Test controller at exact PR head
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          PYTHONNOUSERSITE: "1"
+        run: |
+          python3 --version
+          python3 -m py_compile tools/pryntor-improvement-loop/loop.py tools/pryntor-improvement-loop/test_loop.py
+          python3 -m unittest discover -s tools/pryntor-improvement-loop -p 'test_*.py' -v
