@@ -201,6 +201,10 @@ class EvidenceTests(unittest.TestCase):
         e = evidence(repo=["LLoliwe/pryntor-motion"])
         self.assertIn("UNKNOWN_OWNER_OR_LANE", fd.evidence_gate(e)["gaps"])
 
+    def test_unknown_lane_type_does_not_crash(self):
+        e = evidence(lane=["zowibo"])
+        self.assertIn("UNKNOWN_OWNER_OR_LANE", fd.evidence_gate(e)["gaps"])
+
 
 class CLITests(unittest.TestCase):
     def test_cli_deterministic_replay_and_exit_code(self):
