@@ -3,31 +3,36 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
-const file=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../educator-preview.html');
-const html=readFileSync(file,'utf8');
-
-test('adult-only original LVL7 experiment stays private, no live sales or learner capture',()=>{
- assert.match(html,/PRIVATE R3 EXPERIMENT/);
- assert.match(html,/No student accounts or child data/);
- assert.match(html,/not a certified lesson/i);
- assert.match(html,/PRYNTOR.*PRIVATE SOURCE DESIGN/i);
- assert.match(html,/mailto:partnerships@pryntor\.co\.za\?subject=/);
- assert.doesNotMatch(html,/<(?:iframe|img|script)\b[^>]*\bsrc\s*=['"]https?:/i);
- assert.doesNotMatch(html,/(?:fetch\s*\(|XMLHttpRequest|localStorage|sessionStorage|document\.cookie|paystack|stripe\.com)/i);
+const html=readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../educator-preview.html'),'utf8');
+test('original R4 interactive study embeds 54 3D render views and works without third-party scripts',()=>{
+ assert.equal((html.match(/data:image\/webp;base64,/g)||[]).length,54);
+ assert.match(html,/THE WATER ROOM/);
+ assert.match(html,/function frameState\(m\)/);
+ assert.match(html,/window\.LVL7_R4_TEST=/);
+ assert.doesNotMatch(html,/<script\b[^>]*\bsrc=/);
+ assert.doesNotMatch(html,/<img\b[^>]*\bsrc\s*=\s*["']https?:/);
+ assert.doesNotMatch(html,/(?:XMLHttpRequest|fetch\s*\(|localStorage|sessionStorage|document\.cookie|stripe\.com|paystack\.com)/i);
 });
-test('physics uses transparent original 100 g idealised water model',()=>{
- assert.equal(100*4.18*80/1000,33.44);
- assert.equal(100*2256/1000,225.6);
- assert.ok(Math.abs(33.44+225.6-259.04)<1e-9);
- assert.match(html,/WARM_KJ=33\.44,LATENT_KJ=225\.6,TOTAL_KJ=259\.04/);
- assert.match(html,/no heat loss/i);
+test('100 g heating and phase energy model is numerically correct, with transparent physical limits',()=>{
+ assert.ok(Math.abs(100*4.18*80/1000-33.44)<1e-12);
+ assert.ok(Math.abs(100*2256/1000-225.6)<1e-12);
+ assert.ok(Math.abs(33.44+225.6-259.04)<1e-12);
+ assert.match(html,/const WARM=33\.44,LATENT=225\.6,TOTAL=259\.04/);
+ assert.match(html,/vap=k<=WARM\?0:Math\.min\(1,\(k-WARM\)\/LATENT\)/);
+ assert.match(html,/vaporised completely at 100°C/);
+ assert.match(html,/volumes are deliberately illustrative/i);
+ assert.match(html,/not real-time WebGL/i);
  assert.match(html,/not computational fluid dynamics/i);
- assert.match(html,/not validated CFD/i);
 });
-test('actual energy-linked canvas, 3 states, motion and accessible controls are wired',()=>{
- for(const pattern of [/id="labCanvas"/,/getContext\('2d'\)/,/getContext\('webgl2'/,/function drawFallback\(\)/,/function thermodynamic\(kJ\)/,/id="motionToggle"/,/prefers-reduced-motion: reduce/,/data-state="0"/,/data-state="1"/,/data-state="2"/,/pointercancel/,/ArrowLeft/,/aria-live="polite"/])assert.match(html,pattern);
+test('every meaningful 3D, model and educator interaction has actual controls',()=>{
+ for(const pattern of [/id="energy"/,/data-state="0"/,/data-state="1"/,/data-state="2"/,/id="turnLeft"/,/id="turnRight"/,/pointermove/,/pointercancel/,/ArrowLeft/,/id="explainTitle"/,/id="explainText"/,/id="feedback"/,/id="copyInquiry"/,/id="audience"/,/id="interest"/]) assert.match(html,pattern);
 });
-test('educator inquiry optional and user-initiated, not an automatic sales funnel',()=>{
- for(const pattern of [/id="audience"/,/id="interest"/,/id="inquiryPreview"/,/id="emailInquiry"/,/id="copyInquiry"/,/window\.location\.href='mailto:partnerships@pryntor\.co\.za/])assert.match(html,pattern);
+test('review-only adult experiment respects website, child-safety and no-outreach freeze',()=>{
+ assert.match(html,/PRIVATE ADULT REVIEW \/ NOT FOR SALE/);
+ assert.match(html,/No children's details or student accounts/);
+ assert.match(html,/not a scientifically certified curriculum lesson/i);
+ assert.match(html,/not a live offer/i);
+ assert.match(html,/sends nothing/i);
  assert.doesNotMatch(html,/<form\b/i);
+ assert.doesNotMatch(html,/mailto:/i);
 });
