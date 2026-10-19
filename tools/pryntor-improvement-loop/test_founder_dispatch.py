@@ -133,6 +133,21 @@ class SelectTests(unittest.TestCase):
         self.assertIn("NONZERO_OR_UNVERIFIED_SPEND",
                       fd.screen(task(spend_required=False), NOW))
 
+    def test_malformed_nested_fields_reject_without_type_error(self):
+        for field in ("repo", "lane", "urgency", "impact", "effort", "action"):
+            with self.subTest(field=field):
+                wrong = task(**{field: ["untrusted"]})
+                problems = fd.screen(wrong, NOW)
+                self.assertTrue(problems)
+
+    def test_mismatched_repo_url_is_not_provenance(self):
+        wrong = task(source_url="https://github.com/LLoliwe/Leseli/pull/12")
+        self.assertIn("UNAPPROVED_SOURCE", fd.screen(wrong, NOW))
+
+    def test_boolean_schema_version_rejected(self):
+        with self.assertRaises(ValueError):
+            fd.select({"schema_version": True, "tasks": [task()]}, NOW)
+
 
 class EvidenceTests(unittest.TestCase):
     def test_complete_manifest_is_still_not_independent_release_proof(self):
@@ -176,6 +191,15 @@ class EvidenceTests(unittest.TestCase):
     def test_new_fields_cannot_override_the_release_gate(self):
         with self.assertRaises(ValueError):
             fd.evidence_gate(evidence(release_authorized=True))
+
+    def test_malformed_test_type_does_not_crash(self):
+        e = evidence()
+        e["tests"][0]["type"] = ["functional"]
+        self.assertIn("INVALID_OR_FAILED_TEST", fd.evidence_gate(e)["gaps"])
+
+    def test_unknown_owner_type_does_not_crash(self):
+        e = evidence(repo=["LLoliwe/pryntor-motion"])
+        self.assertIn("UNKNOWN_OWNER_OR_LANE", fd.evidence_gate(e)["gaps"])
 
 
 class CLITests(unittest.TestCase):
