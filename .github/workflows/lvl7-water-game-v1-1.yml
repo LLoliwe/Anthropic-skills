@@ -33,9 +33,12 @@ jobs:
           cd apps/lvl7-science-playground
           node --test tests/science.test.mjs tests/educator-preview.test.mjs
           NODE_PATH="$RUNNER_TEMP/test/node_modules" node --test tests/science-dom.test.cjs
+          NODE_PATH="$RUNNER_TEMP/test/node_modules" node tests/immersive-preview-browser.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: lvl7-water-game-v1-1-chromium-evidence
-          path: apps/lvl7-water-game-v1-1/screenshots/*.png
+          path: |
+            apps/lvl7-water-game-v1-1/screenshots/*.png
+            apps/lvl7-science-playground/screenshots/*.png
           retention-days: 14
           if-no-files-found: error
