@@ -1,0 +1,60 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),path=require('node:path');
+const {chromium}=require('playwright');
+const root=path.resolve(__dirname,'..');
+const html=fs.readFileSync(path.join(root,'educator-preview.html'),'utf8');
+const shots=path.join(root,'screenshots');fs.mkdirSync(shots,{recursive:true});
+(async()=>{
+ const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+ try{
+  for(const [w,h] of [[320,740],[390,844],[768,1024],[1440,900]]){
+   const page=await browser.newPage({viewport:{width:w,height:h},deviceScaleFactor:1,reducedMotion:'reduce'});
+   const errors=[],requests=[];
+   page.on('pageerror',e=>errors.push(String(e)));
+   page.on('request',r=>requests.push(r.url()));
+   await page.setContent(html,{waitUntil:'load'});
+   const mode=await page.locator('#rendererLabel').innerText();
+   assert.ok(['LIVE CANVAS / ORIGINAL','LIVE WEBGL / ORIGINAL'].includes(mode),'renderer: '+mode);
+   assert.equal(await page.locator('#temperature').innerText(),'20.0°C');
+   assert.equal(await page.locator('#energyLabel').innerText(),'0.00 kJ');
+   const before=await page.locator('#labCanvas').screenshot();
+   await page.locator('.stage[data-state="1"]').click();
+   assert.equal(await page.locator('#temperature').innerText(),'100.0°C');
+   assert.equal(await page.locator('#energyLabel').innerText(),'33.44 kJ');
+   assert.equal(await page.locator('#worldPhase').innerText(),'BOILING');
+   await page.locator('.stage[data-state="2"]').click();
+   assert.equal(await page.locator('#energyLabel').innerText(),'259.04 kJ');
+   assert.match(await page.locator('#phase').innerText(),/100% vapour/);
+   const after=await page.locator('#labCanvas').screenshot();
+   assert.ok(!before.equals(after),'rendered pixels respond to model state');
+   await page.locator('#energy').fill('15000');
+   assert.equal(await page.locator('#energyLabel').innerText(),'150.00 kJ');
+   assert.equal(await page.locator('.stage[data-state="1"]').getAttribute('aria-pressed'),'true');
+   await page.locator('#audience').selectOption('School pilot');
+   assert.match(await page.locator('#inquiryPreview').innerText(),/School pilot/);
+   assert.equal(await page.locator('#motionToggle').innerText(),'RESUME MOTION');
+   await page.locator('#motionToggle').click();
+   assert.equal(await page.locator('#motionToggle').innerText(),'PAUSE MOTION');
+   await page.locator('#motionToggle').click();
+   assert.equal(await page.locator('#motionToggle').innerText(),'RESUME MOTION');
+   await page.locator('#labCanvas').scrollIntoViewIfNeeded();
+   const b=await page.locator('#labCanvas').boundingBox();
+   await page.mouse.move(b.x+b.width*.5,b.y+b.height*.5);
+   await page.mouse.down();
+   await page.mouse.move(b.x+b.width*.65,b.y+b.height*.55,{steps:4});
+   await page.mouse.up();
+   const tilt=await page.evaluate(()=>window.LVL7_PRIVATE_TEST.readState().tilt);
+   assert.ok(Math.abs(tilt)>.02,'drag drives the scene state');
+   await page.locator('#labCanvas').focus();await page.keyboard.press('ArrowLeft');
+   assert.ok((await page.evaluate(()=>window.LVL7_PRIVATE_TEST.readState().tilt))<tilt,'keyboard interaction');
+   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+1),false,'overflow');
+   assert.deepEqual(errors,[],'JS errors');
+   assert.deepEqual(requests,[],'external requests');
+   await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   if(w===390||w===1440)await page.screenshot({path:path.join(shots,'lvl7-r3-private-'+w+'.png'),animations:'disabled'});
+   console.log('PASS LVL7 R3 '+w+'x'+h+' states, changing pixels, input, privacy, viewport; '+mode);
+   await page.close();
+  }
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});
