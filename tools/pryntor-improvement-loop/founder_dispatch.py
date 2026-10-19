@@ -179,7 +179,7 @@ def evidence_gate(record):
         gaps.append("NO_IMMUTABLE_ARTIFACT")
     if record["source_changed"] is not True:
         gaps.append("NO_WORK_PRODUCT")
-    needed = {"functional", "negative"} | ({"browser"} if record["lane"] in UI_LANES else set())
+    needed = {"functional", "negative"} | ({"browser"} if known(record["lane"], UI_LANES) else set())
     actual = set()
     tests = record["tests"]
     if not isinstance(tests, list) or not tests or len(tests) > 30:
