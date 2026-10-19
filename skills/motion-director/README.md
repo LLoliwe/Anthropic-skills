@@ -62,3 +62,48 @@ Exports: MP4 if FFmpeg exists; PNG contact sheet; JSON QA/provenance; CSV edit d
 ## Earshot v0.2 / audio-technical quality gate
 
 The optional audio QA is implemented in `scripts/audio_gate.py` and documented in [AUDIO_EARSHOT.md](AUDIO_EARSHOT.md). After a rough render, run `python skills/motion-director/scripts/audio_gate.py preview.mp4 --report audio_qa.json`. It decodes and checks audio locally using FFmpeg; an unintentionally muted sample **fails**. When intentional silence is approved, record the reason using `--intentional-mute` and preserve human signoff. `--earshot-review` requires separately installed and cached Earshot 0.2.0 and blocks without it. Neither this gate nor a model result proves creative approval, music licensing or company-wide installation.
+
+
+## Earshot v0.3 real sound-kit preview (PRY-195, 19 October 2026)
+
+The **optional, already implemented** `scripts/earshot_v03_soundtrack.py` is a distinct,
+model-free v0.3 production adapter, not a claimed migration of the separately pinned v0.2
+listening-model acceptance workflow. It generates real WAVs from Earshot's bank, validates
+`kit.lock.json` (bank version, audited sound ID, SHA1, measured onset/peak, filename and
+warnings), mixes six sounds to exact frame timestamps in our existing original 30-second
+six-shot demo, and can mux a **private, not creatively approved** MP4. It generates receipts
+(`soundtrack-evidence.json`) and preserves upstream credit and human-review gates.
+
+**Verified 19 Oct:** existing PR #3 head `0032384d39c80a79b0b8f6695cda39c9853be0ab`,
+[actual v0.3 rendering CI run 39181878462](https://github.com/LLoliwe/Anthropic-skills/actions/runs/39181878462)
+**PASS** (5/5 new tests, 6/6 sound takes without upstream audit warnings,
+30.000-second H.264+AAC synthetic-preview render, existing offline audio gate technical PASS,
+zero CLAP/AST model downloads or paid APIs). CI artifact:
+[real 30-second review MP4, standalone PCM WAV, six takes, lock and audit receipts](https://github.com/LLoliwe/Anthropic-skills/actions/runs/39181878462/artifacts/12156646821).
+The prior v0.2 upstream acceptance remains separate.
+
+For authorized use with the exact checked source revision
+`Leonxlnx/earshot@925ebe56a1b755e5d354ab642bb8f344440cfa9c`,
+Python >=3.10, FFmpeg, and NumPy / SciPy / soundfile / soxr / pyloudnorm:
+
+```bash
+# From repo root, after installing the exact pinned upstream Earshot v0.3 source locally
+export EARSHOT_OFFLINE=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+python skills/motion-director/scripts/earshot_v03_soundtrack.py \
+  skills/motion-director/examples/signal-demo.json --plan-only
+python skills/motion-director/scripts/motion_director.py render \
+  skills/motion-director/examples/signal-demo.json --output /tmp/pryntor-demo.mp4
+python skills/motion-director/scripts/earshot_v03_soundtrack.py \
+  skills/motion-director/examples/signal-demo.json \
+  --video /tmp/pryntor-demo.mp4 --outdir /tmp/earshot-v03-preview
+```
+
+`earshot kit render/check` is a DSP-only path, so no listening-model download is
+needed. This adapter intentionally uses only six fit/forge bank choices, not all
+201. Upstream source MIT licence and bundled fitted CC0 recordings have separate
+provenance in upstream `docs/CREDITS_FIT.md`; preserve notices if distributing.
+The simple preview is *not* proof of polished sound, a licensed music bed, an
+approved aesthetic, a persistent Earshot host, an installed company-wide runtime,
+or production release. **No merge, external outreach, paid spend, or publication
+is authorized by this technical success.** Directors and venture owners must
+review genuine output and assets before per-venture adoption.
