@@ -1,0 +1,62 @@
+name: Motion Director skill smoke
+on:
+  pull_request:
+    paths:
+      - 'skills/motion-director/**'
+      - '.github/workflows/motion-director-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r skills/motion-director/requirements.txt
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+      - run: python -m unittest discover -s skills/motion-director/tests -v
+      - run: python skills/motion-director/scripts/motion_director.py qa skills/motion-director/examples/signal-demo.json
+      - run: python skills/motion-director/scripts/motion_director.py handoff skills/motion-director/examples/signal-demo.json --outdir /tmp/motion-handoff
+      - run: python skills/motion-director/scripts/motion_director.py qa-frames skills/motion-director/examples/signal-demo.json --output /tmp/motion-handoff/frame_qa.json
+      - name: Render original 30-second rough cut
+        run: |
+          python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --output /tmp/motion-rough-cut.mp4
+          test -s /tmp/motion-rough-cut.mp4
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 /tmp/motion-rough-cut.mp4
+          python skills/motion-director/scripts/motion_director.py render skills/motion-director/examples/signal-demo.json --shot S02 --output /tmp/motion-S02-microclip.mp4
+          test -s /tmp/motion-S02-microclip.mp4
+      - name: Verify decoded MP4 and handoff artifacts
+        run: |
+          python skills/motion-director/scripts/verify_artifacts.py \
+            --rough /tmp/motion-rough-cut.mp4 \
+            --micro /tmp/motion-S02-microclip.mp4 \
+            --handoff /tmp/motion-handoff \
+            --report /tmp/motion-handoff/verification.json
+          ffmpeg -v error -y -ss 12.8 -i /tmp/motion-rough-cut.mp4 -frames:v 1 /tmp/motion-handoff/encoded-S03.png
+          test -s /tmp/motion-handoff/encoded-S03.png
+      - name: Upload real preview and QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: motion-director-original-demo
+          path: |
+            /tmp/motion-rough-cut.mp4
+            /tmp/motion-S02-microclip.mp4
+            /tmp/motion-handoff/contact_sheet.png
+            /tmp/motion-handoff/qa.json
+            /tmp/motion-handoff/frame_qa.json
+            /tmp/motion-handoff/verification.json
+            /tmp/motion-handoff/encoded-S03.png
+            /tmp/motion-handoff/provenance.json
+            /tmp/motion-handoff/storyboard.json
+            /tmp/motion-handoff/edit_decision_list.csv
+            /tmp/motion-handoff/editor_handoff.md
+          if-no-files-found: warn
+          retention-days: 7

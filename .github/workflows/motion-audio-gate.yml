@@ -1,0 +1,33 @@
+name: Motion Director audio technical gate
+
+on:
+  pull_request:
+    paths:
+      - 'skills/motion-director/**'
+      - '.github/workflows/motion-audio-gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audio-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install and strictly verify system media tooling
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+          command -v ffmpeg
+          command -v ffprobe
+          ffmpeg -version
+          ffprobe -version
+      - name: Verify original generated audio fixtures
+        run: python -W error -m unittest discover -s skills/motion-director/tests -p test_audio_gate.py -v
