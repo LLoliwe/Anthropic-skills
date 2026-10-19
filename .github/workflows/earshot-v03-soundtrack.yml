@@ -5,6 +5,8 @@ on:
     paths:
       - 'skills/motion-director/scripts/earshot_v03_soundtrack.py'
       - 'skills/motion-director/tests/test_earshot_v03.py'
+      - 'skills/motion-director/scripts/earshot_genai_mix.py'
+      - 'skills/motion-director/tests/test_earshot_genai_mix.py'
       - 'skills/motion-director/examples/signal-demo.json'
       - '.github/workflows/earshot-v03-soundtrack.yml'
   workflow_dispatch:
@@ -72,6 +74,40 @@ jobs:
             --report /tmp/pryntor-earshot-v03-audio-qa.json
           ffprobe -v error -show_entries format=duration \
             -of default=noprint_wrappers=1 /tmp/pryntor-earshot-v03/pryntor-motion-earshot-v03-preview.mp4
+      - name: Verify GenAI bridge source and timing regressions
+        run: |
+          python -m unittest discover -s skills/motion-director/tests \
+            -p test_earshot_genai_mix.py -v
+      - name: Test full GenAI audio handoff using a clearly synthetic local fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          # This sine fixture exercises the *file integration* only. It is NOT
+          # evidence that any hosted generative model was called in CI.
+          ffmpeg -hide_banner -loglevel error -y \
+            -f lavfi -i "sine=frequency=430:duration=1.75:sample_rate=48000" \
+            -af "adelay=250|250" -t 2.0 \
+            -c:a libmp3lame -b:a 128k /tmp/pryntor-ci-fake-ai-effect.mp3
+          python skills/motion-director/scripts/earshot_genai_mix.py \
+            --proof-root /tmp/pryntor-earshot-v03 \
+            --genai-audio /tmp/pryntor-ci-fake-ai-effect.mp3 \
+            --outdir /tmp/pryntor-earshot-v03-hybrid-ci \
+            --model 'CI local sine source, NOT a real GenAI provider' \
+            --task-id 'ci-synthetic-fixture-only'
+          python skills/motion-director/scripts/audio_gate.py \
+            /tmp/pryntor-earshot-v03-hybrid-ci/pryntor-motion-earshot-v03-plus-genai.mp4 \
+            --report /tmp/pryntor-earshot-v03-hybrid-ci-audio-qa.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/pryntor-earshot-v03-hybrid-ci/hybrid-evidence.json')
+          r=json.loads(p.read_text())
+          assert r['earshot_preserved_cues']==5
+          assert r['genai_inserted_cues']==1
+          assert r['video_stream_identical'] is True
+          assert r['production_approved'] is False
+          print("hybrid CI: exact video hash, 5+1 cue arrangement and technical gate PASS")
+          PY
       - name: Preserve genuine sound files, preview and checks for human review
         if: always()
         uses: actions/upload-artifact@v4
@@ -89,3 +125,5 @@ jobs:
             /tmp/pryntor-earshot-v03-audio-qa.json
             /tmp/pryntor-motion-cues.json
             /tmp/earshot-v03-bank-list.json
+            /tmp/pryntor-earshot-v03-hybrid-ci/hybrid-evidence.json
+            /tmp/pryntor-earshot-v03-hybrid-ci-audio-qa.json
