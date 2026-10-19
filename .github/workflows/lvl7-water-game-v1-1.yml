@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - "apps/lvl7-water-game-v1-1/**"
+      - "apps/lvl7-science-playground/**"
       - ".github/workflows/lvl7-water-game-v1-1.yml"
   workflow_dispatch:
 permissions:
@@ -22,13 +23,22 @@ jobs:
           test -s apps/lvl7-water-game-v1-1/index.html
       - name: Install browser runtime
         run: |
-          npm install --prefix "$RUNNER_TEMP/test" --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1
+          npm install --prefix "$RUNNER_TEMP/test" --no-save --ignore-scripts --no-audit --no-fund playwright@1.56.1 jsdom@26.1.0
           "$RUNNER_TEMP/test/node_modules/.bin/playwright" install --with-deps chromium
       - name: Real responsive physics, rewards and accessibility smoke
         run: NODE_PATH="$RUNNER_TEMP/test/node_modules" node apps/lvl7-water-game-v1-1/tests/browser.cjs
+      - name: Build and verify connected science playground
+        run: |
+          node apps/lvl7-science-playground/build.mjs
+          cd apps/lvl7-science-playground
+          node --test tests/science.test.mjs tests/educator-preview.test.mjs
+          NODE_PATH="$RUNNER_TEMP/test/node_modules" node --test tests/science-dom.test.cjs
+          NODE_PATH="$RUNNER_TEMP/test/node_modules" node tests/immersive-preview-browser.cjs
       - uses: actions/upload-artifact@v4
         with:
           name: lvl7-water-game-v1-1-chromium-evidence
-          path: apps/lvl7-water-game-v1-1/screenshots/*.png
+          path: |
+            apps/lvl7-water-game-v1-1/screenshots/*.png
+            apps/lvl7-science-playground/screenshots/*.png
           retention-days: 14
           if-no-files-found: error
