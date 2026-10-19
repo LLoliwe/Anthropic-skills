@@ -107,3 +107,64 @@ approved aesthetic, a persistent Earshot host, an installed company-wide runtime
 or production release. **No merge, external outreach, paid spend, or publication
 is authorized by this technical success.** Directors and venture owners must
 review genuine output and assets before per-venture adoption.
+
+
+## Original GenAI Foley + Earshot 0.3 (PRY-195, 19 October 2026)
+
+**Implemented, private review only.** The optional
+`scripts/earshot_genai_mix.py` accepts a locally saved **genuinely generated**
+external model sound effect, an already generated Earshot 0.3 kit, five
+verified sound-bank takes, and the original Motion Director MP4 with JSON
+receipts. It replaces only the S02 `snap` effect and leaves the video stream
+untouched. It does **not** pretend Earshot is a generative model.
+
+**Actual GenAI provider call:** The existing-credit Runway "Lebohang"
+workspace produced an original two-second organic toggle foley through its
+Sound Effects generative model. Provider task
+`9c711ef8-7d11-4c12-9935-68e4abab403d`. Original MP3 SHA-256:
+`26cdd2cfa7af5e1b56a3630e377bd280e193224c719b180eb4fc73261da79b6c`.
+Cost: **two existing Runway credits; R0 new cash.** The model audio attack
+was measured at 0.352 seconds into the recording and aligned to
+**video frame 156, t=6.500 seconds at 24fps**. Earshot's other five sound
+effects retain their verified take hashes and onset/peak alignment.
+
+**Actual hybrid output proof:** 30.000-second H.264/AAC MP4 with SHA-256
+`b8bfb7891cee71104ae0935fcff1ea656471d57e410474b5609270e9799decde`,
+48kHz stereo WAV, and `hybrid-evidence.json`. The compressed-video packet
+MD5 remained exactly `6c5506dc7c824060c5a0067f0ec1ee80` from the original
+film. Max decoded audio level -9.0 dBFS, no digital clipping. Human sound
+aesthetics, licensing, music/soundscape choices and commercial use still
+require independent review. The external audio itself is not committed.
+
+Reproduce privately on source artifacts and a licensed-in-workspace
+generated audio file, with FFmpeg + NumPy + soundfile:
+
+```bash
+python skills/motion-director/scripts/earshot_genai_mix.py \
+  --proof-root /path/to/pryntor-earshot-v03 \
+  --genai-audio /private/source/original-effect.mp3 \
+  --outdir /private/review \
+  --model 'verified provider/model' \
+  --task-id 'actual immutable task id'
+```
+
+The bridge validates original MP4/WAV and locked Earshot take hashes, refuses
+unaudited or modified bank sounds, decodes local source audio, measures its
+first perceptible onset, sample-aligns to the exact video frame, mixes with
+peak safety, muxes without video re-encoding, verifies video packet identity,
+and records SHA-256/technical receipt. No cloud upload or model call is made
+by the bridge. A new provider generation requires its own explicitly
+approved, cost-controlled request.
+
+**CI scope:** `tests/test_earshot_genai_mix.py` and
+`earshot-v03-soundtrack.yml` use an obvious synthetic sine fixture to
+test interface/codec/QA only, **not** to impersonate live model output.
+
+**Video model limitation:** Krea image-to-video was attempted on the user's
+existing account, and returned 402 ("higher plan required") without generating
+any video or charging credits. The connected Runway workspace has no eligible
+video-generation model. Visuals therefore remain the prior original
+synthetic 30-second film, not a new generative video. This proves a
+**GenAI-sound plus procedural-Earshot workflow**, not a polished animated
+film, installed company-wide runtime, approved campaign, published product,
+commercial licence, merged source or paid upgrade.
