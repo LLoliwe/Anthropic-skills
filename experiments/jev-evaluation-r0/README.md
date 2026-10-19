@@ -60,3 +60,24 @@ Run locally from experiments/jev-evaluation-r0:
     python3 -B -m unittest discover -s tests -v
 
 No live model performance, cost, latency or accuracy is measured by these sample runs. Before a separate authorized live adapter: verify sponsored no-card credits and zero auto-conversion, establish approved secret management, independently label an unseen evaluation set, assess privacy and commission an independent engineering/security review. Do not allow any model output to authorize external effects.
+
+## R2: Coding-agent harness design, implemented as an offline opt-in example
+
+Studied the [12-page independent Jev Engineering synthesis](https://jevforagents.com/media/Jev-Engineering-for-Coding-Agents.pdf) dated September 2026. It is **not** a TypeSafe-endorsed technical specification and does not prove 200x end-to-end speed or 400x end-to-end cost reduction.
+
+New `coding_harness_r2.py` and `tests/test_coding_harness_r2.py` extend the **same PRY-307 draft PR**, without modifying any real game or agent runtime:
+- Addressable fictional evidence chunks with query-dependent hide / short / long / full visibility. Every policy chunk and explicitly required evidence ID is retained in full, or the context proposal HOLDS for insufficient budget. The supplied summaries are authored evidence, not an unverified auto-compression.
+- Fixed registry of three read-only/request-only tool hints and single-tool schema disclosure; there is no actual tool runner.
+- Advisory preflight checks the proposed command, declared paths and caller-provided script text. Malicious scripts and sensitive path candidates are rejected, unknown commands escalate, and even read-only candidates do not receive runtime authorization. This is **not** a security sandbox, parser, filesystem inspection, credential broker or permission enforcement system.
+- Paper's Opus/Sonnet model-handoff arithmetic computed using Decimal, with a trust override; it never chooses a real provider or makes a charge.
+
+Run from `experiments/jev-evaluation-r0`:
+
+    python3 -B coding_harness_r2.py demo
+    python3 -B coding_harness_r2.py tools
+    python3 -B coding_harness_r2.py economics
+    python3 -B -m unittest discover -s tests -v
+
+Local, pre-commit offline result: 23/23 new unit tests passed. The fictional ZOWIBO Safari-touch context sample reduced a **whitespace word-count proxy** from 119 to 69 words (42% fewer words in that one illustrative context). This is not a tokenizer measurement, a Jev model accuracy evaluation, an actual coding speedup, nor a change to ZOWIBO's game. Exact-head GitHub CI must be verified independently after commits.
+
+No live Jev inference, customer data, cost entitlement, provider payment, external outreach, production change or security approval has occurred. Next permitted pilot is an **opt-in read-only shadow comparison** against a real preapproved failing regression, with mandatory facts fixed in advance, a blind retrieval/recall evaluation, total tokens+wall time+task success+cost measured, and independent QA. Advance only with owner and security sign-off. Keep this PR draft/unmerged.
