@@ -60,9 +60,13 @@ def exact_fields(obj, required, optional=()):
         raise ValueError("Missing or unknown fields: " + ",".join(sorted(missing | unknown)))
 
 
-def valid_ref(value):
-    return isinstance(value, str) and (value.startswith("https://github.com/LLoliwe/")
-                                      or value.startswith("https://linear.app/pryntor/issue/"))
+def known(value, choices):
+    return isinstance(value, str) and value in choices
+
+
+def valid_ref(value, repo):
+    return (known(repo, REPOS) and isinstance(value, str)
+            and value.startswith("https://github.com/" + repo + "/"))
 
 
 def screen(item, now):
@@ -75,13 +79,13 @@ def screen(item, now):
     problems = []
     if not isinstance(item["issue"], str) or not ISSUE.fullmatch(item["issue"]):
         problems.append("INVALID_CANONICAL_ISSUE")
-    if item["repo"] not in REPOS or not valid_ref(item["source_url"]):
+    if not known(item["repo"], REPOS) or not valid_ref(item["source_url"], item["repo"]):
         problems.append("UNAPPROVED_SOURCE")
     if not isinstance(item["source_sha"], str) or not SHA.fullmatch(item["source_sha"]):
         problems.append("UNPINNED_SOURCE")
-    if item["lane"] not in LANES or item["urgency"] not in URGENCY:
+    if not known(item["lane"], LANES) or not known(item["urgency"], URGENCY):
         problems.append("UNKNOWN_PRIORITY")
-    if item["impact"] not in IMPACT or item["effort"] not in EFFORT:
+    if not known(item["impact"], IMPACT) or not known(item["effort"], EFFORT):
         problems.append("UNKNOWN_WORK_SCOPE")
     try:
         age = (now - parse_time(item["updated_at"])).total_seconds()
@@ -96,7 +100,7 @@ def screen(item, now):
     for field in ("acceptance", "negative_case"):
         if not isinstance(item[field], str) or len(item[field].strip()) < 12:
             problems.append("MISSING_" + field.upper())
-    if item["action"] not in ALLOWED_ACTIONS:
+    if not known(item["action"], ALLOWED_ACTIONS):
         problems.append("UNAPPROVED_ACTION")
     if not isinstance(item["risks"], list) or any(not isinstance(x, str) for x in item["risks"]):
         problems.append("INVALID_RISK_LIST")
@@ -119,7 +123,7 @@ def score(item):
 
 def select(frame, now):
     exact_fields(frame, ("schema_version", "tasks"))
-    if frame["schema_version"] != 1 or not isinstance(frame["tasks"], list):
+    if type(frame["schema_version"]) is not int or frame["schema_version"] != 1 or not isinstance(frame["tasks"], list):
         raise ValueError("Invalid work-item schema")
     if len(frame["tasks"]) > MAX_ITEMS:
         raise ValueError("Too many work items")
@@ -164,7 +168,7 @@ def evidence_gate(record):
     gaps = []
     if not isinstance(record["issue"], str) or not ISSUE.fullmatch(record["issue"]):
         gaps.append("INVALID_ISSUE")
-    if record["repo"] not in REPOS or record["lane"] not in LANES:
+    if not known(record["repo"], REPOS) or not known(record["lane"], LANES):
         gaps.append("UNKNOWN_OWNER_OR_LANE")
     if any(not isinstance(record[k], str) or not SHA.fullmatch(record[k])
            for k in ("base_sha", "result_sha")):
@@ -185,7 +189,7 @@ def evidence_gate(record):
             if not isinstance(t, dict) or set(t) != {"type", "command", "exit_code", "log_sha256"}:
                 gaps.append("INVALID_TEST_RECEIPT")
                 continue
-            if (t["type"] not in {"functional", "negative", "browser", "integration"}
+            if (not known(t["type"], {"functional", "negative", "browser", "integration"})
                     or not isinstance(t["command"], list) or not t["command"]
                     or any(not isinstance(a, str) or not a for a in t["command"])
                     or type(t["exit_code"]) is not int or t["exit_code"] != 0
