@@ -1,0 +1,91 @@
+name: Earshot v0.3 original motion soundtrack (model-free R0)
+
+on:
+  pull_request:
+    paths:
+      - 'skills/motion-director/scripts/earshot_v03_soundtrack.py'
+      - 'skills/motion-director/tests/test_earshot_v03.py'
+      - 'skills/motion-director/examples/signal-demo.json'
+      - '.github/workflows/earshot-v03-soundtrack.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sound-kit-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    env:
+      EARSHOT_OFFLINE: '1'
+      HF_HUB_OFFLINE: '1'
+      TRANSFORMERS_OFFLINE: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_IMPLICIT_TOKEN: '1'
+      DO_NOT_TRACK: '1'
+      PIP_DISABLE_PIP_VERSION_CHECK: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install local model-free DSP requirements and video encoder
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+          python -m pip install 'Pillow>=10,<13' 'numpy>=1.26,<3' 'scipy>=1.11,<2' \
+            'soundfile>=0.12,<1' 'soxr>=0.3,<2' 'pyloudnorm>=0.1,<1'
+      - name: Pin original Earshot source without fetching listening models
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --no-checkout --filter=blob:none https://github.com/Leonxlnx/earshot.git /tmp/earshot-v03
+          git -C /tmp/earshot-v03 checkout --detach 925ebe56a1b755e5d354ab642bb8f344440cfa9c
+          test "$(git -C /tmp/earshot-v03 rev-parse HEAD)" = 925ebe56a1b755e5d354ab642bb8f344440cfa9c
+          python -m pip install --no-deps -e /tmp/earshot-v03
+          python -c "import earshot; assert earshot.__version__ == '0.3.0', earshot.__version__"
+          python -m earshot sfx list --json > /tmp/earshot-v03-bank-list.json
+      - name: Test exact frames, bad kit rejection and real WAV mixer
+        run: |
+          python -m unittest discover -s skills/motion-director/tests -p test_earshot_v03.py -v
+          python skills/motion-director/scripts/earshot_v03_soundtrack.py \
+            skills/motion-director/examples/signal-demo.json --plan-only \
+            > /tmp/pryntor-motion-cues.json
+      - name: Render real existing 30 second synthetic Motion Director video
+        run: |
+          python skills/motion-director/scripts/motion_director.py render \
+            skills/motion-director/examples/signal-demo.json \
+            --output /tmp/pryntor-original-30s.mp4
+          test -s /tmp/pryntor-original-30s.mp4
+      - name: Generate six bank effects, audit and sample-sync to the actual film
+        run: |
+          python skills/motion-director/scripts/earshot_v03_soundtrack.py \
+            skills/motion-director/examples/signal-demo.json \
+            --video /tmp/pryntor-original-30s.mp4 --outdir /tmp/pryntor-earshot-v03
+          test -s /tmp/pryntor-earshot-v03/pryntor-motion-earshot-v03.wav
+          test -s /tmp/pryntor-earshot-v03/pryntor-motion-earshot-v03-preview.mp4
+          python skills/motion-director/scripts/audio_gate.py \
+            /tmp/pryntor-earshot-v03/pryntor-motion-earshot-v03-preview.mp4 \
+            --min-mean-dbfs -72 \
+            --report /tmp/pryntor-earshot-v03-audio-qa.json
+          ffprobe -v error -show_entries format=duration \
+            -of default=noprint_wrappers=1 /tmp/pryntor-earshot-v03/pryntor-motion-earshot-v03-preview.mp4
+      - name: Preserve genuine sound files, preview and checks for human review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pryntor-earshot-v03-real-soundtrack-review
+          retention-days: 7
+          if-no-files-found: warn
+          path: |
+            /tmp/pryntor-earshot-v03/pryntor-motion-earshot-v03-preview.mp4
+            /tmp/pryntor-earshot-v03/pryntor-motion-earshot-v03.wav
+            /tmp/pryntor-earshot-v03/soundtrack-evidence.json
+            /tmp/pryntor-earshot-v03/kit.json
+            /tmp/pryntor-earshot-v03/takes/kit.lock.json
+            /tmp/pryntor-earshot-v03/takes/*.wav
+            /tmp/pryntor-earshot-v03-audio-qa.json
+            /tmp/pryntor-motion-cues.json
+            /tmp/earshot-v03-bank-list.json
