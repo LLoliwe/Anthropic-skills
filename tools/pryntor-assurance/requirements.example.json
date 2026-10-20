@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "project": "offline-synthetic-fixture",
+  "required_controls": [
+    "SEC-ACCESS",
+    "PRIV-CONSENT"
+  ],
+  "max_evidence_age_days": 90
+}
