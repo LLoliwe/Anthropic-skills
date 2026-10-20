@@ -1,0 +1,34 @@
+name: Pryntor Pyrum R1 offline safety
+
+on:
+  pull_request:
+    paths:
+      - 'tools/pyrum-handoff/**'
+      - 'skills/pryntor-pyrum-omega/**'
+      - 'docs/pyrum-omega/**'
+      - '.github/workflows/pryntor-pyrum-handoff-r1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run independent synthetic policy negatives
+        run: python3 -m unittest discover -s tools/pyrum-handoff/tests -v
+      - name: Exercise real CLI on synthetic approved-shape fixture
+        run: |
+          python3 tools/pyrum-handoff/preflight.py tools/pyrum-handoff/examples/safe-public-research.json > /tmp/pyrum-r1-preflight.json
+          python3 - <<'PY'
+          import json
+          with open('/tmp/pyrum-r1-preflight.json', encoding='utf-8') as f:
+              receipt = json.load(f)
+          assert receipt['status'] == 'REVIEW_ONLY', receipt
+          assert receipt['releases_execution'] is False
+          assert receipt['dispatches_work'] is False
+          print('Synthetic review-only / no dispatch / no execution: PASS')
+          PY
