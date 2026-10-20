@@ -1,3 +1,4 @@
+import {resolveLocalImport} from './v1-model.mjs';
 export const LIMITS=Object.freeze({maxFiles:20,maxBytesPerFile:256*1024,maxTotalBytes:2*1024*1024});
 const ALLOWED=/\.(?:js|mjs|cjs|jsx|ts|tsx|json|html|css)$/i;
 const kind=name=>{const match=/\.([a-z0-9]+)$/i.exec(name);return match?match[1].toUpperCase():'FILE'};
@@ -44,16 +45,15 @@ export function analyze(files,{mode='local'}={}){
     const functionCount=(f.text.match(/\bfunction\s+\w+\s*\(|(?:const|let)\s+\w+\s*=\s*(?:async\s*)?\([^)]*\)\s*=>/g)||[]).length;
     return {name:clean,extension,label:labelFor(clean,extension),lines,bytes:f.bytes,imports,exports:exportCount,functions:functionCount};
   });
-  const baseNames=new Map(rows.map(f=>[f.name.split('/').at(-1),f.name]));
+  const known=new Set(rows.map(f=>f.name));
   const edges=[];
   for(const file of rows)for(const target of file.imports){
     if(!target.startsWith('.'))continue;
-    const base=target.split('/').at(-1),candidates=[base,base+'.js',base+'.ts',base+'.mjs',base+'.tsx',base+'.jsx',base+'.json'];
-    const resolved=candidates.map(n=>baseNames.get(n)).find(Boolean);
+    const resolved=resolveLocalImport(file.name,target,known);
     if(resolved&&resolved!==file.name)edges.push({from:file.name,to:resolved,type:'imports'});
   }
   const counts={files:rows.length,lines:rows.reduce((s,f)=>s+f.lines,0),imports:rows.reduce((s,f)=>s+f.imports.length,0),notes:findings.length,bytes:total};
-  return {product:'Pryntor Inspect',version:'public-preview-r1',method:'local-heuristic-source-inventory',mode,scope:'first-pass-only',customerDataUploaded:false,codeExecuted:false,securityCertification:false,generatedAt:new Date().toISOString(),counts,files:rows,relationships:edges,findings,limitations:['Static heuristic scan; no AST/runtime execution.','No formal security audit or REA MCP analysis.','Pattern matches may include false positives and omit true defects.']};
+  return {product:'Asko',version:'v1-preview',method:'local-heuristic-source-inventory',mode,scope:'first-pass-only',customerDataUploaded:false,codeExecuted:false,securityCertification:false,generatedAt:new Date().toISOString(),counts,files:rows,relationships:edges,findings,limitations:['Static heuristic scan; no AST/runtime execution.','No formal security audit or REA MCP analysis.','Pattern matches may include false positives and omit true defects.']};
 }
 export const EXAMPLE=[
  {name:'index.js',text:"import { format } from './format.js';\n// Original Pryntor demo — no network calls\nexport function status() {\n  return format('ready');\n}\n"},
