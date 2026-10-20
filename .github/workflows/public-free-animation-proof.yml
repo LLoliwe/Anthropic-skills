@@ -1,0 +1,40 @@
+name: Public free LTX2.5 animation proof (one attempt)
+on:
+  pull_request:
+    paths:
+      - 'tools/public-free-animation/**'
+      - '.github/workflows/public-free-animation-proof.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-free-space-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      GRADIO_ANALYTICS_ENABLED: 'False'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install only lightweight Gradio client
+        run: python -m pip install --disable-pip-version-check --no-input gradio_client==2.0.3
+      - name: Test only the public free ZeroGPU demo (no account secrets)
+        run: python tools/public-free-animation/try_free_lt_video.py
+      - name: Record truthfully whether this rendered, or was blocked
+        if: always()
+        run: |
+          if [ -f output_lt25/status.json ]; then
+            cat output_lt25/status.json >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'NO_RESULT: job interrupted before status report' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-free-space-motion-evidence
+          path: output_lt25/
+          if-no-files-found: warn
+          retention-days: 7
