@@ -25,7 +25,9 @@ jobs:
         run: |
           node --check apps/pryntor-inspect/app.mjs
           node --check apps/pryntor-inspect/inspector.mjs
-          node --test apps/pryntor-inspect/test.mjs
+          node --check apps/pryntor-inspect/v1-model.mjs
+          node --check apps/pryntor-inspect/v1-ui.mjs
+          node --test apps/pryntor-inspect/test.mjs apps/pryntor-inspect/v1-test.mjs
       - name: Verify local-only CSP and standalone static files
         run: |
           python3 - <<'PY'
@@ -35,7 +37,10 @@ jobs:
           assert 'connect-src &#39;none&#39;' not in html
           assert "connect-src 'none'" in html
           assert '<script defer type="module" src="./app.mjs"></script>' in html
-          for f in ('index.html','app.mjs','inspector.mjs','styles.css'): assert (p/f).exists()
+          for f in ('index.html','app.mjs','inspector.mjs','styles.css','v1-ui.mjs','v1-model.mjs','v1-test.mjs'): assert (p/f).exists()
           assert 'Pryntor Inspect' in html
+          assert 'commandDialog' in html and 'graphCanvas' in html and 'reviewToolbar' in html
+          assert 'type="search"' in html
+          assert 'v1-ui.mjs' in (p/'app.mjs').read_text()
           print('Pryntor Inspect local-first static contract: PASS')
           PY

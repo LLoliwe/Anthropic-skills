@@ -3,3 +3,92 @@
 @media(max-width:790px){.topbar{height:72px}.topbar nav{gap:15px}.topbar nav a{font-size:12px}.nav-flag{display:none}.hero{min-height:auto;grid-template-columns:1fr}.hero-content{padding:56px 35px 30px}.hero h1{font-size:clamp(48px,10vw,72px)}.hero-meta{padding-top:30px}.hero-art{min-height:365px}.glass-panel{width:min(66%,365px);transform:rotate(-5deg) translate(0,-15px)}.glass-body{padding:20px}.glass-heading{font-size:27px}.network{height:145px}.floating-pill.pill-one{left:12%;top:8%}.floating-pill.pill-two{right:9%;bottom:15%}.trust-rail{flex-wrap:wrap}.workspace-section,.feature-section,.faq-section{padding-left:25px;padding-right:25px}.privacy-section{padding:0 25px}.privacy-card>div:first-child{padding:52px 25px 50px 35px}}
 @media(max-width:580px){.topbar{padding:0 22px}.brand-text{font-size:15px}.topbar nav a:nth-child(2){display:none}.topbar nav{gap:16px}.hero{margin:0 10px;border-radius:19px}.hero-content{padding:47px 25px 0}.hero h1{font-size:clamp(49px,12vw,66px);margin:25px 0 18px}.hero-lead{font-size:14px}.hero-actions{gap:5px}.primary-btn{font-size:12px;padding:14px}.hero-secondary{font-size:12px}.hero-meta{gap:15px}.hero-meta span{font-size:10px}.hero-art{min-height:295px}.glass-panel{width:65%;transform:rotate(-6deg)}.glass-body{padding:12px 17px 5px}.glass-top{padding:10px}.glass-heading{font-size:21px}.network{height:110px}.glass-foot{padding:9px 0;font-size:7px}.floating-pill{padding:9px;font-size:9px}.pill-one{left:4%!important}.pill-two{right:2%!important}.trust-rail{padding:22px 24px}.trust-rail>div{gap:9px 12px;font-size:10px}.workspace-section,.feature-section,.faq-section{padding:78px 16px 0}.section-top h2{font-size:38px}.section-number{display:none}.section-lead{font-size:13px}.workspace-shell{margin-top:26px}.workspace-header{padding:17px}.empty-view{padding:14px 14px 0}.dropzone{min-height:290px;padding:23px}.dropzone h3{font-size:22px}.privacy-line{margin:0 -14px;padding:14px}.results-view{padding:18px 14px}.results-head h3{font-size:24px}.stats-grid{grid-template-columns:repeat(2,1fr)}.result-grid{grid-template-columns:1fr}.feature-grid{grid-template-columns:1fr;gap:12px}.feature-grid article{min-height:210px;padding:28px}.feature-symbol{margin-bottom:22px}.privacy-section{padding:0 10px;margin-top:75px}.privacy-card{grid-template-columns:1fr}.privacy-card>div:first-child{padding:47px 27px 20px}.privacy-card h2{font-size:39px}.privacy-art{min-height:245px}.privacy-ring{width:300px;height:300px}.privacy-ring.two{width:190px;height:190px}.privacy-lock{width:85px;height:85px;font-size:70px}.privacy-art>span{bottom:17px}.faq-section{padding-bottom:70px}.faq-grid{grid-template-columns:1fr;gap:0}.site-footer{padding:26px 20px;flex-wrap:wrap}.footer-right{gap:12px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+/* Pryntor Inspect V1 — product intelligence layer (original design; no external assets). */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+[hidden]{display:none!important}
+.header-commands{display:inline-flex;gap:11px;align-items:center;white-space:nowrap;border:1px solid #dfe4ee;border-radius:10px;background:#fff;padding:10px 13px;color:#3a4058;font-size:11px;font-weight:750;box-shadow:0 2px 8px #151b3011}
+.header-commands span{color:#798393;font-weight:580}
+.header-commands:hover{border-color:#9da9db;background:#f5f6ff}
+.v1-small{font-size:10px;letter-spacing:.155em;font-weight:780;color:#818c9f}
+.v1-action-strip{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:20px 23px;margin:25px 0 0;border:1px solid #e7eafd;border-radius:13px;background:linear-gradient(106deg,#f4f6ff,#f8fafc)}
+.v1-action-strip p{color:#384059;font-size:13px;font-weight:690;margin-top:6px;letter-spacing:-.02em}
+.v1-quick-btn{border:1px solid #dbdff3;background:#fff;border-radius:9px;padding:10px 13px;font-size:11px;font-weight:720;color:#515996;white-space:nowrap}
+.v1-quick-btn span{display:inline-block;margin-right:10px;font-size:10px;border:1px solid #e4e8f2;border-radius:5px;padding:3px 5px;color:#929bb0}
+.v1-quick-btn:hover{background:#edf0ff}
+.v1-search{display:flex;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid #e9edf3}
+.v1-search input,.v1-review-toolbar input{outline:0;border:1px solid #e2e6f0;background:#f9fafc;border-radius:8px;padding:11px 12px;min-width:0;color:#222941;font-size:12px;flex:1}
+.v1-search input:focus,.v1-review-toolbar input:focus{border-color:#7a83cd;box-shadow:0 0 0 3px #7a83cd20}
+.v1-search span,.v1-review-toolbar>span{font-size:10px;color:#959dad;white-space:nowrap}
+.v1-architecture{margin:18px 0 20px;border:1px solid #e6eaf2;border-radius:16px;background:linear-gradient(180deg,#fff,#fafbfe);overflow:hidden}
+.v1-graph-heading{display:flex;justify-content:space-between;gap:22px;align-items:center;padding:23px 24px;border-bottom:1px solid #edf0f5}
+.v1-graph-heading h4{font-size:23px;line-height:1.15;margin:8px 0 8px;letter-spacing:-.055em;font-weight:690}
+.v1-graph-heading p:not(.v1-small){font-size:12px;color:#8791a1;max-width:525px;line-height:1.7}
+.v1-graph-heading>span{font-size:10px;color:#7f89a0;flex-shrink:0;background:#f4f6fb;border:1px solid #e6ebf3;border-radius:40px;padding:9px 12px}
+.v1-graph-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(205px,1fr);min-height:300px}
+.v1-graph-canvas{min-width:0;min-height:288px;padding:10px;display:grid;place-items:center;background:radial-gradient(circle at 43% 42%,#f2f5ff,#fafbfe 72%)}
+.module-svg{display:block;max-width:100%;height:auto;overflow:visible}
+.module-svg .map-node{cursor:pointer}
+.module-svg .map-node rect{transition:stroke .16s,fill .16s,stroke-width .16s}
+.module-svg .map-node:hover rect{fill:#f1f3ff;stroke:#909af0}
+.module-svg .map-node.selected rect{fill:#eff1ff;stroke:#6a72db;stroke-width:2.7}
+.module-svg .map-node:focus-visible{outline:none}
+.module-svg .map-node:focus-visible rect{stroke:#535fcc;stroke-width:3.4}
+.v1-graph-side{padding:22px 18px;background:#fff;border-left:1px solid #ebedf2;min-width:0}
+.v1-graph-list{max-height:250px;overflow:auto;margin:12px 0 16px}
+.graph-list-item{display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;border:0;border-radius:8px;background:transparent;color:#3f485e;padding:10px 11px;font-size:11px;font-weight:700;text-align:left;word-break:break-all}
+.graph-list-item span{font-weight:520;color:#a0a9b7;font-size:10px;white-space:nowrap}
+.graph-list-item:hover,.graph-list-item.active{background:#f1f3ff;color:#4a54ba}
+.v1-impact{font-size:11px;line-height:1.7;color:#8b95a6;border-top:1px solid #eef0f4;padding-top:14px}
+.v1-review-toolbar{display:flex;align-items:center;gap:11px;flex-wrap:wrap;padding:13px 17px;border-bottom:1px solid #edf0f4}
+.v1-filter-pills{display:inline-flex;gap:5px;border:1px solid #e7ebf2;padding:4px;border-radius:9px;background:#f8f9fc}
+.v1-filter-pills button{border:0;background:transparent;border-radius:6px;padding:8px 11px;font-size:11px;color:#828d9f;font-weight:730}
+.v1-filter-pills button.active{background:#fff;box-shadow:0 1px 5px #222a401a;color:#424c8a}
+.v1-review-toolbar input{max-width:240px;margin-left:auto;min-width:140px}
+.v1-dialog{width:min(620px,calc(100% - 28px));max-height:min(76vh,680px);border:1px solid #d7dfec;border-radius:23px;box-shadow:0 35px 90px #141b3860;background:#fff;padding:0;inset:0;margin:auto;color:#252d46}
+.v1-dialog::backdrop{background:#10172991;backdrop-filter:blur(9px)}
+.v1-command-header{display:flex;justify-content:space-between;align-items:start;padding:24px 26px 15px;gap:20px}
+.v1-command-header h2{font-size:30px;letter-spacing:-.055em;margin:7px 0}
+.command-close{background:#f5f6f9;border:1px solid #e7eaf0;border-radius:8px;padding:8px 10px;color:#929bab;font-size:11px}
+#commandSearch{display:block;width:calc(100% - 52px);margin:0 26px 14px;border:1px solid #d9deea;border-radius:12px;padding:16px 17px;background:#f9fafc;color:#232c47;font-size:15px;outline:none}
+#commandSearch:focus{border-color:#909cdd;box-shadow:0 0 0 3px #747ee519}
+.command-results{margin:0 16px;padding:3px 10px 14px;max-height:370px;overflow-y:auto;border-top:1px solid #eef1f5}
+.command-option{display:flex;justify-content:space-between;align-items:center;text-align:left;gap:14px;width:100%;padding:12px 13px;border-radius:10px;border:0;background:#fff;color:#343c52}
+.command-option.active,.command-option:hover{background:#f0f2ff}
+.command-option strong,.command-option small{display:block}
+.command-option strong{font-size:12px;font-weight:720}
+.command-option small{font-size:11px;color:#929cad;line-height:1.5;margin-top:3px}
+.command-option kbd{font-size:10px;font-family:inherit;font-weight:740;color:#929aaf;background:#fff;border:1px solid #dfe4ed;border-radius:6px;padding:5px 7px}
+.command-empty{padding:22px;font-size:12px;color:#8993a4}
+.command-footer{padding:17px 25px;border-top:1px solid #eceff5;font-size:10px;color:#99a2b0;display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:840px){.header-commands{margin-left:auto}.v1-graph-grid{grid-template-columns:1fr}.v1-graph-side{border-left:0;border-top:1px solid #edf0f6}.v1-graph-list{display:grid;grid-template-columns:1fr 1fr;gap:5px;max-height:220px}.v1-review-toolbar input{max-width:none;flex:1}.v1-graph-heading>span{display:none}}
+@media(max-width:580px){.topbar nav{display:none}.header-commands span{display:none}.header-commands{font-size:10px;padding:9px}.v1-action-strip{margin:18px 0 0;padding:15px}.v1-action-strip p{font-size:12px}.v1-quick-btn{font-size:10px}.v1-graph-heading{padding:18px 16px}.v1-graph-heading h4{font-size:21px}.v1-graph-side{padding:17px 14px}.v1-graph-list{grid-template-columns:1fr}.v1-graph-canvas{padding:7px;min-height:240px}.v1-review-toolbar{padding:12px}.v1-filter-pills{width:100%;justify-content:space-between}.v1-review-toolbar input{width:75%}.v1-quick-btn span{display:none}.v1-dialog{max-height:86vh;border-radius:18px}.v1-command-header{padding:18px}.v1-command-header h2{font-size:27px}#commandSearch{width:calc(100% - 36px);margin:0 18px 10px}.command-results{margin:0 8px}.command-footer{padding:13px 18px}}
+
+
+.finding{align-items:flex-start}
+.finding-body{flex:1;min-width:0}
+.finding-jump{border:1px solid #e2e6f0;border-radius:8px;background:#fff;color:#6771ad;padding:8px 10px;font-size:10px;font-weight:730;white-space:nowrap}
+.finding-jump:hover{background:#f1f3ff}
+@media(max-width:580px){.finding{gap:8px;flex-wrap:wrap}.finding-body{flex:1 1 70%}.finding-jump{margin-left:40px}}
+
+/* Accessibility pass: WCAG AA small-text contrast across V0-derived and V1 surfaces. */
+.header-commands span,
+.trust-rail>span,.trust-rail>div,
+.overline:not(.light),.section-lead,.section-number,
+.workspace-title span:not(.app-icon),.result-eyebrow,.results-head p:not(.result-eyebrow),
+.v1-small,.v1-quick-btn span,.stats-grid span,.panel-title>span,
+.v1-search span,.file-label span,.file-row>span:last-child,
+.file-detail p,.detail-grid span,.detail-imports span,.v1-graph-heading p:not(.v1-small),
+.v1-graph-heading>span,.graph-list-item span,.v1-impact,
+.v1-filter-pills button,.v1-review-toolbar>span,.finding-body p,.finding-body small,
+.report-note,.feature-grid p,.faq-grid p,
+.footer-brand div>span,.footer-right,.privacy-line,
+.dropzone p,.limits,.try-row,.command-option small,.command-option kbd,.command-footer,
+.v1-action-strip .v1-small
+{color:#4d596c}
+.local-indicator{color:#246947}
+.v1-graph-side .v1-small{color:#4d596c}
+.file-row.active>.file-label>span{color:#46546b}
+.graph-list-item.active>span{color:#46546b}
+.v1-filter-pills button.active{color:#343f79}
+.v1-graph-canvas svg .map-node text:last-child{fill:#58647a}
+
