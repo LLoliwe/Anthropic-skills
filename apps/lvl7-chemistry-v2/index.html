@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f5f0">
+<meta name="description" content="LVL7 Chemistry Club. Explore atoms, reactions, bonds and matter in interactive chemistry games.">
+<title>LVL7 Chemistry Club — Think. Try. Discover.</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" aria-label="Primary navigation">
+    <a class="wordmark" href="#/home" aria-label="LVL7 Chemistry Club home"><span class="monogram">7<span class="mark-dot"></span></span><span class="wordmark-lines"><strong>LVL7</strong><small>CHEMISTRY CLUB</small></span></a>
+    <div class="side-label">YOUR LAB</div>
+    <nav class="side-nav" id="desktop-nav">
+      <a href="#/home" data-nav="home"><span aria-hidden="true">⌂</span> Home</a>
+      <a href="#/trail" data-nav="trail"><span aria-hidden="true">◈</span> Chemistry trail</a>
+      <a href="#/collection" data-nav="collection"><span aria-hidden="true">✳</span> Collection</a>
+      <a href="#/profile" data-nav="profile"><span aria-hidden="true">◉</span> My progress</a>
+    </nav>
+    <div class="side-bottom"><div class="side-caption">A little science, every day.</div><div class="bloop-mini" aria-hidden="true">
+      <svg viewBox="0 0 82 95" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M41 5C41 5 12 37 12 58a29 29 0 0 0 58 0C70 37 41 5 41 5Z" fill="#9CDAEE" stroke="#172B38" stroke-width="3"/><path d="M27 50q-5-6-9-3" stroke="#fff" stroke-width="5" stroke-linecap="round"/><circle cx="34" cy="58" r="3" fill="#172B38"/><circle cx="51" cy="58" r="3" fill="#172B38"/><path d="M36 70q6 5 12 0" stroke="#172B38" stroke-width="3" stroke-linecap="round"/></svg>
+    </div><small>Designed to make curiosity a habit.</small></div>
+  </aside>
+  <div class="main-column">
+    <header class="topbar"><div class="mobile-brand"><span class="small-mark">7</span><strong>LVL7</strong><span>CHEMISTRY CLUB</span></div><div class="breadcrumb" id="breadcrumb">YOUR LAB / HOME</div><div class="top-stats"><span class="stat-capsule" aria-label="Total earned experience"><span aria-hidden="true" class="stat-symbol">✦</span><b id="top-xp">0</b><small>XP</small></span><span class="stat-capsule streak" aria-label="Current learning streak"><span aria-hidden="true">◒</span><b id="top-streak">0</b><small>day</small></span></div></header>
+    <main id="app" tabindex="-1"></main>
+  </div>
+</div>
+<nav class="bottom-nav" aria-label="Mobile navigation">
+  <a href="#/home" data-nav="home"><span aria-hidden="true">⌂</span><small>Home</small></a>
+  <a href="#/trail" data-nav="trail"><span aria-hidden="true">◈</span><small>Trail</small></a>
+  <a href="#/collection" data-nav="collection"><span aria-hidden="true">✳</span><small>Collection</small></a>
+  <a href="#/profile" data-nav="profile"><span aria-hidden="true">◉</span><small>Profile</small></a>
+</nav>
+<script src="./game.js" defer></script>
+</body></html>
