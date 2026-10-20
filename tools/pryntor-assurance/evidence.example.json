@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "project": "offline-synthetic-fixture",
+  "controls": [
+    {
+      "id": "SEC-ACCESS",
+      "status": "CONTROL DESIGN",
+      "owner": "SYNTHETIC-OWNER",
+      "reviewer": "",
+      "independent_review": false,
+      "evidence_url": "",
+      "evidence_sha256": "",
+      "reviewed_at": "",
+      "valid_until": ""
+    },
+    {
+      "id": "PRIV-CONSENT",
+      "status": "OPEN",
+      "owner": "SYNTHETIC-OWNER",
+      "reviewer": "",
+      "independent_review": false,
+      "evidence_url": "",
+      "evidence_sha256": "",
+      "reviewed_at": "",
+      "valid_until": ""
+    }
+  ]
+}
