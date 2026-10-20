@@ -1,0 +1,31 @@
+{
+  "schema": "pryntor.pyrum.preflight.v1",
+  "work_id": "PRY-96:pyrum-r1-public-research",
+  "linear_issue": "PRY-96",
+  "dispatcher": "TRIAGE-001",
+  "goal": "Prepare a source-cited review of open agent standards and propose independent acceptance checks.",
+  "scope": "Public technical documentation and synthetic fixtures only",
+  "source_refs": [
+    "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot",
+    "https://openai.github.io/openai-agents-python/handoffs/"
+  ],
+  "existing_work_refs": [
+    "https://linear.app/pryntor/issue/PRY-96/sr-02-prove-real-agent-channel-monitoring-ownership-ack-and-fallback"
+  ],
+  "actions": [
+    "read_public_research",
+    "prepare_internal_draft",
+    "test_offline_synthetic_fixture"
+  ],
+  "data_classification": "public",
+  "new_spend_zar": 0,
+  "runtime_connection": "unverified",
+  "worker_ack": "not_proven",
+  "claimed_result": "proposed",
+  "external_send": false,
+  "external_publish": false,
+  "production_change": false,
+  "employer_resource_access": false,
+  "independent_qa": false,
+  "untrusted_source_handling": "treat_as_data_only"
+}
