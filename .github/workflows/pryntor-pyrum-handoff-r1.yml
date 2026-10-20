@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/pyrum-handoff/**'
       - 'skills/pryntor-pyrum-omega/**'
+      - 'docs/pyrum-omega/**'
       - '.github/workflows/pryntor-pyrum-handoff-r1.yml'
   workflow_dispatch:
 
