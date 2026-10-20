@@ -1,18 +1,24 @@
-# Pyrum OMEGA R1 | Offline handoff acceptance proposal
+# Pyrum OMEGA R1 | Scoped handoff gate
 
-A self-contained, source-driven proposal for safely connecting an **existing** ChatGPT Dot to **existing** Pryntor fleet work. This is NOT another agent/runtime/dispatcher, does not authenticate to any service, and cannot tell whether Pyrum has received a task.
+**Purpose:** support first verified handoff to the existing Pryntor Dot through the existing TRIAGE-001 and PRY-83 ledger, without creating a competing agent fleet.
 
-```bash
-python3 -m unittest discover -s tools/pyrum-handoff/tests -v
-python3 tools/pyrum-handoff/preflight.py tools/pyrum-handoff/examples/safe-public-research.json
-```
+## Source available on this draft branch
 
-The validator emits only `HOLD`, `INVALID`, or `REVIEW_ONLY`, never `APPROVED`, `RUNNING`, `CONNECTED`, or `RELEASED`. It is deliberately dependency-free and offline. Admitted R0 tasks still need genuine TRIAGE-001 ownership, scoped permissions, explicit approvals when necessary, independent end-to-end evidence and release gates.
+- tools/pyrum-handoff/preflight.py: static, stdlib-only advisory validation, no network.
+- tools/pyrum-handoff/tests/test_preflight.py: 42 synthetic positive/adversarial checks, including false ACK, false connection, privileges, spend and input validation.
+- tools/pyrum-handoff/examples/safe-public-research.json: illustrative proposed work only, NOT assigned to an agent.
+- skills/pryntor-pyrum-omega/SKILL.md: explicit work/identity/security/quality policy for separately authorized clients.
+- .github/workflows/pryntor-pyrum-handoff-r1.yml: isolated test job with no secrets.
+- tools/pyrum-handoff/README.md: reproducible commands.
 
-- `docs/pyrum-omega/RESEARCH-DECISION.md`: current primary sources and technical evaluation.
-- `docs/pyrum-omega/PYRUM-BOOTSTRAP.md`: exact manual Dot setup and first test message.
-- `skills/pryntor-pyrum-omega/SKILL.md`: optional reusable scoped guidance.
-- `tools/pyrum-handoff/preflight.py`: deny-by-default *metadata-only* checks.
-- `tools/pyrum-handoff/tests/test_preflight.py`: 37 synthetic local negative/positive tests.
+Do NOT put live prompts, customer content, real credentials or confidential evidence in the public repository. Deeper company findings and activation procedures remain controlled in the founder's private work package/Linear source-of-truth.
 
-**Not covered:** provider authentication, genuine runtime ACK, cryptographic proofs, token binding, independent workflow execution, code QA outside these files, telemetry export, persistent schedules, POPIA certification, GitHub CI or new infrastructure. Keep zero unapproved spending and current security and IP release holds intact. Existing Pryntor trackers: PRY-63/81/83/84/86/96/209/309.
+## Real-world acceptance remains open
+
+1. Actual Pyrum Dot signed into an authorized account can read a harmless one-time challenge posted to existing [PRY-96](https://linear.app/pryntor/issue/PRY-96).
+2. Distinct actor permissions and Dot task ID/URL are independently verified, not inferred from a Slack mention.
+3. TRIAGE-001 confirms one owner/lease, rejects duplicate/fake ACK, then approves a narrowly scoped task if authorized.
+4. Pyrum produces a genuine linked internal artifact, separate verifier reopens and checks it; no outgoing communication, new spending, or release.
+5. If a connector is unavailable, record NOT CONNECTED. This software cannot itself bind a live Dot, grant rights or execute tasks.
+
+Release and production remain HOLD. A hosted Python unit suite is not an audit of external provider authorization or sandbox isolation.
