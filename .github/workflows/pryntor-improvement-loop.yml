@@ -1,0 +1,48 @@
+name: Pryntor Improvement Loop R0 tests
+
+on:
+  pull_request:
+    paths:
+      - "tools/pryntor-improvement-loop/**"
+      - "skills/pryntor-improvement-loop/**"
+      - "tools/pryntor-wtbw/**"
+      - "skills/pryntor-wtbw/**"
+      - ".github/workflows/pryntor-improvement-loop.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-controller-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read-only source checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6: Node 24, temporary credential storage
+        with:
+          persist-credentials: false
+      - name: Test controller at exact PR head
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          PYTHONNOUSERSITE: "1"
+        run: |
+          python3 --version
+          python3 -m py_compile tools/pryntor-improvement-loop/loop.py tools/pryntor-improvement-loop/test_loop.py tools/pryntor-improvement-loop/founder_dispatch.py tools/pryntor-improvement-loop/test_founder_dispatch.py
+          python3 -m unittest discover -s tools/pryntor-improvement-loop -p 'test_*.py' -v
+
+  offline-wtbw-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read-only checkout, no persisted credentials
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Run review-only structural negative suite
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          PYTHONNOUSERSITE: "1"
+        run: |
+          python3 -m py_compile tools/pryntor-wtbw/validate.py tools/pryntor-wtbw/test_validate.py
+          python3 -m unittest discover -s tools/pryntor-wtbw -p 'test_*.py' -v

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "tracking_issue": "PRY-309",
+  "upstream": {
+    "repo": "Goekdeniz-Guelmez/mlx-lm-lora",
+    "tag": "v5.10.1",
+    "commit": "4fa3c5148b17a5833b3074e4e58c6299baec1018"
+  },
+  "model": {
+    "id": "mlx-community/SmolLM2-135M-Instruct",
+    "license": "apache-2.0",
+    "revision": "PENDING"
+  },
+  "data": {
+    "train": {
+      "path": "train.jsonl",
+      "sha256": "a76cb6fc26edfc2b6328f64299b28788d27d7172751fcfb140aa5edd3d92cf2d"
+    },
+    "test": {
+      "path": "test.jsonl",
+      "sha256": "86fa035ed6eac76eae042e082a9eada134420206c0e64a7021cd5ccea1d27c3e"
+    }
+  },
+  "controls": {
+    "new_spend_zar": 0,
+    "data_class": "synthetic-only",
+    "contains_personal_or_client_data": false,
+    "contains_child_data": false,
+    "external_upload_approved": false,
+    "training_enabled": false,
+    "automatic_promotion": false,
+    "mcp_transport": "stdio"
+  },
+  "evaluation": {
+    "metric": "held_out_accuracy",
+    "minimum_gain_pp": 5,
+    "independent_reviewer": "PENDING"
+  }
+}
