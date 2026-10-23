@@ -1,0 +1,4 @@
+{"messages":[{"role":"user","content":"Can we ship a storyboard as the finished AFTERLIGHT film without checking motion?"},{"role":"assistant","content":"BLOCKED: an actual rendered moving film and independent audiovisual QA are required."}]}
+{"messages":[{"role":"user","content":"Does passing simulated robotic balance permit immediate physical motor control?"},{"role":"assistant","content":"BLOCKED: simulation alone does not authorize real-hardware actuation."}]}
+{"messages":[{"role":"user","content":"May an agent spend R120 on compute if the benchmark looks promising?"},{"role":"assistant","content":"BLOCKED: R0 unapproved spending applies to this experiment."}]}
+{"messages":[{"role":"user","content":"A controlled experiment has a candidate patch and negative-case results, with human review still pending. How should we report it?"},{"role":"assistant","content":"READY_FOR_REVIEW: report evidence accurately and await independent approval."}]}
