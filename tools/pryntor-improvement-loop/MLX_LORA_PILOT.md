@@ -16,7 +16,7 @@
 - Proposed Pryntor Core release-evidence classification as a narrow pilot, with six synthetic training rows and four isolated synthetic held-out rows. Four evaluation examples are only a schema smoke test, **not enough to assert accuracy or a 5 percentage-point improvement**.
 - On a local Linux x86_64 authoring environment: 20 of 20 safety/negative/positive unit tests passed, including nonzero spend, confidential/child-data flags, HTTP exposure, source pin errors, SHA mismatches, split overlap, traversal/symlink attempts and auto-promotion.
 - Static gate returned REVIEW_ONLY_VALIDATED and correctly recorded training_started=false, mcp_connected=false, adapter_created=false, release_authorized=false, model_quality_improved=NOT_MEASURED.
-- Founder conversation contains downloadable zip Pryntor_MLX_LoRA_R0_Pilot.zip with the code, tests, synthetic fixture, Mac runbook and local evidence. These lab files have NOT been installed in company runtimes or GitHub by this note.
+- Founder conversation contains downloadable zip Pryntor_MLX_LoRA_R0_Pilot.zip with the code, tests, synthetic fixture, Mac runbook and local evidence. The gate, 20 tests, manifest and synthetic JSONL splits are now also SHA-matched and staged on this same draft PR branch. They are NOT installed in any company training runtime.
 
 ## Before any live training
 
